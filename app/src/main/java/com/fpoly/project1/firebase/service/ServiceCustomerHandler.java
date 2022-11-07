@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import com.fpoly.project1.firebase.controller.ControllerBase;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.model.Customer;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.Arrays;
@@ -60,10 +62,15 @@ public class ServiceCustomerHandler extends Service {
                                             rBundle.putBoolean("success", false);
                                             rBundle.putString("error", "Snapshot is null");
                                         } else {
+                                            // we will log user in via firebase since it include both
+                                            // password-based auth and google auth,
+                                            // here we're just creating a customer object linked to
+                                            // the firebase account
+
                                             // get email / password pair
                                             Pair<String, String> credentials = new Pair<>(
                                                     intent.getExtras().getString("email"),
-                                                    intent.getExtras().getString("password", null)
+                                                    intent.getExtras().getString("gid")
                                             );
 
                                             // get matching account
@@ -71,25 +78,41 @@ public class ServiceCustomerHandler extends Service {
                                                     c -> c.emailAddress.equals(credentials.first)
                                             ).toArray();
 
-                                            // does not have matching account
+                                            // get current firebase account, at this point it is non-null
+                                            FirebaseUser googleAccount = FirebaseAuth.getInstance().getCurrentUser();
+                                            assert googleAccount != null;
+
                                             if (matchingCustomer[0] == null) {
-                                                rBundle.putBoolean("success", false);
-                                                rBundle.putString("error", "Account does not exist");
-                                            }
-                                            // account was logged in via Google
-                                            else if (intent.getExtras().getString("gid") != null) {
+                                                Customer customerAccount =
+                                                        new Customer(
+                                                                -1,
+                                                                googleAccount.getUid(),
+                                                                googleAccount.getPhotoUrl(),
+                                                                googleAccount.getDisplayName(),
+                                                                null,
+                                                                googleAccount.getEmail(),
+                                                                null
+                                                        );
+
+                                                controllerCustomer.newCustomer(customerAccount,
+                                                        new ControllerBase.SuccessListener() {
+                                                            @Override
+                                                            public void run() {
+                                                                rBundle.putBoolean("success", true);
+                                                                rBundle.putSerializable("account", customerAccount);
+                                                            }
+                                                        },
+                                                        new ControllerBase.FailureListener() {
+                                                            @Override
+                                                            public void run(Exception error) {
+                                                                rBundle.putBoolean("success", false);
+                                                                rBundle.putString("error", error.getMessage());
+                                                                rIntent.putExtras(rBundle);
+                                                            }
+                                                        });
+                                            } else {
                                                 rBundle.putBoolean("success", true);
                                                 rBundle.putSerializable("account", matchingCustomer[0]);
-                                            }
-                                            // matching password hashes
-                                            else if (matchingCustomer[0].password.equals(credentials.second)) {
-                                                rBundle.putBoolean("success", true);
-                                                rBundle.putSerializable("account", matchingCustomer[0]);
-                                            }
-                                            // wrong password
-                                            else {
-                                                rBundle.putBoolean("success", false);
-                                                rBundle.putString("error", "Incorrect password");
                                             }
                                         }
 
@@ -174,6 +197,7 @@ public class ServiceCustomerHandler extends Service {
                         break;
                     }
 
+                    // OBSOLETE
                     // insert new customer entry
                     case "cheetah.service.customer.new": {
                         if (intent.getExtras() == null)

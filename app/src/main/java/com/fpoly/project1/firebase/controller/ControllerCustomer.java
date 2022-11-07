@@ -42,7 +42,6 @@ public class ControllerCustomer extends ControllerBase {
             rowReference = tableReference.child(String.valueOf(customer.id));
         }
 
-        // failed listener
         rowReference
                 .setValue(customer) // set value to new location
                 .addOnSuccessListener(sListener::run)

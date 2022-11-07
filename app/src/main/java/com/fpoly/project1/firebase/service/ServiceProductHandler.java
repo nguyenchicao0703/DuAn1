@@ -11,14 +11,14 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.fpoly.project1.firebase.controller.ControllerBase;
-import com.fpoly.project1.firebase.controller.ControllerRating;
-import com.fpoly.project1.firebase.model.Rating;
+import com.fpoly.project1.firebase.controller.ControllerProduct;
+import com.fpoly.project1.firebase.model.Product;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.Arrays;
 
-public class ServiceRatingHandler extends Service {
-    private final ControllerRating controllerRating = new ControllerRating();
+public class ServiceProductHandler extends Service {
+    private final ControllerProduct controllerProduct = new ControllerProduct();
 
     @Nullable
     @Override
@@ -26,33 +26,33 @@ public class ServiceRatingHandler extends Service {
         return null;
     }
 
-    public ServiceRatingHandler() {
+    public ServiceProductHandler() {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("cheetah.service.rating.get");
-        intentFilter.addAction("cheetah.service.rating.getAll");
-        intentFilter.addAction("cheetah.service.rating.new");
-        intentFilter.addAction("cheetah.service.rating.set");
-        intentFilter.addAction("cheetah.service.rating.delete");
+        intentFilter.addAction("cheetah.service.product.get");
+        intentFilter.addAction("cheetah.service.product.getAll");
+        intentFilter.addAction("cheetah.service.product.new");
+        intentFilter.addAction("cheetah.service.product.set");
+        intentFilter.addAction("cheetah.service.product.delete");
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
-                    // get single rating
-                    case "cheetah.service.rating.get": {
+                    // get single product
+                    case "cheetah.service.product.get": {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.rating.get.result");
+                        rIntent.setAction("cheetah.service.product.get.result");
 
-                        controllerRating.getRating(intent.getExtras().getInt("value"),
+                        controllerProduct.getProduct(intent.getExtras().getInt("value"),
                                 new ControllerBase.SuccessListener() {
                                     @Override
                                     public void run(DataSnapshot dataSnapshot) {
                                         rBundle.putBoolean("success", true);
-                                        rBundle.putSerializable("value", dataSnapshot.getValue(Rating.class));
+                                        rBundle.putSerializable("value", dataSnapshot.getValue(Product.class));
                                         rIntent.putExtras(rBundle);
 
                                         sendBroadcast(rIntent);
@@ -71,34 +71,24 @@ public class ServiceRatingHandler extends Service {
                         break;
                     }
 
-                    // get all rating entries
-                    case "cheetah.service.rating.getAll": {
+                    // get all product entries
+                    case "cheetah.service.product.getAll": {
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.rating.getAll.result");
+                        rIntent.setAction("cheetah.service.product.getAll.result");
 
-                        controllerRating.getAllRating(
+                        controllerProduct.getAllProduct(
                                 new ControllerBase.SuccessListener() {
                                     @Override
                                     public void run(DataSnapshot dataSnapshot) {
-                                        Rating[] ratings = dataSnapshot.getValue(Rating[].class);
+                                        Product[] products = dataSnapshot.getValue(Product[].class);
 
-                                        if (ratings == null) {
+                                        if (products == null) {
                                             rBundle.putBoolean("success", false);
                                             rBundle.putString("error", "Snapshot is null");
                                         } else {
-                                            int sellerId = intent.getExtras().getInt("sellerId", -1);
-                                            int shipperId = intent.getExtras().getInt("shipperId", -1);
-                                            int productId = intent.getExtras().getInt("productId", -1);
-
-                                            if (sellerId != -1 || shipperId != -1) {
-                                                ratings = (Rating[]) Arrays.stream(ratings).filter(
-                                                        v -> v.shipper_id == shipperId || v.seller_id == sellerId || v.product_id == productId
-                                                ).toArray();
-                                            }
-
                                             rBundle.putBoolean("success", true);
-                                            rBundle.putSerializable("value", ratings);
+                                            rBundle.putSerializable("value", products);
                                         }
 
                                         rIntent.putExtras(rBundle);
@@ -119,16 +109,16 @@ public class ServiceRatingHandler extends Service {
                         break;
                     }
 
-                    // insert new rating entry
-                    case "cheetah.service.rating.new": {
+                    // insert new product entry
+                    case "cheetah.service.product.new": {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.rating.new.result");
+                        rIntent.setAction("cheetah.service.product.new.result");
 
-                        controllerRating.newRating((Rating) intent.getExtras().getSerializable("value"),
+                        controllerProduct.newProduct((Product) intent.getExtras().getSerializable("value"),
                                 new ControllerBase.SuccessListener() {
                                     @Override
                                     public void run() {
@@ -151,17 +141,17 @@ public class ServiceRatingHandler extends Service {
                         break;
                     }
 
-                    // override old rating entry
-                    case "cheetah.service.rating.set": {
+                    // override old product entry
+                    case "cheetah.service.product.set": {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.rating.set.result");
+                        rIntent.setAction("cheetah.service.product.set.result");
 
-                        controllerRating.setRating((Rating) intent.getExtras().getSerializable("value"), true,
-                                new ControllerRating.SuccessListener() {
+                        controllerProduct.setProduct((Product) intent.getExtras().getSerializable("value"), true,
+                                new ControllerProduct.SuccessListener() {
                                     @Override
                                     public void run() {
                                         rBundle.putBoolean("success", true);
@@ -170,7 +160,7 @@ public class ServiceRatingHandler extends Service {
                                         sendBroadcast(rIntent);
                                     }
                                 },
-                                new ControllerRating.FailureListener() {
+                                new ControllerProduct.FailureListener() {
                                     @Override
                                     public void run(Exception error) {
                                         rBundle.putBoolean("success", false);
@@ -183,16 +173,16 @@ public class ServiceRatingHandler extends Service {
                         break;
                     }
 
-                    // delete old rating entry
-                    case "cheetah.service.rating.delete": {
+                    // delete old product entry
+                    case "cheetah.service.product.delete": {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.rating.delete.result");
+                        rIntent.setAction("cheetah.service.product.delete.result");
 
-                        controllerRating.deleteRating(intent.getExtras().getInt("value"),
+                        controllerProduct.deleteProduct(intent.getExtras().getInt("value"),
                                 new ControllerBase.SuccessListener() {
                                     @Override
                                     public void run() {

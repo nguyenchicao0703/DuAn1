@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "796777611334",
+    "firebase_url": "https://duan1-a7273-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "duan1-a7273",
     "storage_bucket": "duan1-a7273.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "796777611334-s3dsvqi3ui37m5g585tpops14bvdgrd2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpoly.project1",
+            "certificate_hash": "abeb5fb3f310eb4f7b3b89697ab8096c687055da"
+          }
+        },
         {
           "client_id": "796777611334-ft6vop9d5juh8m1bmgav4qa0ils5hedv.apps.googleusercontent.com",
           "client_type": 3
