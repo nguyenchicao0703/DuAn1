@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Project 1</string>
     <string name="web_client_id">796777611334-ft6vop9d5juh8m1bmgav4qa0ils5hedv.apps.googleusercontent.com</string>
+    <string name="sign_in">Dont have an account?<b> <font color="#E62B37">Sign up</font></b></string>
+    <string name="sign_up">Already have an account? <b><font color="#E62B37">Sign in</font></b></string>
+    <string name="email"><i>Email</i><font color="#E62B37">*</font></string>
+    <string name="password"><i>Password</i><font color="#E62B37">*</font></string>
 </resources>
