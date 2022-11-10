@@ -1,19 +1,25 @@
 package com.fpoly.project1.activity;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.fpoly.project1.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class TestProfileActivity extends AppCompatActivity {
     @Override
@@ -23,6 +29,7 @@ public class TestProfileActivity extends AppCompatActivity {
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
+            Glide.with(this).load(firebaseUser.getPhotoUrl()).into((ImageView) findViewById(R.id.test_profile_avatar));
             ((TextView) findViewById(R.id.test_profile_gid)).setText(firebaseUser.getUid());
             ((TextView) findViewById(R.id.test_profile_email)).setText(firebaseUser.getEmail());
         }
@@ -33,8 +40,7 @@ public class TestProfileActivity extends AppCompatActivity {
             // Sign out from google
             googleSignInClient.signOut().addOnCompleteListener(task -> {
                 // Check condition
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     // When task is successful
                     // Sign out from firebase
                     FirebaseAuth.getInstance().signOut();

@@ -1,13 +1,12 @@
 package com.fpoly.project1.firebase.model;
 
-import android.net.Uri;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.io.Serializable;
-
-public class Customer implements Serializable {
-    public int id;
+@IgnoreExtraProperties
+public class Customer {
+    public String id;
     public String gid;
-    public Uri avatar_url;
+    public String avatar_url;
     public String fullname;
     public String birthdate;
     public String emailAddress;
@@ -15,7 +14,7 @@ public class Customer implements Serializable {
 
     public Customer() {}
 
-    public Customer(int id, String gid, Uri avatar_url, String fullname, String birthdate, String emailAddress, String postalAddress) {
+    public Customer(String id, String gid, String avatar_url, String fullname, String birthdate, String emailAddress, String postalAddress) {
         this.id = id;
         this.gid = gid;
         this.avatar_url = avatar_url;

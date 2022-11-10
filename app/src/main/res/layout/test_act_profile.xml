@@ -3,6 +3,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="500sp"
+        android:layout_height="500sp"
+        android:id="@+id/test_profile_avatar" />
+
     <TextView
         android:id="@+id/test_profile_email"
         android:layout_width="wrap_content"

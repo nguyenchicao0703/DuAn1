@@ -1,10 +1,17 @@
 package com.fpoly.project1.firebase.controller;
 
+import android.util.Log;
+
 import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.model.Customer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.GenericTypeIndicator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class ControllerCustomer extends ControllerBase {
@@ -23,6 +30,23 @@ public class ControllerCustomer extends ControllerBase {
      * Please read: https://firebase.google.com/docs/database/android/read-and-write
      */
 
+    public ControllerCustomer() {
+        Firebase.database
+                .child(table)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.getValue() == null) {
+                        Firebase.database
+                                .child(table)
+                                .setValue(0)
+                                .addOnSuccessListener(v -> {
+                                    Log.i("ControllerCustomer", "Created table");
+                                });
+                    }
+                })
+                .addOnFailureListener(Throwable::printStackTrace);
+    }
+
     public void setCustomer(Customer customer, boolean update, SuccessListener sListener, FailureListener fListener) {
         DatabaseReference tableReference = Firebase.database // database reference
                 .child(this.table); // get the table reference
@@ -34,9 +58,7 @@ public class ControllerCustomer extends ControllerBase {
             rowReference = tableReference.push();
 
             // override customer unique ID
-            customer.id = Integer.parseInt(
-                    Objects.requireNonNull(tableReference.getKey())
-            );
+            customer.id = Objects.requireNonNull(rowReference.getKey());
         } else {
             // set as existing location reference
             rowReference = tableReference.child(String.valueOf(customer.id));
@@ -53,11 +75,14 @@ public class ControllerCustomer extends ControllerBase {
                 .child(this.table)
                 .get() // read all entries from table (or row/json tree)
                 .addOnSuccessListener(dataSnapshot -> {
-                    // get result as arraylist
-                    Customer[] arrayList = dataSnapshot.getValue(Customer[].class);
+                    List<Customer> customers = new ArrayList<>();
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        customers.add(ds.getValue(Customer.class));
+                    }
 
                     // check if any account with matching email exist
-                    if (arrayList != null && Arrays.stream(arrayList).anyMatch(c ->
+                    if (customers.stream().anyMatch(c ->
                             c.emailAddress.equals(customer.emailAddress)
                     )) {
                         fListener.run(new Exception("Email taken"));

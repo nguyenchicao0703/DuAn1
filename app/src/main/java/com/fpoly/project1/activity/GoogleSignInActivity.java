@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fpoly.project1.R;
 import com.fpoly.project1.firebase.Firebase;
+import com.fpoly.project1.firebase.service.ServiceCustomerHandler;
+import com.fpoly.project1.firebase.service.ServiceType;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +34,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Objects;
 
 public class GoogleSignInActivity extends AppCompatActivity {
+    private final int REQ_CODE = 72;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
 
@@ -40,12 +43,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // start service(s)
+        startService(new Intent(this, ServiceCustomerHandler.class));
+
         // check if user is already logged in
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            startActivity(new Intent(this, TestProfileActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            );
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, TestProfileActivity.class));
             finish();
         }
 
@@ -66,29 +69,38 @@ public class GoogleSignInActivity extends AppCompatActivity {
         );
 
         // btn listener
-        btnSignIn.setOnClickListener(v -> startActivityForResult(googleSignInClient.getSignInIntent(), 72));
+        btnSignIn.setOnClickListener(v -> startActivityForResult(googleSignInClient.getSignInIntent(), REQ_CODE));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode != 72) return;
+        if (requestCode != REQ_CODE) return;
 
-        Log.i("Google", "Received result");
+        Log.i("GoogleSignInActivity", "Received result");
 
         try {
             GoogleSignInAccount googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-            if (googleSignInAccount == null) return;
-
-            AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
+            if (googleSignInAccount == null) {
+                Toast.makeText(this, "Received Null while getting account", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             firebaseAuth
-                    .signInWithCredential(authCredential)
+                    .signInWithCredential(
+                            GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null)
+                    )
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show();
 
+                            // send intent
+                            Intent serviceIntent = new Intent();
+                            serviceIntent.setAction(ServiceType.CUSTOMER_LOGIN);
+                            sendBroadcast(serviceIntent);
+
+                            // start activity
                             startActivity(new Intent(this, TestProfileActivity.class)
                                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             );

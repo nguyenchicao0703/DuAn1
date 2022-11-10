@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
@@ -31,25 +32,25 @@ public class ServiceCustomerHandler extends Service {
 
     public ServiceCustomerHandler() {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("cheetah.service.customer.login");
-        intentFilter.addAction("cheetah.service.customer.get");
-        intentFilter.addAction("cheetah.service.customer.getAll");
-        intentFilter.addAction("cheetah.service.customer.new");
-        intentFilter.addAction("cheetah.service.customer.set");
-        intentFilter.addAction("cheetah.service.customer.delete");
+        intentFilter.addAction(ServiceType.CUSTOMER_LOGIN);
+        intentFilter.addAction(ServiceType.CUSTOMER_GET);
+        intentFilter.addAction(ServiceType.CUSTOMER_GETALL);
+        intentFilter.addAction(ServiceType.CUSTOMER_NEW);
+        intentFilter.addAction(ServiceType.CUSTOMER_SET);
+        intentFilter.addAction(ServiceType.CUSTOMER_DELETE);
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
                     // customer login
-                    case "cheetah.service.customer.login": {
+                    case ServiceType.CUSTOMER_LOGIN: {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.login.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_LOGIN_RESULT);
 
                         controllerCustomer.getAllCustomer(
                                 new ControllerBase.SuccessListener() {
@@ -61,33 +62,30 @@ public class ServiceCustomerHandler extends Service {
                                         if (customers == null) {
                                             rBundle.putBoolean("success", false);
                                             rBundle.putString("error", "Snapshot is null");
+                                            rIntent.putExtras(rBundle);
+
+                                            sendBroadcast(rIntent);
                                         } else {
                                             // we will log user in via firebase since it include both
                                             // password-based auth and google auth,
                                             // here we're just creating a customer object linked to
                                             // the firebase account
 
-                                            // get email / password pair
-                                            Pair<String, String> credentials = new Pair<>(
-                                                    intent.getExtras().getString("email"),
-                                                    intent.getExtras().getString("gid")
-                                            );
-
-                                            // get matching account
-                                            Customer[] matchingCustomer = (Customer[]) Arrays.stream(customers).filter(
-                                                    c -> c.emailAddress.equals(credentials.first)
-                                            ).toArray();
-
                                             // get current firebase account, at this point it is non-null
                                             FirebaseUser googleAccount = FirebaseAuth.getInstance().getCurrentUser();
                                             assert googleAccount != null;
 
+                                            // get matching account
+                                            Customer[] matchingCustomer = (Customer[]) Arrays.stream(customers).filter(
+                                                    c -> c.emailAddress.equals(googleAccount.getEmail())
+                                            ).toArray();
+
                                             if (matchingCustomer[0] == null) {
                                                 Customer customerAccount =
                                                         new Customer(
-                                                                -1,
+                                                                null,
                                                                 googleAccount.getUid(),
-                                                                googleAccount.getPhotoUrl(),
+                                                                googleAccount.getPhotoUrl().toString(),
                                                                 googleAccount.getDisplayName(),
                                                                 null,
                                                                 googleAccount.getEmail(),
@@ -98,31 +96,46 @@ public class ServiceCustomerHandler extends Service {
                                                         new ControllerBase.SuccessListener() {
                                                             @Override
                                                             public void run() {
+                                                                Log.i(ServiceType.CUSTOMER_LOGIN, "Added account to Firebase");
+
                                                                 rBundle.putBoolean("success", true);
-                                                                rBundle.putSerializable("account", customerAccount);
+                                                                //rBundle.putSerializable("account", customerAccount);
+                                                                rIntent.putExtras(rBundle);
+
+                                                                sendBroadcast(rIntent);
                                                             }
                                                         },
                                                         new ControllerBase.FailureListener() {
                                                             @Override
                                                             public void run(Exception error) {
+                                                                Log.i(ServiceType.CUSTOMER_LOGIN, "Failed to add account to Firebase");
+                                                                error.printStackTrace();
+
                                                                 rBundle.putBoolean("success", false);
                                                                 rBundle.putString("error", error.getMessage());
                                                                 rIntent.putExtras(rBundle);
+
+                                                                sendBroadcast(rIntent);
                                                             }
                                                         });
                                             } else {
+                                                Log.i(ServiceType.CUSTOMER_LOGIN, "Fetched account from Firebase");
+
                                                 rBundle.putBoolean("success", true);
-                                                rBundle.putSerializable("account", matchingCustomer[0]);
+                                                //rBundle.putSerializable("account", matchingCustomer[0]);
+                                                rIntent.putExtras(rBundle);
+
+                                                sendBroadcast(rIntent);
                                             }
                                         }
-
-                                        rIntent.putExtras(rBundle);
-                                        sendBroadcast(rIntent);
                                     }
                                 },
                                 new ControllerBase.FailureListener() {
                                     @Override
                                     public void run(Exception error) {
+                                        Log.i(ServiceType.CUSTOMER_LOGIN, "Failed to get account from Firebase");
+                                        error.printStackTrace();
+
                                         rBundle.putBoolean("success", false);
                                         rBundle.putString("error", error.getMessage());
                                         rIntent.putExtras(rBundle);
@@ -134,20 +147,20 @@ public class ServiceCustomerHandler extends Service {
                     }
 
                     // get single customer
-                    case "cheetah.service.customer.get": {
+                    case ServiceType.CUSTOMER_GET: {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.get.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_GET_RESULT);
 
                         controllerCustomer.getCustomer(intent.getExtras().getInt("value"),
                                 new ControllerBase.SuccessListener() {
                                     @Override
                                     public void run(DataSnapshot dataSnapshot) {
                                         rBundle.putBoolean("success", true);
-                                        rBundle.putSerializable("value", dataSnapshot.getValue(Customer.class));
+                                        //rBundle.putSerializable("value", dataSnapshot.getValue(Customer.class));
                                         rIntent.putExtras(rBundle);
 
                                         sendBroadcast(rIntent);
@@ -167,10 +180,10 @@ public class ServiceCustomerHandler extends Service {
                     }
 
                     // get all customer entries
-                    case "cheetah.service.customer.getAll": {
+                    case ServiceType.CUSTOMER_GETALL: {
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.getAll.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_GETALL_RESULT);
 
                         controllerCustomer.getAllCustomer(
                                 new ControllerBase.SuccessListener() {
@@ -199,13 +212,13 @@ public class ServiceCustomerHandler extends Service {
 
                     // OBSOLETE
                     // insert new customer entry
-                    case "cheetah.service.customer.new": {
+                    case ServiceType.CUSTOMER_NEW: {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.new.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_NEW_RESULT);
 
                         controllerCustomer.newCustomer((Customer) intent.getExtras().getSerializable("value"),
                                 new ControllerBase.SuccessListener() {
@@ -231,13 +244,13 @@ public class ServiceCustomerHandler extends Service {
                     }
 
                     // override old customer entry
-                    case "cheetah.service.customer.set": {
+                    case ServiceType.CUSTOMER_SET: {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.set.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_SET_RESULT);
 
                         controllerCustomer.setCustomer((Customer) intent.getExtras().getSerializable("value"), true,
                                 new ControllerCustomer.SuccessListener() {
@@ -263,13 +276,13 @@ public class ServiceCustomerHandler extends Service {
                     }
 
                     // delete old customer entry
-                    case "cheetah.service.customer.delete": {
+                    case ServiceType.CUSTOMER_DELETE: {
                         if (intent.getExtras() == null)
                             return;
 
                         Intent rIntent = new Intent();
                         Bundle rBundle = new Bundle();
-                        rIntent.setAction("cheetah.service.customer.delete.result");
+                        rIntent.setAction(ServiceType.CUSTOMER_DELETE_RESULT);
 
                         controllerCustomer.deleteCustomer(intent.getExtras().getInt("value"),
                                 new ControllerBase.SuccessListener() {
