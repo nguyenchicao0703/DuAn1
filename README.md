@@ -3,25 +3,25 @@
 **Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
 
 ### TODO List
-[-] Thêm thao tác đăng ký (tương tự như đăng nhập)
+:x: Thêm thao tác đăng ký (tương tự như đăng nhập)
 
-[-] Làm các layout khác đi đm
+:x: Làm các layout khác đi đm
 
-[-] Liên kết tài khoản Facebook, Google với tài khoản password
+:x: Liên kết tài khoản Facebook, Google với tài khoản password
 
-[-] Sửa lại toàn bộ controller sang sử dụng ``addOnCompleteListener(task -> task.isSuccessful()...)`` vì success/failure listener có khi không trigger
+:x: Sửa lại toàn bộ controller sang sử dụng ``addOnCompleteListener(task -> task.isSuccessful()...)`` vì success/failure listener có khi không trigger
 
-[-] TBA..
+:x: TBA..
 
-[+] Đăng nhập bằng Google
+:white_check_mark: Đăng nhập bằng Google
 
-[+] Đăng nhập bằng email/password thông qua Firebase**
+:white_check_mark: Đăng nhập bằng email/password thông qua Firebase**
 
-[+] Đăng nhập bằng Facebook
+:white_check_mark: Đăng nhập bằng Facebook
 
-[+] Tạo tài khoản (Customer) nếu chưa có khi fast login bằng Google/Facebook
+:white_check_mark: Tạo tài khoản (Customer) nếu chưa có khi fast login bằng Google/Facebook
 
-[+] Đăng nhập vào tài khoản có sẵn trùng email bằng nền tảng khác (reg = Google, log = Facebook)
+:white_check_mark: Đăng nhập vào tài khoản có sẵn trùng email bằng nền tảng khác (reg = Google, log = Facebook)
 
 ### Chú ý
 - Ghi ra những thay đổi trong commit message để biết cái gì đã xong hoặc chưa xong
