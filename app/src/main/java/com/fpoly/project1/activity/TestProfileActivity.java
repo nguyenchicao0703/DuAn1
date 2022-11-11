@@ -1,8 +1,7 @@
 package com.fpoly.project1.activity;
 
-import android.graphics.BitmapFactory;
+import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,15 +10,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.fpoly.project1.R;
+import com.fpoly.project1.firebase.controller.ControllerBase;
+import com.fpoly.project1.firebase.controller.ControllerCustomer;
+import com.fpoly.project1.firebase.model.Customer;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestProfileActivity extends AppCompatActivity {
     @Override
@@ -27,31 +30,47 @@ public class TestProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_act_profile);
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            Glide.with(this).load(firebaseUser.getPhotoUrl()).into((ImageView) findViewById(R.id.test_profile_avatar));
-            ((TextView) findViewById(R.id.test_profile_gid)).setText(firebaseUser.getUid());
-            ((TextView) findViewById(R.id.test_profile_email)).setText(firebaseUser.getEmail());
-        }
+        ControllerCustomer controllerCustomer = new ControllerCustomer();
+        controllerCustomer.getAllCustomer(
+                new ControllerBase.SuccessListener() {
+                    @Override
+                    public void run(DataSnapshot dataSnapshot) {
+                        List<Customer> customerList = new ArrayList<>();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            customerList.add(ds.getValue(Customer.class));
+                        }
+                        String email = getSharedPreferences("cheetah", Context.MODE_PRIVATE).getString("email", null);
+                        customerList.forEach(c -> {
+
+                            if (c.emailAddress.equals(email)) {
+                                Glide.with(TestProfileActivity.this).load(c.avatarUrl).into((ImageView) findViewById(R.id.test_profile_avatar));
+                                ((TextView) findViewById(R.id.test_profile_gid)).setText(c.__id);
+                                ((TextView) findViewById(R.id.test_profile_email)).setText(c.fullName);
+                            }
+                        });
+                    }
+                },
+                new ControllerBase.FailureListener() {
+                    @Override
+                    public void run(Exception error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
 
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
         findViewById(R.id.test_profile_logout).setOnClickListener(view -> {
-            // Sign out from google
+            LoginManager.getInstance().logOut();
+
             googleSignInClient.signOut().addOnCompleteListener(task -> {
-                // Check condition
                 if (task.isSuccessful()) {
-                    // When task is successful
-                    // Sign out from firebase
                     FirebaseAuth.getInstance().signOut();
-
-                    // Display Toast
                     Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_SHORT).show();
-
-                    // Finish activity
-                    finish();
                 }
             });
+
+            finish();
         });
     }
 }

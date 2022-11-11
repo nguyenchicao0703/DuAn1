@@ -1,5 +1,7 @@
 package com.fpoly.project1.firebase.controller;
 
+import android.util.Log;
+
 import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.model.Product;
 import com.google.firebase.database.DatabaseReference;
@@ -10,6 +12,21 @@ import java.util.Objects;
 public class ControllerProduct extends ControllerBase {
     private final String table = "table_products";
 
+    public ControllerProduct() {
+        Firebase.database
+                .child(table)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.getValue() == null) {
+                        Firebase.database
+                                .child(table)
+                                .setValue(0)
+                                .addOnSuccessListener(v -> Log.i("ControllerProduct", "Created table"));
+                    }
+                })
+                .addOnFailureListener(Throwable::printStackTrace);
+    }
+
     public void setProduct(Product product, boolean update, SuccessListener sListener, FailureListener fListener) {
         DatabaseReference tableReference = Firebase.database
                 .child(this.table);
@@ -18,11 +35,9 @@ public class ControllerProduct extends ControllerBase {
         if (!update) {
             rowReference = tableReference.push();
 
-            product.id = Integer.parseInt(
-                    Objects.requireNonNull(tableReference.getKey())
-            );
+            product.__id = Objects.requireNonNull(tableReference.getKey());
         } else {
-            rowReference = tableReference.child(String.valueOf(product.id));
+            rowReference = tableReference.child(String.valueOf(product.__id));
         }
 
         rowReference
@@ -35,7 +50,7 @@ public class ControllerProduct extends ControllerBase {
         setProduct(product, false, sListener, fListener);
     }
 
-    public void deleteProduct(int id, SuccessListener sListener, FailureListener fListener) {
+    public void deleteProduct(String id, SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .child(String.valueOf(id))
@@ -44,7 +59,7 @@ public class ControllerProduct extends ControllerBase {
                 .addOnFailureListener(fListener::run);
     }
 
-    public void getProduct(int id, SuccessListener sListener, FailureListener fListener) {
+    public void getProduct(String id, SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .child(String.valueOf(id))

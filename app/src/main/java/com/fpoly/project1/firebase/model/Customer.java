@@ -4,22 +4,35 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Customer {
-    public String id;
+    public String __id;
     public String gid;
-    public String avatar_url;
-    public String fullname;
-    public String birthdate;
+    public String fid;
+    public String avatarUrl;
+    public String fullName;
+    public String birthDate;
     public String emailAddress;
     public String postalAddress;
 
     public Customer() {}
 
-    public Customer(String id, String gid, String avatar_url, String fullname, String birthdate, String emailAddress, String postalAddress) {
-        this.id = id;
+    /**
+     *
+     * @param __id Firebase unique ID
+     * @param gid Google account unique ID
+     * @param fid Facebook account unique ID
+     * @param avatarUrl Account public avatar url, use Glide to load the image
+     * @param fullName Account display name
+     * @param birthDate Account birth date, optionally set by user via account settings screen
+     * @param emailAddress Account email address
+     * @param postalAddress Account postal address, set by user via account creation screen
+     */
+    public Customer(String __id, String gid, String fid, String avatarUrl, String fullName, String birthDate, String emailAddress, String postalAddress) {
+        this.__id = __id;
         this.gid = gid;
-        this.avatar_url = avatar_url;
-        this.fullname = fullname;
-        this.birthdate = birthdate;
+        this.fid = fid;
+        this.avatarUrl = avatarUrl;
+        this.fullName = fullName;
+        this.birthDate = birthDate;
         this.emailAddress = emailAddress;
         this.postalAddress = postalAddress;
     }

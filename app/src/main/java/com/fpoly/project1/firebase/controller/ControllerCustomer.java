@@ -34,17 +34,22 @@ public class ControllerCustomer extends ControllerBase {
         Firebase.database
                 .child(table)
                 .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    if (dataSnapshot.getValue() == null) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().getValue() == null) {
                         Firebase.database
                                 .child(table)
                                 .setValue(0)
-                                .addOnSuccessListener(v -> {
-                                    Log.i("ControllerCustomer", "Created table");
-                                });
+                                .addOnCompleteListener(
+                                        task2 -> Log.i(
+                                                "ControllerCustomer",
+                                                task2.isSuccessful() ? "Created table" : task2.getException().getMessage()
+                                        )
+                                );
+                    } else {
+                        if (task.getException() != null)
+                            task.getException().printStackTrace();
                     }
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     public void setCustomer(Customer customer, boolean update, SuccessListener sListener, FailureListener fListener) {
@@ -58,64 +63,88 @@ public class ControllerCustomer extends ControllerBase {
             rowReference = tableReference.push();
 
             // override customer unique ID
-            customer.id = Objects.requireNonNull(rowReference.getKey());
+            customer.__id = Objects.requireNonNull(rowReference.getKey());
+
+            // check if email is in use
+            Firebase.database
+                    .child(this.table)
+                    .get() // read all entries from table (or row/json tree)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<Customer> customers = new ArrayList<>();
+
+                            for (DataSnapshot ds : task.getResult().getChildren()) {
+                                customers.add(ds.getValue(Customer.class));
+                            }
+
+                            // check if any account with matching email exist
+                            if (customers.stream().anyMatch(c ->
+                                    c.emailAddress.equals(customer.emailAddress)
+                            )) {
+                                fListener.run(new Exception("Email taken"));
+                            } else {
+                                rowReference
+                                        .setValue(customer) // set value to new location
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful())
+                                                sListener.run();
+                                            else
+                                                fListener.run(task2.getException());
+                                        });
+                            }
+                        } else {
+                            fListener.run(task.getException());
+                        }
+                    });
         } else {
             // set as existing location reference
-            rowReference = tableReference.child(String.valueOf(customer.id));
+            rowReference = tableReference.child(String.valueOf(customer.__id));
+            rowReference
+                    .setValue(customer) // set value to new location
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful())
+                            sListener.run();
+                        else
+                            fListener.run(task.getException());
+                    });
         }
-
-        rowReference
-                .setValue(customer) // set value to new location
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
     }
 
-    public void newCustomer(Customer customer, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .get() // read all entries from table (or row/json tree)
-                .addOnSuccessListener(dataSnapshot -> {
-                    List<Customer> customers = new ArrayList<>();
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        customers.add(ds.getValue(Customer.class));
-                    }
-
-                    // check if any account with matching email exist
-                    if (customers.stream().anyMatch(c ->
-                            c.emailAddress.equals(customer.emailAddress)
-                    )) {
-                        fListener.run(new Exception("Email taken"));
-                    } else {
-                        setCustomer(customer, false, sListener, fListener);
-                    }
-                })
-                .addOnFailureListener(fListener::run);
-    }
-
-    public void deleteCustomer(int id, SuccessListener sListener, FailureListener fListener) {
+    public void deleteCustomer(String id, SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .child(String.valueOf(id))
                 .setValue(null) // set null to delete entry
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
-    public void getCustomer(int id, SuccessListener sListener, FailureListener fListener) {
+    public void getCustomer(String id, SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
-                .child(String.valueOf(id))
+                .child(id)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getAllCustomer(SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 }
