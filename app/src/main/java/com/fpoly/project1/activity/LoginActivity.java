@@ -207,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             // get matching account
                             Object[] matchingCustomer = customers.stream().filter(
-                                    c -> c.emailAddress.equals(user.getEmail())
+                                    c -> c.emailAddress.equals(user.getEmail()) || c.gid.equals(user.getUid())
                             ).toArray();
 
                             // if there isn't any matching user, we create one
@@ -298,7 +298,7 @@ public class LoginActivity extends AppCompatActivity {
                                         String email = jsonObject.getString("email");
 
                                         Object[] matchingCustomer = customers.stream().filter(
-                                                c -> c.emailAddress.equals(email)
+                                                c -> c.emailAddress.equals(email) || c.fid.equals(profile.getId())
                                         ).toArray();
 
                                         if (matchingCustomer.length == 0) {
