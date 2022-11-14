@@ -18,15 +18,16 @@ public class ControllerShipper extends ControllerBase {
         Firebase.database
                 .child(table)
                 .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    if (dataSnapshot.getValue() == null) {
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful())
+                        task.getException().printStackTrace();
+                    else if (task.getResult().getValue() == null) {
                         Firebase.database
                                 .child(table)
                                 .setValue(0)
                                 .addOnSuccessListener(v -> Log.i("ControllerShipper", "Created table"));
                     }
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     public void setShipper(Shipper shipper, boolean update, SuccessListener sListener, FailureListener fListener) {
@@ -42,10 +43,15 @@ public class ControllerShipper extends ControllerBase {
             Firebase.database
                     .child(this.table)
                     .get()
-                    .addOnSuccessListener(dataSnapshot -> {
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            fListener.run(task.getException());
+                            return;
+                        }
+
                         List<Shipper> arrayList = new ArrayList<>();
 
-                        for (DataSnapshot ds : dataSnapshot.getChildren())
+                        for (DataSnapshot ds : task.getResult().getChildren())
                             arrayList.add(ds.getValue(Shipper.class));
 
                         if (arrayList.stream().anyMatch(c ->
@@ -55,23 +61,26 @@ public class ControllerShipper extends ControllerBase {
                         } else {
                             rowReference
                                     .setValue(shipper)
-                                    .addOnSuccessListener(sListener::run)
-                                    .addOnFailureListener(fListener::run);
+                                    .addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful())
+                                            sListener.run();
+                                        else
+                                            fListener.run(task2.getException());
+                                    });
                         }
-                    })
-                    .addOnFailureListener(fListener::run);
+                    });
         } else {
             rowReference = tableReference.child(String.valueOf(shipper.__id));
 
             rowReference
                     .setValue(shipper)
-                    .addOnSuccessListener(sListener::run)
-                    .addOnFailureListener(fListener::run);
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful())
+                            sListener.run();
+                        else
+                            fListener.run(task.getException());
+                    });
         }
-    }
-
-    public void newShipper(Shipper shipper, SuccessListener sListener, FailureListener fListener) {
-        setShipper(shipper, false, sListener, fListener);
     }
 
     public void deleteShipper(String id, SuccessListener sListener, FailureListener fListener) {
@@ -79,8 +88,12 @@ public class ControllerShipper extends ControllerBase {
                 .child(this.table)
                 .child(id)
                 .setValue(null)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getShipper(String id, SuccessListener sListener, FailureListener fListener) {
@@ -88,15 +101,23 @@ public class ControllerShipper extends ControllerBase {
                 .child(this.table)
                 .child(id)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getAllShipper(SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 }

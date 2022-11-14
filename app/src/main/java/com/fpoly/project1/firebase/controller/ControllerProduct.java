@@ -16,15 +16,18 @@ public class ControllerProduct extends ControllerBase {
         Firebase.database
                 .child(table)
                 .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    if (dataSnapshot.getValue() == null) {
-                        Firebase.database
-                                .child(table)
-                                .setValue(0)
-                                .addOnSuccessListener(v -> Log.i("ControllerProduct", "Created table"));
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().getValue() == null) {
+                            Firebase.database
+                                    .child(table)
+                                    .setValue(0)
+                                    .addOnSuccessListener(v -> Log.i("ControllerProduct", "Created table"));
+                        }
+                    } else {
+                        task.getException().printStackTrace();
                     }
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     public void setProduct(Product product, boolean update, SuccessListener sListener, FailureListener fListener) {
@@ -42,12 +45,12 @@ public class ControllerProduct extends ControllerBase {
 
         rowReference
                 .setValue(product)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
-    }
-
-    public void newProduct(Product product, SuccessListener sListener, FailureListener fListener) {
-        setProduct(product, false, sListener, fListener);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void deleteProduct(String id, SuccessListener sListener, FailureListener fListener) {
@@ -55,8 +58,12 @@ public class ControllerProduct extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .setValue(null)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getProduct(String id, SuccessListener sListener, FailureListener fListener) {
@@ -64,16 +71,24 @@ public class ControllerProduct extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getAllProduct(SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 }
 

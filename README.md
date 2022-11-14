@@ -3,21 +3,33 @@
 **Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
 
 ### TODO List
-:x: Thêm thao tác đăng ký (tương tự như đăng nhập)
-
 :x: Làm các layout khác đi đm
 
-:x: Liên kết tài khoản Facebook, Google với tài khoản password
+:x: Trang yêu cầu thêm thông tin người dùng khi đăng nhập lần đầu
 
-:x: Sửa lại toàn bộ controller sang sử dụng ``addOnCompleteListener(task -> task.isSuccessful()...)`` vì success/failure listener có khi không trigger
+:x: Liên kết tài khoản Facebook, Google với tài khoản password trong mục quản lý tài khoản
+
+:x: Trang chủ hiển thị sản phẩm nổi bật, các loại sản phẩm, tba..
+
+:x: Trang quản lý thông tin tài khoản
+
+:x: Trang quản lý các đơn hàng / lịch sử mua
+
+:x: Trang tìm kiếm sản phẩm
+
+:x: Trang thông tin của 1 sản phẩm / người hoặc nhà bán
+
+:x: Trang và chức năng của người / nhà bán
+
+:x: Trang và chức năng của người giao hàng (maybe)
 
 :x: TBA..
 
 :white_check_mark: Đăng nhập bằng Google
 
-:white_check_mark: Đăng nhập bằng email/password thông qua Firebase**
-
 :white_check_mark: Đăng nhập bằng Facebook
+
+:white_check_mark: Đăng nhập / đăng ký bằng email / password thông qua Firebase**
 
 :white_check_mark: Tạo tài khoản (Customer) nếu chưa có khi fast login bằng Google/Facebook
 

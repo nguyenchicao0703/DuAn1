@@ -19,15 +19,16 @@ public class ControllerSeller extends ControllerBase {
         Firebase.database
                 .child(table)
                 .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    if (dataSnapshot.getValue() == null) {
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful())
+                        task.getException().printStackTrace();
+                    else if (task.getResult().getValue() == null) {
                         Firebase.database
                                 .child(table)
                                 .setValue(0)
                                 .addOnSuccessListener(v -> Log.i("ControllerSeller", "Created table"));
                     }
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     public void setSeller(Seller seller, boolean update, SuccessListener sListener, FailureListener fListener) {
@@ -43,10 +44,15 @@ public class ControllerSeller extends ControllerBase {
             Firebase.database
                     .child(this.table)
                     .get()
-                    .addOnSuccessListener(dataSnapshot -> {
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            fListener.run(task.getException());
+                            return;
+                        }
+
                         List<Seller> arrayList = new ArrayList<>();
 
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        for (DataSnapshot ds : task.getResult().getChildren()) {
                             arrayList.add(ds.getValue(Seller.class));
                         }
 
@@ -59,23 +65,26 @@ public class ControllerSeller extends ControllerBase {
 
                             rowReference
                                     .setValue(seller)
-                                    .addOnSuccessListener(sListener::run)
-                                    .addOnFailureListener(fListener::run);
+                                    .addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful())
+                                            sListener.run();
+                                        else
+                                            fListener.run(task2.getException());
+                                    });
                         }
-                    })
-                    .addOnFailureListener(fListener::run);
+                    });
         } else {
             rowReference = tableReference.child(String.valueOf(seller.__id));
 
             rowReference
                     .setValue(seller)
-                    .addOnSuccessListener(sListener::run)
-                    .addOnFailureListener(fListener::run);
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful())
+                            sListener.run();
+                        else
+                            fListener.run(task.getException());
+                    });
         }
-    }
-
-    public void newSeller(Seller seller, SuccessListener sListener, FailureListener fListener) {
-        setSeller(seller, false, sListener, fListener);
     }
 
     public void deleteSeller(String id, SuccessListener sListener, FailureListener fListener) {
@@ -83,8 +92,12 @@ public class ControllerSeller extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .setValue(null)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getSeller(String id, SuccessListener sListener, FailureListener fListener) {
@@ -92,15 +105,23 @@ public class ControllerSeller extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getAllSeller(SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 }

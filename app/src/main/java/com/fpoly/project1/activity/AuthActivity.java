@@ -3,6 +3,7 @@ package com.fpoly.project1.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -45,7 +47,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity {
+    private boolean registerView = false;
     private final int REQ_CODE = 72;
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -55,9 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LoginManager.getInstance().logOut();
-        FirebaseAuth.getInstance().signOut();
 
         // check if user is already logged in
         // note: firebase and facebook keeps account state even after app exit so there's no need
@@ -70,17 +70,33 @@ public class LoginActivity extends AppCompatActivity {
                         && !accessToken.isExpired())
         ) {
             startProfileActivity(getSharedPreferences("cheetah", Context.MODE_PRIVATE).getString("email", null));
+            finish();
         }
 
-        // proceed with login activity
-        setContentView(R.layout.activity_login);
+        // proceed with the activity
+        setContentView(R.layout.activity_auth_customer);
         Window window = this.getWindow();
         window.setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
-        // register btn
-        findViewById(R.id.login_tv_signup)
-                .setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
+        // switching between login and signup btn
+        // because why create another activity that's basically a clone when you can
+        // modify the current one
+        TextView tvTitle = findViewById(R.id.auth_tv_title);
+        TextView tvSwitch = findViewById(R.id.auth_tv_switch);
+        AppCompatButton btnSubmit = findViewById(R.id.auth_btn_submit);
+        tvSwitch.setOnClickListener(v -> {
+                    registerView = !registerView;
+                    if (registerView) {
+                        tvTitle.setText(getString(R.string.auth_title_sign_up));
+                        tvSwitch.setText(getString(R.string.auth_switch_sign_up));
+                        btnSubmit.setText(getString(R.string.auth_btn_sign_up));
+                    } else {
+                        tvTitle.setText(getString(R.string.auth_title_sign_in));
+                        tvSwitch.setText(getString(R.string.auth_switch_sign_in));
+                        btnSubmit.setText(getString(R.string.auth_btn_sign_in));
+                    }
+                });
 
         // ============================ GOOGLE AUTHENTICATION ============================
         // firebase related
@@ -94,15 +110,15 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         // login via google button
-        findViewById(R.id.login_btn_google)
+        findViewById(R.id.auth_btn_google)
                 .setOnClickListener(v -> startActivityForResult(googleSignInClient.getSignInIntent(), REQ_CODE));
 
         // login via email and password
-        findViewById(R.id.login_btn_login)
+        EditText etEmail = findViewById(R.id.auth_et_email);
+        EditText etPass = findViewById(R.id.auth_et_password);
+        findViewById(R.id.auth_btn_submit)
                 .setOnClickListener(v -> {
                     boolean hasError = false;
-                    EditText etEmail = findViewById(R.id.login_et_email);
-                    EditText etPass = findViewById(R.id.login_et_password);
 
                     if (etEmail.getText().toString().isEmpty()) {
                         etEmail.setError("Email must not be empty");
@@ -115,10 +131,18 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     if (!hasError) {
-                        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                        if (registerView)
+                            // create user with email and password
+                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                                 etEmail.getText().toString(),
                                 etPass.getText().toString()
-                        ).addOnCompleteListener(this::googleCompleteListener);
+                            ).addOnCompleteListener(this::googleCompleteListener);
+                        else
+                            // sigin with email and password
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                                    etEmail.getText().toString(),
+                                    etPass.getText().toString()
+                            ).addOnCompleteListener(this::googleCompleteListener);
                     }
                 });
 
@@ -133,24 +157,25 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this, "User cancelled action", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthActivity.this, "User cancelled action", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(@NonNull FacebookException e) {
-                Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                 e.printStackTrace();
             }
         });
 
         // login via facebook button
-        findViewById(R.id.login_btn_facebook)
+        findViewById(R.id.auth_btn_facebook)
                 .setOnClickListener(v -> {
                     LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
                 });
     }
 
+    // Listen for activity result from Google auth popup and Facebook auth screen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -172,12 +197,13 @@ public class LoginActivity extends AppCompatActivity {
                     .signInWithCredential(GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null))
                     .addOnCompleteListener(this::googleCompleteListener);
         } catch (ApiException apiException) {
-            Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
             apiException.printStackTrace();
         }
     }
 
+    // Google auth complete listener
     private void googleCompleteListener(Task<AuthResult> task) {
         if (task.isSuccessful()) {
             controllerCustomer.getAllCustomer(
@@ -188,7 +214,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             // null snapshot
                             if (dataSnapshot.getValue() == null) {
-                                Toast.makeText(LoginActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AuthActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
                                 return;
                             }
 
@@ -238,7 +264,7 @@ public class LoginActivity extends AppCompatActivity {
                                         new ControllerBase.FailureListener() {
                                             @Override
                                             public void run(Exception error) {
-                                                Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                                                 Log.e("LoginActivity::Google", "Failed to add account to Firebase");
                                                 error.printStackTrace();
@@ -255,7 +281,7 @@ public class LoginActivity extends AppCompatActivity {
                     new ControllerBase.FailureListener() {
                         @Override
                         public void run(Exception error) {
-                            Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                             Log.e("LoginActivity::Google", "Failed to get account from Firebase");
                             error.printStackTrace();
@@ -272,6 +298,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Facebook auth complete listener
     private void facebookCompleteListener(LoginResult loginResult) {
         controllerCustomer.getAllCustomer(
                 new ControllerBase.SuccessListener() {
@@ -280,7 +307,7 @@ public class LoginActivity extends AppCompatActivity {
                         List<Customer> customers = new ArrayList<>();
 
                         if (dataSnapshot.getValue() == null) {
-                            Toast.makeText(LoginActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AuthActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -328,7 +355,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     new ControllerBase.FailureListener() {
                                                         @Override
                                                         public void run(Exception error) {
-                                                            Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                                                             Log.e("LoginActivity::Facebook", "Failed to add account to Firebase");
                                                             error.printStackTrace();
@@ -353,7 +380,7 @@ public class LoginActivity extends AppCompatActivity {
                 new ControllerBase.FailureListener() {
                     @Override
                     public void run(Exception error) {
-                        Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                         Log.e("LoginActivity::Facebook", "Failed to get account from Firebase");
                         error.printStackTrace();
@@ -361,8 +388,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    // TODO replace the target activity with HomePage
     private void startProfileActivity(String email) {
-        Intent intent = new Intent(LoginActivity.this, TestProfileActivity.class);
+        Intent intent = new Intent(AuthActivity.this, TestProfileActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         intent.putExtras(bundle);

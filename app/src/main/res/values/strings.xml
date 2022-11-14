@@ -7,8 +7,12 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">8f8120d050f3a3d3a76e2b6ac194eb14</string>
 
-    <string name="sign_in">Dont have an account?<b> <font color="#E62B37">Sign up</font></b></string>
-    <string name="sign_up">Already have an account? <b><font color="#E62B37">Sign in</font></b></string>
-    <string name="email"><i>Email</i><font color="#E62B37">*</font></string>
-    <string name="password"><i>Password</i><font color="#E62B37">*</font></string>
+    <string name="auth_title_sign_in">Sign in to your account</string>
+    <string name="auth_title_sign_up">Sign up for an account</string>
+    <string name="auth_btn_sign_in">Sign in</string>
+    <string name="auth_btn_sign_up">Sign up</string>
+    <string name="auth_switch_sign_in">Dont have an account?<b> <font color="#E62B37">Sign up</font></b></string>
+    <string name="auth_switch_sign_up">Already have an account? <b><font color="#E62B37">Sign in</font></b></string>
+    <string name="auth_input_email"><i>Email</i><font color="#E62B37">*</font></string>
+    <string name="auth_input_password"><i>Password</i><font color="#E62B37">*</font></string>
 </resources>

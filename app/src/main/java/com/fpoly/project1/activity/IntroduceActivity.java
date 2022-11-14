@@ -24,7 +24,7 @@ public class IntroduceActivity extends AppCompatActivity {
         btnNextIntroduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(IntroduceActivity.this, LoginActivity.class));
+                startActivity(new Intent(IntroduceActivity.this, AuthActivity.class));
             }
         });
     }

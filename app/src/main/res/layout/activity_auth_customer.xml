@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".activity.LoginActivity">
+        tools:context=".activity.AuthActivity">
 
         <ImageView
-            android:id="@+id/login_logo"
+            android:id="@+id/auth_logo"
             android:layout_width="246sp"
             android:layout_height="145sp"
             android:layout_marginTop="4sp"
@@ -24,10 +24,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/auth_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="164sp"
-            android:text="Sign in to your account"
+            android:text="@string/auth_title_sign_in"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -37,19 +38,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/login_tv_email"
+            android:id="@+id/auth_tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="212sp"
-            android:text="@string/email"
+            android:text="@string/auth_input_email"
             android:textColor="#474444"
             android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@id/login_et_email"
+            app:layout_constraintStart_toStartOf="@id/auth_et_email"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/login_et_email"
+            android:id="@+id/auth_et_email"
             android:layout_width="360sp"
             android:layout_height="51sp"
             android:layout_marginTop="12sp"
@@ -62,22 +63,22 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_email" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_email" />
 
         <TextView
-            android:id="@+id/login_tv_password"
+            android:id="@+id/auth_tv_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="312sp"
-            android:text="@string/password"
+            android:text="@string/auth_input_password"
             android:textColor="#474444"
             android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@id/login_et_password"
+            app:layout_constraintStart_toStartOf="@id/auth_et_password"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/login_et_password"
+            android:id="@+id/auth_et_password"
             android:layout_width="360sp"
             android:layout_height="51sp"
             android:layout_marginTop="12sp"
@@ -92,24 +93,24 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_password" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_password" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_btn_login"
+            android:id="@+id/auth_btn_submit"
             android:layout_width="360sp"
             android:layout_height="51sp"
             android:layout_marginTop="24sp"
             android:background="@drawable/login_radius_btn"
-            android:text="Sign in"
+            android:text="@string/auth_btn_sign_in"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_et_password" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_et_password" />
 
         <TextView
-            android:id="@+id/login_tv_forgot"
+            android:id="@+id/auth_tv_forgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
@@ -118,10 +119,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_btn_submit" />
 
         <TextView
-            android:id="@+id/login_tv_alt"
+            android:id="@+id/auth_tv_alt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12sp"
@@ -130,10 +131,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_forgot" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_forgot" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_btn_facebook"
+            android:id="@+id/auth_btn_facebook"
             android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12sp"
@@ -146,10 +147,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.168"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_alt" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_alt" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_btn_google"
+            android:id="@+id/auth_btn_google"
             android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12sp"
@@ -162,17 +163,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.816"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_alt" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_alt" />
 
         <TextView
-            android:id="@+id/login_tv_signup"
+            android:id="@+id/auth_tv_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80sp"
-            android:text="@string/sign_in"
+            android:text="@string/auth_switch_sign_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_tv_alt" />
+            app:layout_constraintTop_toBottomOf="@+id/auth_tv_alt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

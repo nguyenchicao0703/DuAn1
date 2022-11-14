@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.fpoly.project1.R;
 
-public class Welcome_Activity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,6 @@ public class Welcome_Activity extends AppCompatActivity {
         Glide.with(this).load(R.mipmap.splash).into(ivLogo);
 
         //delay qua man hinh cho
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(Welcome_Activity.this, LoginActivity.class));
-            }
-        }, 3000);
+        new Handler().postDelayed(() -> startActivity(new Intent(WelcomeActivity.this, AuthActivity.class)), 3_000L);
     }
 }

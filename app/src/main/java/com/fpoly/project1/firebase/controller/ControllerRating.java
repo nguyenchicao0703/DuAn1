@@ -16,15 +16,16 @@ public class ControllerRating extends ControllerBase {
         Firebase.database
                 .child(table)
                 .get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    if (dataSnapshot.getValue() == null) {
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful())
+                        task.getException().printStackTrace();
+                    else if (task.getResult().getValue() == null) {
                         Firebase.database
                                 .child(table)
                                 .setValue(0)
                                 .addOnSuccessListener(v -> Log.i("ControllerRating", "Created table"));
                     }
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     public void setRating(Rating rating, boolean update, SuccessListener sListener, FailureListener fListener) {
@@ -42,8 +43,12 @@ public class ControllerRating extends ControllerBase {
 
         rowReference
                 .setValue(rating)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void newRating(Rating rating, SuccessListener sListener, FailureListener fListener) {
@@ -55,8 +60,12 @@ public class ControllerRating extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .setValue(null)
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run();
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getRating(int id, SuccessListener sListener, FailureListener fListener) {
@@ -64,15 +73,23 @@ public class ControllerRating extends ControllerBase {
                 .child(this.table)
                 .child(String.valueOf(id))
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 
     public void getAllRating(SuccessListener sListener, FailureListener fListener) {
         Firebase.database
                 .child(this.table)
                 .get()
-                .addOnSuccessListener(sListener::run)
-                .addOnFailureListener(fListener::run);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        sListener.run(task.getResult());
+                    else
+                        fListener.run(task.getException());
+                });
     }
 }
