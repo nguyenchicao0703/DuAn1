@@ -34,6 +34,10 @@ Ghi chú ``[<1>:<2>:<3>]``
 
 :x: ``[A:L/F:Search Product Activity]`` Trang tìm kiếm sản phẩm
 
+:x: ``[A:L/F:Favorite Product Activity]`` Trang lưu trữ các sản phẩm yêu thích
+
+:x: ``[A:L/F:Upload Avata Activity]`` Trang thay đổi ảnh đại diện trong các bước đăng kí tài khoản (maybe)
+
 :x: ``[A:L/F:Item Info Activity]`` Trang thông tin của 1 sản phẩm / người hoặc nhà bán
 
 :x: ``[B:L/F:ALL]`` Trang và chức năng của người / nhà bán
