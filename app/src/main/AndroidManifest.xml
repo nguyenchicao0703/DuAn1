@@ -47,6 +47,9 @@
             android:name=".activity.AuthActivity"
             android:exported="true" />
         <activity
+            android:name=".activity.IntroduceActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.TestProfileActivity"
             android:exported="true" />
     </application>
