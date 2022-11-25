@@ -2,6 +2,7 @@
     <string name="app_name">Project 1</string>
 
     <string name="firebase_web_client_id">796777611334-ft6vop9d5juh8m1bmgav4qa0ils5hedv.apps.googleusercontent.com</string>
+    <string name="firebase_database_uri">https://duan1-a7273-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 
     <string name="facebook_app_id">510459427674407</string>
     <string name="fb_login_protocol_scheme">fb1234</string>

@@ -1,20 +1,21 @@
 package com.fpoly.project1.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -25,7 +26,6 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.fpoly.project1.R;
-import com.fpoly.project1.firebase.controller.ControllerBase;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.model.Customer;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,26 +38,28 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class AuthActivity extends AppCompatActivity {
-    private boolean registerView = false;
+    public static Resources resources;
     private final int REQ_CODE = 72;
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private boolean registerView = false;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // for use by Firebase
+        resources = getResources();
 
         // check if user is already logged in
         // note: firebase and facebook keeps account state even after app exit so there's no need
@@ -86,17 +88,17 @@ public class AuthActivity extends AppCompatActivity {
         TextView tvSwitch = findViewById(R.id.auth_tv_switch);
         AppCompatButton btnSubmit = findViewById(R.id.auth_btn_submit);
         tvSwitch.setOnClickListener(v -> {
-                    registerView = !registerView;
-                    if (registerView) {
-                        tvTitle.setText(getString(R.string.auth_title_sign_up));
-                        tvSwitch.setText(getString(R.string.auth_switch_sign_up));
-                        btnSubmit.setText(getString(R.string.auth_btn_sign_up));
-                    } else {
-                        tvTitle.setText(getString(R.string.auth_title_sign_in));
-                        tvSwitch.setText(getString(R.string.auth_switch_sign_in));
-                        btnSubmit.setText(getString(R.string.auth_btn_sign_in));
-                    }
-                });
+            registerView = !registerView;
+            if (registerView) {
+                tvTitle.setText(getString(R.string.auth_title_sign_up));
+                tvSwitch.setText(getString(R.string.auth_switch_sign_up));
+                btnSubmit.setText(getString(R.string.auth_btn_sign_up));
+            } else {
+                tvTitle.setText(getString(R.string.auth_title_sign_in));
+                tvSwitch.setText(getString(R.string.auth_switch_sign_in));
+                btnSubmit.setText(getString(R.string.auth_btn_sign_in));
+            }
+        });
 
         // ============================ GOOGLE AUTHENTICATION ============================
         // firebase related
@@ -134,11 +136,11 @@ public class AuthActivity extends AppCompatActivity {
                         if (registerView)
                             // create user with email and password
                             FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                                etEmail.getText().toString(),
-                                etPass.getText().toString()
+                                    etEmail.getText().toString(),
+                                    etPass.getText().toString()
                             ).addOnCompleteListener(this::googleCompleteListener);
                         else
-                            // sigin with email and password
+                            // signin with email and password
                             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                                     etEmail.getText().toString(),
                                     etPass.getText().toString()
@@ -206,87 +208,54 @@ public class AuthActivity extends AppCompatActivity {
     // Google auth complete listener
     private void googleCompleteListener(Task<AuthResult> task) {
         if (task.isSuccessful()) {
-            controllerCustomer.getAllCustomer(
-                    new ControllerBase.SuccessListener() {
-                        @Override
-                        public void run(DataSnapshot dataSnapshot) {
-                            List<Customer> customers = new ArrayList<>();
+            ArrayList<Customer> customers = controllerCustomer.getAllSync();
+            if (customers == null) {
+                Toast.makeText(this, "Failed to get users from database", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                            // null snapshot
-                            if (dataSnapshot.getValue() == null) {
-                                Toast.makeText(AuthActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+            // we will log user in via firebase since it include both
+            // password-based auth and google auth,
+            // here we're just creating a customer object linked to
+            // the firebase account
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            assert user != null;
 
-                            // add list of customers
-                            // on a large scale, this will have a performance hit
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                customers.add(ds.getValue(Customer.class));
-                            }
-                            // we will log user in via firebase since it include both
-                            // password-based auth and google auth,
-                            // here we're just creating a customer object linked to
-                            // the firebase account
+            // get matching account
+            Object[] matchingCustomer = customers.stream().filter(
+                    c -> c.emailAddress.equals(user.getEmail()) || c.gid.equals(user.getUid())
+            ).toArray();
 
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            assert user != null;
+            // if there isn't any matching user, we create one
+            if (matchingCustomer.length == 0) {
+                Customer customerAccount =
+                        new Customer(
+                                null,
+                                user.getUid(),
+                                null,
+                                user.getPhotoUrl().toString(),
+                                user.getDisplayName(),
+                                null,
+                                user.getEmail(),
+                                null
+                        );
 
-                            // get matching account
-                            Object[] matchingCustomer = customers.stream().filter(
-                                    c -> c.emailAddress.equals(user.getEmail()) || c.gid.equals(user.getUid())
-                            ).toArray();
+                // add the user to firebase
+                if (controllerCustomer.setSync(customerAccount, false)) {
+                    Log.i("LoginActivity::Google", "Added account to Firebase");
 
-                            // if there isn't any matching user, we create one
-                            if (matchingCustomer.length == 0) {
-                                Customer customerAccount =
-                                        new Customer(
-                                                null,
-                                                user.getUid(),
-                                                null,
-                                                user.getPhotoUrl().toString(),
-                                                user.getDisplayName(),
-                                                null,
-                                                user.getEmail(),
-                                                null
-                                        );
+                    startProfileActivity(customerAccount.emailAddress);
+                } else {
+                    Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
-                                // add the user to firebase
-                                controllerCustomer.setCustomer(customerAccount,
-                                        false,
-                                        new ControllerBase.SuccessListener() {
-                                            @Override
-                                            public void run() {
-                                                Log.i("LoginActivity::Google", "Added account to Firebase");
+                    Log.e("LoginActivity::Google", "Failed to add account to Firebase");
+                }
+            } else {
+                // if user is already exist
+                Log.i("LoginActivity::Google", "Got account from Firebase");
 
-                                                startProfileActivity(customerAccount.emailAddress);
-                                            }
-                                        },
-                                        new ControllerBase.FailureListener() {
-                                            @Override
-                                            public void run(Exception error) {
-                                                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                                                Log.e("LoginActivity::Google", "Failed to add account to Firebase");
-                                                error.printStackTrace();
-                                            }
-                                        });
-                            } else {
-                                // if user is already exist
-                                Log.i("LoginActivity::Google", "Got account from Firebase");
-
-                                startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
-                            }
-                        }
-                    },
-                    new ControllerBase.FailureListener() {
-                        @Override
-                        public void run(Exception error) {
-                            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                            Log.e("LoginActivity::Google", "Failed to get account from Firebase");
-                            error.printStackTrace();
-                        }
-                    });
+                startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
+            }
         } else {
             Objects.requireNonNull(task.getException()).printStackTrace();
 
@@ -300,92 +269,65 @@ public class AuthActivity extends AppCompatActivity {
 
     // Facebook auth complete listener
     private void facebookCompleteListener(LoginResult loginResult) {
-        controllerCustomer.getAllCustomer(
-                new ControllerBase.SuccessListener() {
-                    @Override
-                    public void run(DataSnapshot dataSnapshot) {
-                        List<Customer> customers = new ArrayList<>();
+        ArrayList<Customer> customers = controllerCustomer.getAllSync();
+        if (customers == null) {
+            Toast.makeText(this, "Failed to get users from database", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                        if (dataSnapshot.getValue() == null) {
-                            Toast.makeText(AuthActivity.this, "Snapshot does not exist", Toast.LENGTH_SHORT).show();
-                            return;
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                (jsonObject, graphResponse) -> {
+                    Log.i("LoginActivity::Facebook", graphResponse.toString());
+
+                    try {
+                        Profile profile = Profile.getCurrentProfile();
+                        String email = jsonObject.getString("email");
+
+                        Object[] matchingCustomer = customers.stream().filter(
+                                c -> c.emailAddress.equals(email) || c.fid.equals(profile.getId())
+                        ).toArray();
+
+                        if (matchingCustomer.length == 0) {
+                            Customer customerAccount =
+                                    new Customer(
+                                            null,
+                                            null,
+                                            profile.getId(),
+                                            profile.getProfilePictureUri(500, 500).toString(),
+                                            profile.getName(),
+                                            null,
+                                            email,
+                                            null
+                                    );
+
+                            // add the user to firebase
+                            if (controllerCustomer.setSync(customerAccount, false)) {
+                                Log.i("LoginActivity::Facebook", "Added account to Firebase");
+
+                                startProfileActivity(customerAccount.emailAddress);
+                            } else {
+                                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                                Log.e("LoginActivity::Facebook", "Failed to add account to Firebase");
+                            }
+                        } else {
+                            // if user is already exist
+                            Log.i("LoginActivity::Facebook", "Got account from Firebase");
+
+                            startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
                         }
-
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            customers.add(ds.getValue(Customer.class));
-                        }
-
-                        GraphRequest request = GraphRequest.newMeRequest(
-                                loginResult.getAccessToken(),
-                                (jsonObject, graphResponse) -> {
-                                    Log.i("LoginActivity::Facebook", graphResponse.toString());
-
-                                    try {
-                                        Profile profile = Profile.getCurrentProfile();
-                                        String email = jsonObject.getString("email");
-
-                                        Object[] matchingCustomer = customers.stream().filter(
-                                                c -> c.emailAddress.equals(email) || c.fid.equals(profile.getId())
-                                        ).toArray();
-
-                                        if (matchingCustomer.length == 0) {
-                                            Customer customerAccount =
-                                                    new Customer(
-                                                            null,
-                                                            null,
-                                                            profile.getId(),
-                                                            profile.getProfilePictureUri(500, 500).toString(),
-                                                            profile.getName(),
-                                                            null,
-                                                            email,
-                                                            null
-                                                    );
-
-                                            // add the user to firebase
-                                            controllerCustomer.setCustomer(customerAccount,
-                                                    false,
-                                                    new ControllerBase.SuccessListener() {
-                                                        @Override
-                                                        public void run() {
-                                                            Log.i("LoginActivity::Facebook", "Added account to Firebase");
-
-                                                            startProfileActivity(customerAccount.emailAddress);
-                                                        }
-                                                    },
-                                                    new ControllerBase.FailureListener() {
-                                                        @Override
-                                                        public void run(Exception error) {
-                                                            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                                                            Log.e("LoginActivity::Facebook", "Failed to add account to Firebase");
-                                                            error.printStackTrace();
-                                                        }
-                                                    });
-                                        } else {
-                                            // if user is already exist
-                                            Log.i("LoginActivity::Facebook", "Got account from Firebase");
-
-                                            startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                        Bundle bundle = new Bundle();
-                        bundle.putString("fields", "id,name,email");
-                        request.setParameters(bundle);
-                        request.executeAsync();
-                    }
-                },
-                new ControllerBase.FailureListener() {
-                    @Override
-                    public void run(Exception error) {
+                    } catch (JSONException e) {
                         Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
-                        Log.e("LoginActivity::Facebook", "Failed to get account from Firebase");
-                        error.printStackTrace();
+                        e.printStackTrace();
                     }
                 });
+
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "id,name,email");
+        request.setParameters(bundle);
+        request.executeAsync();
     }
 
     // TODO replace the target activity with HomePage
@@ -394,7 +336,7 @@ public class AuthActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         intent.putExtras(bundle);
-        
+
         SharedPreferences.Editor editor = getSharedPreferences("cheetah", Context.MODE_PRIVATE).edit();
         editor.putString("email", email);
         editor.apply();

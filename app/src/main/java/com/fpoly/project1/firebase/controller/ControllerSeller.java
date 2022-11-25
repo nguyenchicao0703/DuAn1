@@ -1,127 +1,111 @@
 package com.fpoly.project1.firebase.controller;
 
-import android.util.Log;
-
 import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.model.Seller;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class ControllerSeller extends ControllerBase {
-    private final String table = "table_sellers";
-
+public class ControllerSeller extends ControllerBase<Seller> {
     public ControllerSeller() {
-        Firebase.database
-                .child(table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful())
-                        task.getException().printStackTrace();
-                    else if (task.getResult().getValue() == null) {
-                        Firebase.database
-                                .child(table)
-                                .setValue(0)
-                                .addOnSuccessListener(v -> Log.i("ControllerSeller", "Created table"));
-                    }
-                });
+        super("table_sellers");
     }
 
-    public void setSeller(Seller seller, boolean update, SuccessListener sListener, FailureListener fListener) {
-        DatabaseReference tableReference = Firebase.database
-                .child(this.table);
+    @Override
+    public boolean setSync(Seller value, boolean update) {
+        DatabaseReference tableReference = Firebase.database.child(this.table);
         DatabaseReference rowReference;
 
-        if (!update) {
-            rowReference = tableReference.push();
+        try {
+            if (!update) {
+                if (this.getAllSync().stream().anyMatch(account ->
+                        account.emailAddress.equals(value.emailAddress)
+                )) throw new Exception("Email đã tồn tại");
 
-            seller.__id = Objects.requireNonNull(tableReference.getKey());
+                rowReference = tableReference.push();
 
-            Firebase.database
-                    .child(this.table)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            fListener.run(task.getException());
-                            return;
-                        }
+                // override ID
+                value.__id = rowReference.getKey();
 
-                        List<Seller> arrayList = new ArrayList<>();
+                Tasks.await(Firebase.database.child(this.table).child(Objects.requireNonNull(rowReference.getKey())).setValue(value));
+            } else {
+                rowReference = tableReference.child(value.__id);
+                Tasks.await(rowReference.setValue(value));
+            }
 
-                        for (DataSnapshot ds : task.getResult().getChildren()) {
-                            arrayList.add(ds.getValue(Seller.class));
-                        }
-
-                        if (arrayList.stream().anyMatch(c ->
-                                c.emailAddress.equals(seller.emailAddress)
-                        )) {
-                            fListener.run(new Exception("Email taken"));
-                        } else {
-                            setSeller(seller, false, sListener, fListener);
-
-                            rowReference
-                                    .setValue(seller)
-                                    .addOnCompleteListener(task2 -> {
-                                        if (task2.isSuccessful())
-                                            sListener.run();
-                                        else
-                                            fListener.run(task2.getException());
-                                    });
-                        }
-                    });
-        } else {
-            rowReference = tableReference.child(String.valueOf(seller.__id));
-
-            rowReference
-                    .setValue(seller)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful())
-                            sListener.run();
-                        else
-                            fListener.run(task.getException());
-                    });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteSeller(String id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(String.valueOf(id))
-                .setValue(null)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run();
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public void setAsync(Seller value, boolean update, SuccessListener successListener, FailureListener failureListener) {
+
     }
 
-    public void getSeller(String id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(String.valueOf(id))
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public boolean removeSync(String referenceId) {
+        try {
+            Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .setValue(null)
+            );
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void getAllSeller(SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public void removeAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
+    }
+
+    @Override
+    public Seller getSync(String referenceId) {
+        try {
+            return Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .get()
+            ).getValue(Seller.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
+    }
+
+    @Override
+    public ArrayList<Seller> getAllSync() {
+        try {
+            ArrayList<Seller> list = new ArrayList<>();
+
+            for (DataSnapshot dataSnapshot : Tasks.await(Firebase.database.child(table).get()).getChildren()) {
+                list.add(dataSnapshot.getValue(Seller.class));
+            }
+
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAllAsync(SuccessListener successListener, FailureListener failureListener) {
+
     }
 }

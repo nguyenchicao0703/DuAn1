@@ -26,8 +26,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <Rating android:name="android.intent.Rating.DEFAULT" />
+                <Rating android:name="android.intent.Rating.BROWSABLE" />
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -40,7 +40,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <Rating android:name="android.intent.Rating.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity

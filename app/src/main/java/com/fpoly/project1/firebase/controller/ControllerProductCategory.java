@@ -1,96 +1,106 @@
 package com.fpoly.project1.firebase.controller;
 
-import android.util.Log;
-
 import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.model.ProductCategory;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class ControllerProductCategory extends ControllerBase {
-    private final String table = "table_product_categories";
-
+public class ControllerProductCategory extends ControllerBase<ProductCategory> {
     public ControllerProductCategory() {
-        Firebase.database
-                .child(table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful())
-                        task.getException().printStackTrace();
-                    else if (task.getResult().getValue() == null) {
-                        Firebase.database
-                                .child(table)
-                                .setValue(0)
-                                .addOnSuccessListener(v -> Log.i("ControllerProductCategory", "Created table"));
-                    }
-                });
+        super("table_product_categories");
     }
 
-    public void setProductCategory(ProductCategory productCategory, boolean update, SuccessListener sListener, FailureListener fListener) {
-        DatabaseReference tableReference = Firebase.database
-                .child(this.table);
+    @Override
+    public boolean setSync(ProductCategory value, boolean update) {
+        DatabaseReference tableReference = Firebase.database.child(this.table);
         DatabaseReference rowReference;
 
-        if (!update) {
-            rowReference = tableReference.push();
+        try {
+            if (!update) {
+                rowReference = tableReference.push();
 
-            productCategory.__id = Objects.requireNonNull(tableReference.getKey());
-        } else {
-            rowReference = tableReference.child(String.valueOf(productCategory.__id));
+                value.__id = rowReference.getKey();
+
+                Tasks.await(Firebase.database.child(this.table).child(Objects.requireNonNull(rowReference.getKey())).setValue(value));
+            } else {
+                rowReference = tableReference.child(value.__id);
+                Tasks.await(rowReference.setValue(value));
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-
-        rowReference
-                .setValue(productCategory)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run();
-                    else
-                        fListener.run(task.getException());
-                });
     }
 
-    public void newProductCategory(ProductCategory productCategory, SuccessListener sListener, FailureListener fListener) {
-        setProductCategory(productCategory, false, sListener, fListener);
+    @Override
+    public void setAsync(ProductCategory value, boolean update, SuccessListener successListener, FailureListener failureListener) {
+
     }
 
-    public void deleteProductCategory(int id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(String.valueOf(id))
-                .setValue(null)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task);
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public boolean removeSync(String referenceId) {
+        try {
+            Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .setValue(null)
+            );
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void getProductCategory(int id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(String.valueOf(id))
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public void removeAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
     }
 
-    public void getAllProductCategory(SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public ProductCategory getSync(String referenceId) {
+        try {
+            return Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .get()
+            ).getValue(ProductCategory.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
+    }
+
+    @Override
+    public ArrayList<ProductCategory> getAllSync() {
+        try {
+            ArrayList<ProductCategory> list = new ArrayList<>();
+
+            for (DataSnapshot dataSnapshot : Tasks.await(Firebase.database.child(table).get()).getChildren())
+                list.add(dataSnapshot.getValue(ProductCategory.class));
+
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAllAsync(SuccessListener successListener, FailureListener failureListener) {
+
     }
 }
 

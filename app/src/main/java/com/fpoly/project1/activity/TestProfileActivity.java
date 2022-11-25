@@ -31,32 +31,15 @@ public class TestProfileActivity extends AppCompatActivity {
         setContentView(R.layout.test_act_profile);
 
         ControllerCustomer controllerCustomer = new ControllerCustomer();
-        controllerCustomer.getAllCustomer(
-                new ControllerBase.SuccessListener() {
-                    @Override
-                    public void run(DataSnapshot dataSnapshot) {
-                        List<Customer> customerList = new ArrayList<>();
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            customerList.add(ds.getValue(Customer.class));
-                        }
-                        String email = getSharedPreferences("cheetah", Context.MODE_PRIVATE).getString("email", null);
-                        customerList.forEach(c -> {
+        String email = getSharedPreferences("cheetah", Context.MODE_PRIVATE).getString("email", null);
+        controllerCustomer.getAllSync().forEach(c -> {
 
-                            if (c.emailAddress.equals(email)) {
-                                Glide.with(TestProfileActivity.this).load(c.avatarUrl).into((ImageView) findViewById(R.id.test_profile_avatar));
-                                ((TextView) findViewById(R.id.test_profile_gid)).setText(c.__id);
-                                ((TextView) findViewById(R.id.test_profile_email)).setText(c.fullName);
-                            }
-                        });
-                    }
-                },
-                new ControllerBase.FailureListener() {
-                    @Override
-                    public void run(Exception error) {
-                        error.printStackTrace();
-                    }
-                }
-        );
+            if (c.emailAddress.equals(email)) {
+                Glide.with(TestProfileActivity.this).load(c.avatarUrl).into((ImageView) findViewById(R.id.test_profile_avatar));
+                ((TextView) findViewById(R.id.test_profile_gid)).setText(c.__id);
+                ((TextView) findViewById(R.id.test_profile_email)).setText(c.fullName);
+            }
+        });
 
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 

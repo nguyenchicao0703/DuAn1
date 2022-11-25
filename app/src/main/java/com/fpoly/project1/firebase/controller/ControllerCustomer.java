@@ -1,22 +1,18 @@
 package com.fpoly.project1.firebase.controller;
 
-import android.util.Log;
-
 import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.model.Customer;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class ControllerCustomer extends ControllerBase {
-    // table to use
-    private final String table = "table_customers";
+public class ControllerCustomer extends ControllerBase<Customer> {
+    public ControllerCustomer() {
+        super("table_customers");
+    }
 
     /**
      * Broadcast object:
@@ -30,121 +26,100 @@ public class ControllerCustomer extends ControllerBase {
      * Please read: https://firebase.google.com/docs/database/android/read-and-write
      */
 
-    public ControllerCustomer() {
-        Firebase.database
-                .child(table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult().getValue() == null) {
-                        Firebase.database
-                                .child(table)
-                                .setValue(0)
-                                .addOnCompleteListener(
-                                        task2 -> Log.i(
-                                                "ControllerCustomer",
-                                                task2.isSuccessful() ? "Created table" : task2.getException().getMessage()
-                                        )
-                                );
-                    } else {
-                        if (task.getException() != null)
-                            task.getException().printStackTrace();
-                    }
-                });
-    }
-
-    public void setCustomer(Customer customer, boolean update, SuccessListener sListener, FailureListener fListener) {
-        DatabaseReference tableReference = Firebase.database // database reference
-                .child(this.table); // get the table reference
+    @Override
+    public boolean setSync(Customer value, boolean update) {
+        DatabaseReference tableReference = Firebase.database.child(this.table);
         DatabaseReference rowReference;
 
-        // if add new customer
-        if (!update) {
-            // set as new entry location reference (basically new unique ID)
-            rowReference = tableReference.push();
+        try {
+            if (!update) {
+                if (this.getAllSync().stream().anyMatch(account ->
+                        account.emailAddress.equals(value.emailAddress) ||
+                                account.gid.equals(value.gid) ||
+                                account.fid.equals(value.fid))
+                ) throw new Exception("Email đã tồn tại");
 
-            // override customer unique ID
-            customer.__id = Objects.requireNonNull(rowReference.getKey());
+                rowReference = tableReference.push();
 
-            // check if email is in use
-            Firebase.database
-                    .child(this.table)
-                    .get() // read all entries from table (or row/json tree)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<Customer> customers = new ArrayList<>();
+                // override ID
+                value.__id = rowReference.getKey();
 
-                            for (DataSnapshot ds : task.getResult().getChildren()) {
-                                customers.add(ds.getValue(Customer.class));
-                            }
+                Tasks.await(Firebase.database.child(this.table).child(Objects.requireNonNull(rowReference.getKey())).setValue(value));
+            } else {
+                rowReference = tableReference.child(value.__id);
+                Tasks.await(rowReference.setValue(value));
+            }
 
-                            // check if any account with matching email exist
-                            if (customers.stream().anyMatch(c ->
-                                    c.emailAddress.equals(customer.emailAddress)
-                            )) {
-                                fListener.run(new Exception("Email taken"));
-                            } else {
-                                rowReference
-                                        .setValue(customer) // set value to new location
-                                        .addOnCompleteListener(task2 -> {
-                                            if (task2.isSuccessful())
-                                                sListener.run();
-                                            else
-                                                fListener.run(task2.getException());
-                                        });
-                            }
-                        } else {
-                            fListener.run(task.getException());
-                        }
-                    });
-        } else {
-            // set as existing location reference
-            rowReference = tableReference.child(String.valueOf(customer.__id));
-            rowReference
-                    .setValue(customer) // set value to new location
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful())
-                            sListener.run();
-                        else
-                            fListener.run(task.getException());
-                    });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteCustomer(String id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(String.valueOf(id))
-                .setValue(null) // set null to delete entry
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run();
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public void setAsync(Customer value, boolean update, SuccessListener successListener, FailureListener failureListener) {
+
     }
 
-    public void getCustomer(String id, SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .child(id)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public boolean removeSync(String referenceId) {
+        try {
+            Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .setValue(null)
+            );
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void getAllCustomer(SuccessListener sListener, FailureListener fListener) {
-        Firebase.database
-                .child(this.table)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        sListener.run(task.getResult());
-                    else
-                        fListener.run(task.getException());
-                });
+    @Override
+    public void removeAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
+    }
+
+    @Override
+    public Customer getSync(String referenceId) {
+        try {
+            return Tasks.await(Firebase.database
+                    .child(table)
+                    .child(referenceId)
+                    .get()
+            ).getValue(Customer.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAsync(String referenceId, SuccessListener successListener, FailureListener failureListener) {
+
+    }
+
+    @Override
+    public ArrayList<Customer> getAllSync() {
+        try {
+            ArrayList<Customer> list = new ArrayList<>();
+
+            for (DataSnapshot dataSnapshot : Tasks.await(Firebase.database.child(table).get()).getChildren()) {
+                list.add(dataSnapshot.getValue(Customer.class));
+            }
+
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void getAllAsync(SuccessListener successListener, FailureListener failureListener) {
+
     }
 }
