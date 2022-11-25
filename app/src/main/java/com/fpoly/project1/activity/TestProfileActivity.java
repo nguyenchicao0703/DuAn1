@@ -12,17 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.fpoly.project1.R;
-import com.fpoly.project1.firebase.controller.ControllerBase;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
-import com.fpoly.project1.firebase.model.Customer;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestProfileActivity extends AppCompatActivity {
     @Override
