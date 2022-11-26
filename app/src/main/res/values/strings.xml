@@ -16,4 +16,10 @@
     <string name="auth_switch_sign_up">Already have an account? <b><font color="#E62B37">Sign in</font></b></string>
     <string name="auth_input_email"><i>Email</i><font color="#E62B37">*</font></string>
     <string name="auth_input_password"><i>Password</i><font color="#E62B37">*</font></string>
+    <string name="auth_input_password_confirm"><i>Confirm Password</i><font color="#E62B37">*</font></string>
+    <string name="address">Postal Address</string>
+    <string name="date">Birthdate</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="nickName">Nickname</string>
+    <string name="fullName">Full Name</string>
 </resources>

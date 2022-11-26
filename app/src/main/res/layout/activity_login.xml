@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".activity.AuthActivity">
+        tools:context=".activity.AuthLoginActivity">
 
         <ImageView
             android:id="@+id/auth_logo"

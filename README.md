@@ -2,63 +2,77 @@
 
 **Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
 
-### TODO List
+**Layout**: Hiệp, Chí, Hùng*
 
-Ghi chú ``[<1>:<2>:<3>]``
-```yaml
-<1>:
-  A: "Mục Khách hàng"
-  B: "Mục Người bán"
-  C: "Mục người giao"
-  
-<2>:
-  L: "Layout / Giao diện"
-  F: "Function / Chức năng (code)"
-  
-<3>: "Tên của cụm chức năng"
-```
+**Program**: Hưng, Phi*, acay
 
-:x: Làm các layout khác đi đm
+## TODO List
+### Mục khách hàng
+#### Auth Activity - Đăng nhập / Đăng ký
+| Task                                                      | Trạng thái    |
+|-----------------------------------------------------------|---------------|
+| Màn hình khởi chạy lần đầu                                | Chưa test     |
+| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Chưa xong     |
+| Đăng nhập bằng Google                                     | Hoạt động     |
+| Đăng nhập bằng Facebook                                   | Hoạt động     |
+| Đăng nhập bằng tài khoản thường                           | Chưa test     |
+| Đăng ký bằng tài khoản thường                             | Chưa test     |
+| Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Cần check lại |
+| Xác thực địa chỉ email                                    | Chưa làm      |
+| Quên mật khẩu (email hoặc sđt)                            | Chưa làm      |
+Còn thêm?
 
-:x: ``[A:L/F:Auth]`` Trang khởi chạy ứng dụng lần đầu (Giới thiệu app)
+**Note**: Firebase không có tạo tài khoản được bằng số điện thoại nên số điện thoại chỉ được dùng làm đăng nhập hoặc quên mật khẩu
 
-:x: ``[A:L/F:Auth]`` Trang yêu cầu thêm thông tin người dùng khi đăng nhập lần đầu
+#### Màn hình chính
+| Task                                                       | Trạng thái |
+|------------------------------------------------------------|------------|
+| Liệt kê danh sách loại sản phẩm?                           | Chưa xong  |
+| Liệt kê danh sách sản phẩm nổi bật                         | Chưa xong  |
+| Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Chưa làm   |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa làm   |
+Còn thêm?
 
-:x: ``[A:F:Account Settings Activity]`` Liên kết tài khoản Facebook, Google với tài khoản password trong mục quản lý tài khoản
+#### Màn hình tìm kiếm sản phẩm
+| Task                                                     | Trạng thái |
+|----------------------------------------------------------|------------|
+| Liệt kê danh sách các sản phẩm                           | Chưa làm   |
+| Khung tìm kiếm theo tên / loại sản phẩm                  | Chưa làm   |
+| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác | Chưa làm   |
+Còn thêm?
 
-:x: ``[A:L/F:Home Activity]`` Trang chủ hiển thị sản phẩm nổi bật, các loại sản phẩm, tba..
+#### Màn hình thông tin sản phẩm
+| Task                           | Trạng thái |
+|--------------------------------|------------|
+| Hiển thị thông tin sản phẩm    | Chưa làm   |
+| Nút chọn thêm vào mục ưa thích | Chưa làm   |
+| Nút đặt mua sản phẩm           | Chưa làm   |
+Còn thêm?
 
-:x: ``[A:L/F:Account Settings Activity]`` Trang quản lý thông tin tài khoản
+#### Màn hình giỏ hàng
+| Task                                               | Trạng thái |
+|----------------------------------------------------|------------|
+| Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa làm   |
+| Đặt mua và thanh toán (giả)                        | Chưa làm   |
+Còn thêm?
 
-:x: ``[A:L/F:Order History Activity]`` Trang quản lý các đơn hàng / lịch sử mua
+#### Màn hình quản lý tài khoản
+| Task                                                                    | Trạng thái |
+|-------------------------------------------------------------------------|------------|
+| Xem và thay đổi thông tin cá nhân                                       | Chưa làm   |
+| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa làm   |
+| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa làm   |
+| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm   |
+| Đăng xuất                                                               | Chưa làm   |
+Còn thêm?
 
-:x: ``[A:L/F:Search Product Activity]`` Trang tìm kiếm sản phẩm
+#### Các chức năng khác sẽ có hoặc không
+- Giao diện người bán
+- Giao diện người giao hàng
+- Live chat với người bán / người giao (phải có app người bán / người giao)
+Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể bán và mua cùng lúc
 
-:x: ``[A:L/F:Favorite Product Activity]`` Trang lưu trữ các sản phẩm yêu thích
 
-:x: ``[A:L/F:Upload Avata Activity]`` Trang thay đổi ảnh đại diện trong các bước đăng kí tài khoản (maybe)
-
-:x: ``[A:L/F:Item Info Activity]`` Trang thông tin của 1 sản phẩm / người hoặc nhà bán
-
-:x: ``[B:L/F:ALL]`` Trang và chức năng của người / nhà bán
-
-:x: ``[C:L/F:ALL]`` Trang và chức năng của người giao hàng (maybe)
-
-:x: TBA..
-
-:white_check_mark: ``[A:L:Auth]`` Layout đăng ký / đăng nhập tài khoản
-
-:white_check_mark: ``[A:F:Auth]`` Đăng nhập bằng Google
-
-:white_check_mark: ``[A:F:Auth]`` Đăng nhập bằng Facebook
-
-:white_check_mark: ``[A:F:Auth]`` Đăng nhập / đăng ký bằng email / password thông qua Firebase**
-
-:white_check_mark: ``[A:F:Auth]`` Tạo tài khoản (Customer) nếu chưa có khi fast login bằng Google/Facebook
-
-:white_check_mark: ``[A:F:Auth]`` Đăng nhập vào tài khoản có sẵn trùng email bằng nền tảng khác (reg = Google, log = Facebook)
-
-### Chú ý
-- Ghi ra những thay đổi trong commit message để biết cái gì đã xong hoặc chưa xong
-- Layout nên cho các view size lớn hơn
+## Chú ý
+- Sử dụng Tiếng Anh (sớm sau gì tất cả code đều làm bằng tiếng Anh cả thôi)
 - Khi đặt tên View trong layout thì theo format ``<activity>_<loại view>_<tên view>``. Ví dụ như ``login_btn_submit``. Đừng có đặt tùm lum như textView2 textView3

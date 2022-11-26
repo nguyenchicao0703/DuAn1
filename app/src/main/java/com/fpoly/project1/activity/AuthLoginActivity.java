@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
 import com.facebook.AccessToken;
@@ -45,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthLoginActivity extends AppCompatActivity {
     public static Resources resources;
     private final int REQ_CODE = 72;
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
@@ -76,28 +74,15 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         // proceed with the activity
-        setContentView(R.layout.activity_auth_customer);
+        setContentView(R.layout.activity_login);
         Window window = this.getWindow();
         window.setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
 
         // switching between login and signup btn
-        // because why create another activity that's basically a clone when you can
-        // modify the current one
-        TextView tvTitle = findViewById(R.id.auth_tv_title);
-        TextView tvSwitch = findViewById(R.id.auth_tv_switch);
-        AppCompatButton btnSubmit = findViewById(R.id.auth_btn_submit);
-        tvSwitch.setOnClickListener(v -> {
-            registerView = !registerView;
-            if (registerView) {
-                tvTitle.setText(getString(R.string.auth_title_sign_up));
-                tvSwitch.setText(getString(R.string.auth_switch_sign_up));
-                btnSubmit.setText(getString(R.string.auth_btn_sign_up));
-            } else {
-                tvTitle.setText(getString(R.string.auth_title_sign_in));
-                tvSwitch.setText(getString(R.string.auth_switch_sign_in));
-                btnSubmit.setText(getString(R.string.auth_btn_sign_in));
-            }
+        findViewById(R.id.auth_tv_switch).setOnClickListener(v -> {
+            startActivity(new Intent(this, AuthRegisterActivity.class));
+            finish();
         });
 
         // ============================ GOOGLE AUTHENTICATION ============================
@@ -133,13 +118,6 @@ public class AuthActivity extends AppCompatActivity {
                     }
 
                     if (!hasError) {
-                        if (registerView)
-                            // create user with email and password
-                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                                    etEmail.getText().toString(),
-                                    etPass.getText().toString()
-                            ).addOnCompleteListener(this::googleCompleteListener);
-                        else
                             // signin with email and password
                             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                                     etEmail.getText().toString(),
@@ -159,12 +137,12 @@ public class AuthActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(AuthActivity.this, "User cancelled action", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthLoginActivity.this, "User cancelled action", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(@NonNull FacebookException e) {
-                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                 e.printStackTrace();
             }
@@ -199,7 +177,7 @@ public class AuthActivity extends AppCompatActivity {
                     .signInWithCredential(GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null))
                     .addOnCompleteListener(this::googleCompleteListener);
         } catch (ApiException apiException) {
-            Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
             apiException.printStackTrace();
         }
@@ -237,6 +215,7 @@ public class AuthActivity extends AppCompatActivity {
                                 user.getDisplayName(),
                                 null,
                                 user.getEmail(),
+                                null,
                                 null
                         );
 
@@ -246,7 +225,7 @@ public class AuthActivity extends AppCompatActivity {
 
                     startProfileActivity(customerAccount.emailAddress);
                 } else {
-                    Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                     Log.e("LoginActivity::Google", "Failed to add account to Firebase");
                 }
@@ -298,6 +277,7 @@ public class AuthActivity extends AppCompatActivity {
                                             profile.getName(),
                                             null,
                                             email,
+                                            null,
                                             null
                                     );
 
@@ -307,7 +287,7 @@ public class AuthActivity extends AppCompatActivity {
 
                                 startProfileActivity(customerAccount.emailAddress);
                             } else {
-                                Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                                 Log.e("LoginActivity::Facebook", "Failed to add account to Firebase");
                             }
@@ -318,7 +298,7 @@ public class AuthActivity extends AppCompatActivity {
                             startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(AuthActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                         e.printStackTrace();
                     }
@@ -332,7 +312,7 @@ public class AuthActivity extends AppCompatActivity {
 
     // TODO replace the target activity with HomePage
     private void startProfileActivity(String email) {
-        Intent intent = new Intent(AuthActivity.this, TestProfileActivity.class);
+        Intent intent = new Intent(AuthLoginActivity.this, TestProfileActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         intent.putExtras(bundle);

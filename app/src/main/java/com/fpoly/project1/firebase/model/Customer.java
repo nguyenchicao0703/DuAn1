@@ -2,6 +2,8 @@ package com.fpoly.project1.firebase.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.List;
+
 @IgnoreExtraProperties
 public class Customer {
     public String __id;
@@ -12,6 +14,7 @@ public class Customer {
     public String birthDate;
     public String emailAddress;
     public String postalAddress;
+    public List<String> favoriteIds;
 
     public Customer() {}
 
@@ -25,8 +28,9 @@ public class Customer {
      * @param birthDate Account birth date, optionally set by user via account settings screen
      * @param emailAddress Account email address
      * @param postalAddress Account postal address, set by user via account creation screen
+     * @param favoriteIds Account list of favorite products (by product ID)
      */
-    public Customer(String __id, String gid, String fid, String avatarUrl, String fullName, String birthDate, String emailAddress, String postalAddress) {
+    public Customer(String __id, String gid, String fid, String avatarUrl, String fullName, String birthDate, String emailAddress, String postalAddress, List<String> favoriteIds) {
         this.__id = __id;
         this.gid = gid;
         this.fid = fid;
@@ -35,5 +39,6 @@ public class Customer {
         this.birthDate = birthDate;
         this.emailAddress = emailAddress;
         this.postalAddress = postalAddress;
+        this.favoriteIds = favoriteIds;
     }
 }
