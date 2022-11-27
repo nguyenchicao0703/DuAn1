@@ -48,7 +48,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                             || customer.fid.equals(Profile.getCurrentProfile().getId())
                             ).collect(Collectors.toList()).get(0).__id
                     );
-
+                    
                     // send to main screen
                     intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 } else {

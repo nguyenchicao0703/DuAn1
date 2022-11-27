@@ -31,7 +31,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -211,44 +213,56 @@ public class AuthLoginActivity extends AppCompatActivity {
 
     // Facebook auth complete listener
     private void facebookCompleteListener(LoginResult loginResult) {
-        ArrayList<Customer> customers = controllerCustomer.getAllSync();
-        if (customers == null) {
-            Toast.makeText(this, "Failed to get users from database", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Authenticate with firebase
+        AuthCredential authCredential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+        firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Customer> customers = controllerCustomer.getAllSync();
+                if (customers == null) {
+                    Toast.makeText(this, "Failed to get users from database", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-        GraphRequest request = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
-                (jsonObject, graphResponse) -> {
-                    Log.i("LoginActivity::Facebook", graphResponse.toString());
+                // TODO test and see if Facebook's Firebase user has the necessary credentials or not and remove GraphRequest code below
+                // Get facebook related information
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        (jsonObject, graphResponse) -> {
+                            Log.i("LoginActivity::Facebook", graphResponse.toString());
 
-                    try {
-                        Profile profile = Profile.getCurrentProfile();
-                        String email = jsonObject.getString("email");
+                            try {
+                                Profile profile = Profile.getCurrentProfile();
+                                String email = jsonObject.getString("email");
 
-                        Object[] matchingCustomer = customers.stream().filter(
-                                c -> c.emailAddress.equals(email) || c.fid.equals(profile.getId())
-                        ).toArray();
+                                Object[] matchingCustomer = customers.stream().filter(
+                                        c -> c.emailAddress.equals(email) || c.fid.equals(profile.getId())
+                                ).toArray();
 
-                        if (matchingCustomer.length == 0) {
-                            startActivity(new Intent(this, AuthFillBioActivity.class));
-                        } else {
-                            // if user is already exist
-                            Log.i("LoginActivity::Facebook", "Got account from Firebase");
+                                if (matchingCustomer.length == 0) {
+                                    startActivity(new Intent(this, AuthFillBioActivity.class));
+                                } else {
+                                    // if user is already exist
+                                    Log.i("LoginActivity::Facebook", "Got account from Firebase");
 
-                            Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
-                            startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
+                                    startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
-                        e.printStackTrace();
-                    }
-                });
+                                e.printStackTrace();
+                            }
+                        });
 
-        Bundle bundle = new Bundle();
-        bundle.putString("fields", "id,name,email");
-        request.setParameters(bundle);
-        request.executeAsync();
+                Bundle bundle = new Bundle();
+                bundle.putString("fields", "id,name,email");
+                request.setParameters(bundle);
+                request.executeAsync();
+            } else {
+                Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                task.getException().printStackTrace();
+            }
+        });
     }
 }
