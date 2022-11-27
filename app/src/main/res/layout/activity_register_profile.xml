@@ -74,7 +74,7 @@
                 android:textSize="18dp" />
 
             <EditText
-                android:id="@+id/registerProfile_edt_email"
+                android:id="@+id/registerProfile_edt_fullName"
                 android:layout_width="330dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="30dp"

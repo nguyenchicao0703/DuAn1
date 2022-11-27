@@ -56,8 +56,7 @@ public class AuthRegisterActivity extends AppCompatActivity {
                                 inputPassword.getText().toString()
                         ).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(AuthRegisterActivity.this, AuthFillBioActivity.class));
-                                finish();
+                                startActivity(new Intent(AuthRegisterActivity.this, AuthFillBioActivity.class), null);
                             } else {
                                 Toast.makeText(AuthRegisterActivity.this, "Failed to register. Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }

@@ -44,13 +44,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.AuthLoginActivity"
-            android:exported="true" />
-        <activity
             android:name=".activity.IntroduceActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.TestProfileActivity"
+            android:name=".activity.AuthLoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AuthRegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AuthFillBioActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true" />
     </application>
 

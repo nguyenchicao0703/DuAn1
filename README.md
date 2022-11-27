@@ -2,7 +2,7 @@
 
 **Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
 
-**Layout**: Hiệp, Chí, Hùng*
+**Layout**: Hiệp, Cao, Hùng*
 
 **Program**: Hưng, Phi*, acay
 
@@ -12,7 +12,7 @@
 | Task                                                      | Trạng thái    |
 |-----------------------------------------------------------|---------------|
 | Màn hình khởi chạy lần đầu                                | Chưa test     |
-| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Chưa xong     |
+| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Chưa test     |
 | Đăng nhập bằng Google                                     | Hoạt động     |
 | Đăng nhập bằng Facebook                                   | Hoạt động     |
 | Đăng nhập bằng tài khoản thường                           | Chưa test     |

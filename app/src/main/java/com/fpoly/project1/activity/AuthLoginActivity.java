@@ -48,7 +48,6 @@ public class AuthLoginActivity extends AppCompatActivity {
     private final int REQ_CODE = 72;
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private boolean registerView = false;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
 
@@ -58,20 +57,6 @@ public class AuthLoginActivity extends AppCompatActivity {
 
         // for use by Firebase
         resources = getResources();
-
-        // check if user is already logged in
-        // note: firebase and facebook keeps account state even after app exit so there's no need
-        // for a "Remember me" checkbox, user can manually logout when they need to
-        // with FirebaseAuth.getInstance().signOut() or LoginManager.getInstance().logOut()
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (firebaseAuth.getCurrentUser() != null || // google auth status
-                (Profile.getCurrentProfile() != null // facebook auth status
-                        && accessToken != null
-                        && !accessToken.isExpired())
-        ) {
-            startProfileActivity(getSharedPreferences("cheetah", Context.MODE_PRIVATE).getString("email", null));
-            finish();
-        }
 
         // proceed with the activity
         setContentView(R.layout.activity_login);
@@ -204,36 +189,14 @@ public class AuthLoginActivity extends AppCompatActivity {
                     c -> c.emailAddress.equals(user.getEmail()) || c.gid.equals(user.getUid())
             ).toArray();
 
-            // if there isn't any matching user, we create one
+            // if there isn't any matching user, switch to fill bio activity
             if (matchingCustomer.length == 0) {
-                Customer customerAccount =
-                        new Customer(
-                                null,
-                                user.getUid(),
-                                null,
-                                user.getPhotoUrl().toString(),
-                                user.getDisplayName(),
-                                null,
-                                user.getEmail(),
-                                null,
-                                null
-                        );
-
-                // add the user to firebase
-                if (controllerCustomer.setSync(customerAccount, false)) {
-                    Log.i("LoginActivity::Google", "Added account to Firebase");
-
-                    startProfileActivity(customerAccount.emailAddress);
-                } else {
-                    Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                    Log.e("LoginActivity::Google", "Failed to add account to Firebase");
-                }
+                startActivity(new Intent(this, AuthFillBioActivity.class));
             } else {
                 // if user is already exist
                 Log.i("LoginActivity::Google", "Got account from Firebase");
-
-                startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
+                
+                startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
             }
         } else {
             Objects.requireNonNull(task.getException()).printStackTrace();
@@ -268,34 +231,12 @@ public class AuthLoginActivity extends AppCompatActivity {
                         ).toArray();
 
                         if (matchingCustomer.length == 0) {
-                            Customer customerAccount =
-                                    new Customer(
-                                            null,
-                                            null,
-                                            profile.getId(),
-                                            profile.getProfilePictureUri(500, 500).toString(),
-                                            profile.getName(),
-                                            null,
-                                            email,
-                                            null,
-                                            null
-                                    );
-
-                            // add the user to firebase
-                            if (controllerCustomer.setSync(customerAccount, false)) {
-                                Log.i("LoginActivity::Facebook", "Added account to Firebase");
-
-                                startProfileActivity(customerAccount.emailAddress);
-                            } else {
-                                Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                                Log.e("LoginActivity::Facebook", "Failed to add account to Firebase");
-                            }
+                            startActivity(new Intent(this, AuthFillBioActivity.class));
                         } else {
                             // if user is already exist
                             Log.i("LoginActivity::Facebook", "Got account from Firebase");
 
-                            startProfileActivity(((Customer) matchingCustomer[0]).emailAddress);
+                            startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
                         }
                     } catch (JSONException e) {
                         Toast.makeText(AuthLoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -308,19 +249,5 @@ public class AuthLoginActivity extends AppCompatActivity {
         bundle.putString("fields", "id,name,email");
         request.setParameters(bundle);
         request.executeAsync();
-    }
-
-    // TODO replace the target activity with HomePage
-    private void startProfileActivity(String email) {
-        Intent intent = new Intent(AuthLoginActivity.this, TestProfileActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        intent.putExtras(bundle);
-
-        SharedPreferences.Editor editor = getSharedPreferences("cheetah", Context.MODE_PRIVATE).edit();
-        editor.putString("email", email);
-        editor.apply();
-
-        startActivity(intent);
     }
 }

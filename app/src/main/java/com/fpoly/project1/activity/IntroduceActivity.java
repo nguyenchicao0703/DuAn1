@@ -22,7 +22,7 @@ public class IntroduceActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(getResources().getColor(android.R.color.black));
         getWindow().setNavigationBarColor(getResources().getColor(android.R.color.black));
 
-        findViewById(R.id.btnNextIntroduce)
+        findViewById(R.id.introduce_btn_next)
                 .setOnClickListener(v -> startActivity(new Intent(IntroduceActivity.this, AuthLoginActivity.class)));
     }
 }
