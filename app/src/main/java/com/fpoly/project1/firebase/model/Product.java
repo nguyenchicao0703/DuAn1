@@ -12,17 +12,17 @@ public class Product implements Serializable {
     public String price;
     public List<String> thumbnails;
 
-    public Product() {}
+    public Product() {
+    }
 
     /**
-     *
-     * @param __id Firebase product unique ID
-     * @param sellerId Seller ID which owns this product
-     * @param categoryId Category ID which this belongs to
-     * @param name Product display name
+     * @param __id        Firebase product unique ID
+     * @param sellerId    Seller ID which owns this product
+     * @param categoryId  Category ID which this belongs to
+     * @param name        Product display name
      * @param description Product display description
-     * @param price Product price
-     * @param thumbnails Product thumbnails
+     * @param price       Product price
+     * @param thumbnails  Product thumbnails
      */
     public Product(String __id, String sellerId, String categoryId, String name, String description, String price, List<String> thumbnails) {
         this.__id = __id;

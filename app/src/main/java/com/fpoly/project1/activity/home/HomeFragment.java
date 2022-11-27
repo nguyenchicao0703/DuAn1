@@ -1,4 +1,4 @@
-package com.fpoly.project1.fragment;
+package com.fpoly.project1.activity.home;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,12 +6,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.project1.R;
-import com.fpoly.project1.adapter.HomeFeaturedAdapter;
-import com.fpoly.project1.adapter.HomeMenuAdapter;
+import com.fpoly.project1.activity.home.adapter.FeaturedAdapter;
+import com.fpoly.project1.activity.home.adapter.MenuAdapter;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.controller.ControllerProduct;
 
@@ -38,10 +37,10 @@ public class HomeFragment extends Fragment {
         });
 
         RecyclerView menuView = requireActivity().findViewById(R.id.home_recyclerView_product_menu);
-        menuView.setAdapter(new HomeMenuAdapter(requireContext(), controllerProduct.getAllSync()));
+        menuView.setAdapter(new MenuAdapter(requireContext(), controllerProduct.getAllSync()));
 
         // TODO implement featured products by purchase amounts for past week (or a period of time)
         RecyclerView featuredView = requireActivity().findViewById(R.id.home_recyclerView_product_featured);
-        featuredView.setAdapter(new HomeFeaturedAdapter(requireContext(), controllerProduct.getAllSync()));
+        featuredView.setAdapter(new FeaturedAdapter(requireContext(), controllerProduct.getAllSync()));
     }
 }

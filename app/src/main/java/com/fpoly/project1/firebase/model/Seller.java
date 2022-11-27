@@ -13,18 +13,18 @@ public class Seller implements Serializable {
     public String closingTime;
     public String[] featuredImages;
 
-    public Seller() {}
+    public Seller() {
+    }
 
     /**
-     *
-     * @param __id Firebase seller unique ID
-     * @param name Seller display name
-     * @param avatarUrl Seller display avatar url
-     * @param emailAddress Seller contact email address
-     * @param phoneNumber Seller contact phone number
-     * @param postalAddress Seller postal address
-     * @param openingTime Seller opening time
-     * @param closingTime Seller closing time
+     * @param __id           Firebase seller unique ID
+     * @param name           Seller display name
+     * @param avatarUrl      Seller display avatar url
+     * @param emailAddress   Seller contact email address
+     * @param phoneNumber    Seller contact phone number
+     * @param postalAddress  Seller postal address
+     * @param openingTime    Seller opening time
+     * @param closingTime    Seller closing time
      * @param featuredImages Seller featured images as list of urls
      */
     public Seller(String __id, String name, String avatarUrl, String emailAddress, String phoneNumber, String postalAddress, String openingTime, String closingTime, String[] featuredImages) {

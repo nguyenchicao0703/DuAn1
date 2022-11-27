@@ -1,4 +1,4 @@
-package com.fpoly.project1.activity;
+package com.fpoly.project1.activity.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;

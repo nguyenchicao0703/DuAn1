@@ -1,8 +1,6 @@
-package com.fpoly.project1.activity;
+package com.fpoly.project1.activity.authentication;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -24,6 +21,8 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.fpoly.project1.R;
+import com.fpoly.project1.activity.MainActivity;
+import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.model.Customer;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -103,11 +102,11 @@ public class AuthLoginActivity extends AppCompatActivity {
                     }
 
                     if (!hasError) {
-                            // signin with email and password
-                            FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                                    etEmail.getText().toString(),
-                                    etPass.getText().toString()
-                            ).addOnCompleteListener(this::googleCompleteListener);
+                        // sign in with email and password
+                        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                                etEmail.getText().toString(),
+                                etPass.getText().toString()
+                        ).addOnCompleteListener(this::googleCompleteListener);
                     }
                 });
 
@@ -195,7 +194,8 @@ public class AuthLoginActivity extends AppCompatActivity {
             } else {
                 // if user is already exist
                 Log.i("LoginActivity::Google", "Got account from Firebase");
-                
+
+                Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
                 startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
             }
         } else {
@@ -236,6 +236,7 @@ public class AuthLoginActivity extends AppCompatActivity {
                             // if user is already exist
                             Log.i("LoginActivity::Facebook", "Got account from Firebase");
 
+                            Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
                             startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
                         }
                     } catch (JSONException e) {

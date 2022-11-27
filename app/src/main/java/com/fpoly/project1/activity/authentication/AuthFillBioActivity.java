@@ -1,4 +1,4 @@
-package com.fpoly.project1.activity;
+package com.fpoly.project1.activity.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.Profile;
 import com.fpoly.project1.R;
+import com.fpoly.project1.activity.MainActivity;
+import com.fpoly.project1.firebase.Firebase;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.model.Customer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,9 +66,12 @@ public class AuthFillBioActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.registerProfile_btn_next).setOnClickListener(v -> {
-            if (controllerCustomer.setSync(account, false)) {
+            String sessionId = controllerCustomer.addSync(account);
+
+            if (sessionId != null) {
                 Toast.makeText(this, "Successfully recorded user details", Toast.LENGTH_SHORT).show();
 
+                Firebase.setSessionId(sessionId);
                 startActivity(new Intent(this, MainActivity.class));
             } else {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();

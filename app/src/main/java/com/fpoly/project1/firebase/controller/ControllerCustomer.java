@@ -57,6 +57,31 @@ public class ControllerCustomer extends ControllerBase<Customer> {
         }
     }
 
+    public String addSync(Customer value) {
+        DatabaseReference tableReference = Firebase.database.child(this.table);
+        DatabaseReference rowReference;
+
+        try {
+            if (this.getAllSync().stream().anyMatch(account ->
+                    account.emailAddress.equals(value.emailAddress) ||
+                            account.gid.equals(value.gid) ||
+                            account.fid.equals(value.fid))
+            ) throw new Exception("Email đã tồn tại");
+
+            rowReference = tableReference.push();
+
+            // override ID
+            value.__id = rowReference.getKey();
+
+            Tasks.await(Firebase.database.child(this.table).child(Objects.requireNonNull(rowReference.getKey())).setValue(value));
+
+            return value.__id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public void setAsync(Customer value, boolean update, SuccessListener successListener, FailureListener failureListener) {
 

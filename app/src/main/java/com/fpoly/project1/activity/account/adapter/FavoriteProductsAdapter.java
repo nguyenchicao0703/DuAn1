@@ -1,4 +1,4 @@
-package com.fpoly.project1.adapter;
+package com.fpoly.project1.activity.account.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fpoly.project1.R;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
-import com.fpoly.project1.firebase.controller.ControllerProduct;
 import com.fpoly.project1.firebase.controller.ControllerProductCategory;
 import com.fpoly.project1.firebase.model.Customer;
 import com.fpoly.project1.firebase.model.Product;
@@ -23,33 +22,30 @@ import com.fpoly.project1.firebase.model.ProductCategory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavoriteAdapter.ViewHolder> {
+public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProductsAdapter.ViewHolder> {
     private final Context context;
     private final LayoutInflater layoutInflater;
-    private final ControllerProduct controllerProduct = new ControllerProduct();
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
     private final ArrayList<ProductCategory> categories = new ControllerProductCategory().getAllSync();
-    private final List<String> favoriteList;
     private final Customer customer;
+    private List<Product> productList;
 
-    public ProductsFavoriteAdapter(Context context, Customer account) {
+    public FavoriteProductsAdapter(Context context, List<Product> products, Customer customer) {
         this.context = context;
-        this.customer = account;
         this.layoutInflater = LayoutInflater.from(context);
-
-        favoriteList = account.favoriteIds;
+        this.productList = products;
+        this.customer = customer;
     }
 
     @NonNull
     @Override
-    public ProductsFavoriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteProductsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(layoutInflater.inflate(R.layout.item_recycler_favorite, parent));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsFavoriteAdapter.ViewHolder holder, int position) {
-        String favoriteId = favoriteList.get(position);
-        Product product = controllerProduct.getSync(favoriteId);
+    public void onBindViewHolder(@NonNull FavoriteProductsAdapter.ViewHolder holder, int position) {
+        Product product = productList.get(position);
 
         Glide.with(context).load(product.thumbnails.get(0)).into(holder.productThumbnail);
         holder.productName.setText(product.name);
@@ -64,9 +60,10 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
             // TODO implement product view activity
         });
         holder.favoriteStatus.setOnClickListener(v -> {
-            customer.favoriteIds.remove(position);
+            productList.remove(position); // local list
+            customer.favoriteIds.remove(position); // account list
 
-            if (controllerCustomer.setSync(customer, true)) {
+            if (controllerCustomer.setSync(customer, true)) { // update account
                 Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
 
                 notifyItemRemoved(position);
@@ -78,7 +75,15 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
 
     @Override
     public int getItemCount() {
-        return favoriteList.size();
+        return productList.size();
+    }
+
+    public void updateList(List<Product> newList) {
+        notifyItemRangeRemoved(0, this.productList.size());
+
+        this.productList = newList;
+
+        notifyItemRangeInserted(0, newList.size());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

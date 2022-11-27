@@ -8,13 +8,13 @@ public class ProductCategory implements Serializable {
     public String description;
     public String featuredThumbnail;
 
-    public ProductCategory() {}
+    public ProductCategory() {
+    }
 
     /**
-     *
-     * @param __id Firebase Rating unique ID
-     * @param name Rating display name
-     * @param description Rating description
+     * @param __id              Firebase Rating unique ID
+     * @param name              Rating display name
+     * @param description       Rating description
      * @param featuredThumbnail Rating featured thumbnail TODO: should use product ID or not
      */
     public ProductCategory(String __id, String name, String description, String featuredThumbnail) {

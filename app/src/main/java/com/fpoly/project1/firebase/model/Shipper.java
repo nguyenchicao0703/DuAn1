@@ -10,7 +10,8 @@ public class Shipper {
     public String postalAddress;
     public String licenseNumber;
 
-    public Shipper() {}
+    public Shipper() {
+    }
 
     public Shipper(String __id, String fullName, String avatarUrl, String birthDate, String emailAddress, String phoneNumber, String postalAddress, String licenseNumber) {
         this.__id = __id;

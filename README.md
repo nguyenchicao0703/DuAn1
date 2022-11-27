@@ -1,8 +1,10 @@
 # DuAn1
 
-**Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
+## Chết hết đâu rồi
 
-**Layout**: Hiệp, Cao, ~~Hùng~~
+#### Nhóm 6 (lần 2) - Tổng nghỉ: 3
+
+**Layout**: Hiệp?, Cao, ~~Hùng (nghỉ học)~~
 
 **Program**: Hưng, Phi*, acay
 
@@ -11,6 +13,10 @@
 #### Auth Activity - Đăng nhập / Đăng ký
 | Task                                                      | Trạng thái    |
 |-----------------------------------------------------------|---------------|
+| Layout đăng nhập / đăng ký                                | Hoàn thành    |
+| Layout điền thông tin chi tiết sau đăng ký                | Hoàn thành    |
+| Layout splash loading screen                              | Hoàn thành    |
+| Layout chạy app lần đầu                                   | Sửa lại       |
 | Màn hình khởi chạy lần đầu                                | Chưa test     |
 | Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Chưa test     |
 | Đăng nhập bằng Google                                     | Hoạt động     |
@@ -27,6 +33,7 @@ Còn thêm?
 #### Màn hình chính
 | Task                                                       | Trạng thái |
 |------------------------------------------------------------|------------|
+| Layout homepage                                            | Hoàn thành |
 | Liệt kê danh sách loại sản phẩm?                           | Chưa xong  |
 | Liệt kê danh sách sản phẩm nổi bật                         | Chưa xong  |
 | Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Chưa làm   |
@@ -36,14 +43,18 @@ Còn thêm?
 #### Màn hình tìm kiếm sản phẩm
 | Task                                                     | Trạng thái |
 |----------------------------------------------------------|------------|
+| Layout tìm kiếm                                          | Chưa làm   |
+| Layout ưa thích                                          | Hoàn thành |
 | Liệt kê danh sách các sản phẩm                           | Chưa làm   |
 | Khung tìm kiếm theo tên / loại sản phẩm                  | Chưa làm   |
-| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác | Chưa làm   |
+| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác | Chưa xong  |
 Còn thêm?
 
 #### Màn hình thông tin sản phẩm
 | Task                           | Trạng thái |
 |--------------------------------|------------|
+| Layout thông tin sản phẩm      | Chưa làm   |
+| Layout thông tin loại sản phẩm | Không rõ?  |
 | Hiển thị thông tin sản phẩm    | Chưa làm   |
 | Nút chọn thêm vào mục ưa thích | Chưa làm   |
 | Nút đặt mua sản phẩm           | Chưa làm   |
@@ -52,6 +63,9 @@ Còn thêm?
 #### Màn hình giỏ hàng
 | Task                                               | Trạng thái |
 |----------------------------------------------------|------------|
+| Layout giỏ hàng                                    | Chưa làm   |
+| Layout cổng thanh toán                             | Chưa làm   |
+| Layout xác nhận thanh toán                         | Chưa làm   |
 | Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa làm   |
 | Đặt mua và thanh toán (giả)                        | Chưa làm   |
 Còn thêm?
@@ -59,6 +73,9 @@ Còn thêm?
 #### Màn hình quản lý tài khoản
 | Task                                                                    | Trạng thái |
 |-------------------------------------------------------------------------|------------|
+| Layout thông tin người dùng                                             | Chưa làm   |
+| Layout chỉnh sửa thông tin                                              | Chưa làm   |
+| Layout quên mật khẩu / OTP                                              | Hoàn thành |
 | Xem và thay đổi thông tin cá nhân                                       | Chưa làm   |
 | Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa làm   |
 | Xem những hoá đơn đã hoàn thành trước đó                                | Chưa làm   |
@@ -66,7 +83,7 @@ Còn thêm?
 | Đăng xuất                                                               | Chưa làm   |
 Còn thêm?
 
-#### Các chức năng khác sẽ có hoặc không
+### Các chức năng khác sẽ có hoặc không
 - Giao diện người bán
 - Giao diện người giao hàng
 - Live chat với người bán / người giao (phải có app người bán / người giao)

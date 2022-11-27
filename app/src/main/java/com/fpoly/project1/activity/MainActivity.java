@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fpoly.project1.R;
-import com.fpoly.project1.fragment.HomeFragment;
+import com.fpoly.project1.activity.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

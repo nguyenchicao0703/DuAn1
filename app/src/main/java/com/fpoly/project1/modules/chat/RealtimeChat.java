@@ -17,7 +17,7 @@ public class RealtimeChat {
                     if (!task.isSuccessful()) {
                         databaseReference.setValue(0)
                                 .addOnCompleteListener(task2 ->
-                                    Log.i("RealtimeChat", task2.isSuccessful() ? "Created table" : task2.getException().getMessage())
+                                        Log.i("RealtimeChat", task2.isSuccessful() ? "Created table" : task2.getException().getMessage())
                                 );
                     }
                 });

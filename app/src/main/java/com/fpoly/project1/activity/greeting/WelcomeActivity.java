@@ -1,4 +1,4 @@
-package com.fpoly.project1.activity;
+package com.fpoly.project1.activity.greeting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,13 @@ import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.fpoly.project1.R;
+import com.fpoly.project1.activity.MainActivity;
+import com.fpoly.project1.activity.authentication.AuthLoginActivity;
+import com.fpoly.project1.firebase.Firebase;
+import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.stream.Collectors;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -35,6 +41,14 @@ public class WelcomeActivity extends AppCompatActivity {
             if (getSharedPreferences("firstLaunch", MODE_PRIVATE).getBoolean("seen", false)) {
                 // check if user session is still available
                 if (FirebaseAuth.getInstance().getCurrentUser() != null || (Profile.getCurrentProfile() != null && accessToken != null && !accessToken.isExpired())) {
+                    // set session ID
+                    Firebase.setSessionId(
+                            new ControllerCustomer().getAllSync().stream().filter(customer ->
+                                    customer.gid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            || customer.fid.equals(Profile.getCurrentProfile().getId())
+                            ).collect(Collectors.toList()).get(0).__id
+                    );
+
                     // send to main screen
                     intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 } else {
@@ -47,6 +61,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
 
             startActivity(intent);
+            finish();
         }, 3_000L);
     }
 }

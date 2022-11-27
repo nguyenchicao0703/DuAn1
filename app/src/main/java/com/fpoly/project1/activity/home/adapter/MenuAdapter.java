@@ -1,4 +1,4 @@
-package com.fpoly.project1.adapter;
+package com.fpoly.project1.activity.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,16 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.project1.R;
+import com.fpoly.project1.firebase.controller.ControllerProductCategory;
 import com.fpoly.project1.firebase.model.Product;
+import com.fpoly.project1.firebase.model.ProductCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFeaturedAdapter extends RecyclerView.Adapter<HomeFeaturedAdapter.ViewHolder> {
+public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     private final Context context;
     private final LayoutInflater layoutInflater;
     private final List<Product> products;
+    private final ArrayList<ProductCategory> categories = new ControllerProductCategory().getAllSync();
 
-    public HomeFeaturedAdapter(Context context, List<Product> products) {
+    public MenuAdapter(Context context, List<Product> products) {
         this.context = context;
         this.products = products;
         this.layoutInflater = LayoutInflater.from(context);
@@ -29,17 +33,22 @@ public class HomeFeaturedAdapter extends RecyclerView.Adapter<HomeFeaturedAdapte
 
     @NonNull
     @Override
-    public HomeFeaturedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(layoutInflater.inflate(R.layout.item_recycler_featured_products, parent));
+    public MenuAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeFeaturedAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MenuAdapter.ViewHolder holder, int position) {
         Product product = products.get(position);
 
         Glide.with(context).load(product.thumbnails.get(0)).into(holder.productThumbnail);
         holder.productName.setText(product.name);
         holder.productPrice.setText(product.price);
+        holder.productType.setText(
+                ((ProductCategory) List.of(categories.stream().filter(
+                        productCategory -> productCategory.__id.equals(product.categoryId)
+                )).get(0)).name
+        );
 
         holder.itemView.setOnClickListener(v -> {
             // TODO implement product view activity
@@ -54,14 +63,16 @@ public class HomeFeaturedAdapter extends RecyclerView.Adapter<HomeFeaturedAdapte
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView productThumbnail;
         TextView productName;
+        TextView productType;
         TextView productPrice;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            productThumbnail = itemView.findViewById(R.id.item_iv_product_featured);
-            productName = itemView.findViewById(R.id.item_txt_featured_name);
-            productPrice = itemView.findViewById(R.id.item_txt_featured_price);
+            productThumbnail = itemView.findViewById(R.id.item_iv_products_menu);
+            productName = itemView.findViewById(R.id.item_txt_menu_name);
+            productType = itemView.findViewById(R.id.item_txt_menu_type);
+            productPrice = itemView.findViewById(R.id.item_txt_menu_price);
         }
     }
 }

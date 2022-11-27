@@ -1,7 +1,6 @@
 package com.fpoly.project1.modules.chat;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class ChatSession {
     public String _id;
