@@ -2,7 +2,7 @@
 
 **Nếu có bị Conflict thì Discard local stashed changes đi rồi fetch về từ repo**
 
-**Layout**: Hiệp, Cao, Hùng*
+**Layout**: Hiệp, Cao, ~~Hùng~~
 
 **Program**: Hưng, Phi*, acay
 
