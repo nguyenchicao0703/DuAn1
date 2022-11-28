@@ -25,7 +25,7 @@
 | Đăng ký bằng tài khoản thường                             | Chưa test     |
 | Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Cần check lại |
 | Xác thực địa chỉ email                                    | Chưa làm      |
-| Quên mật khẩu (email hoặc sđt)                            | Chưa làm      |
+| Quên mật khẩu (email hoặc sđt)                            | Chưa test     |
 Còn thêm?
 
 **Note**: Firebase không có tạo tài khoản được bằng số điện thoại nên số điện thoại chỉ được dùng làm đăng nhập hoặc quên mật khẩu

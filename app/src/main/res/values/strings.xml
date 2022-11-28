@@ -22,4 +22,6 @@
     <string name="phoneNumber">Phone Number</string>
     <string name="nickName">Nickname</string>
     <string name="fullName">Full Name</string>
+    <string name="newPassword">New password</string>
+    <string name="confirmNewPassword">Confirm new password</string>
 </resources>

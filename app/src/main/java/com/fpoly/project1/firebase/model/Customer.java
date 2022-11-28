@@ -13,6 +13,7 @@ public class Customer {
     public String fullName;
     public String birthDate;
     public String emailAddress;
+    public String phoneNumber;
     public String postalAddress;
     public List<String> favoriteIds;
 
@@ -27,10 +28,11 @@ public class Customer {
      * @param fullName      Account display name
      * @param birthDate     Account birth date, optionally set by user via account settings screen
      * @param emailAddress  Account email address
+     * @param phoneNumber   Account phone number
      * @param postalAddress Account postal address, set by user via account creation screen
      * @param favoriteIds   Account list of favorite products (by product ID)
      */
-    public Customer(String __id, String gid, String fid, String avatarUrl, String fullName, String birthDate, String emailAddress, String postalAddress, List<String> favoriteIds) {
+    public Customer(String __id, String gid, String fid, String avatarUrl, String fullName, String birthDate, String emailAddress, String phoneNumber, String postalAddress, List<String> favoriteIds) {
         this.__id = __id;
         this.gid = gid;
         this.fid = fid;
@@ -38,6 +40,7 @@ public class Customer {
         this.fullName = fullName;
         this.birthDate = birthDate;
         this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
         this.postalAddress = postalAddress;
         this.favoriteIds = favoriteIds;
     }
