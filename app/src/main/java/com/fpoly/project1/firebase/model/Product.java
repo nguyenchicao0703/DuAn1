@@ -17,7 +17,7 @@ public class Product implements Serializable {
 
     /**
      * @param __id        Firebase product unique ID
-     * @param sellerId    Seller ID which owns this product
+     * @param sellerId    Account ID which owns this product
      * @param categoryId  Category ID which this belongs to
      * @param name        Product display name
      * @param description Product display description

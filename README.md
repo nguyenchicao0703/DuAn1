@@ -4,9 +4,13 @@
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 3
 
-**Layout**: Hiệp?, Cao, ~~Hùng (nghỉ học)~~
+**Layout**: Cao
 
-**Program**: Hưng, Phi*, acay
+**Program**: Hiệp, acay
+
+**Presentation**: Hưng
+
+~~Cút: Hùng, Phi, 2 thằng nữa không biết~~
 
 ## TODO List
 ### Mục khách hàng
@@ -43,11 +47,10 @@ Còn thêm?
 #### Màn hình tìm kiếm sản phẩm
 | Task                                                     | Trạng thái |
 |----------------------------------------------------------|------------|
-| Layout tìm kiếm                                          | Chưa làm   |
+| Layout tìm kiếm                                          | Hoàn thành |
 | Layout ưa thích                                          | Hoàn thành |
 | Liệt kê danh sách các sản phẩm                           | Chưa làm   |
 | Khung tìm kiếm theo tên / loại sản phẩm                  | Chưa làm   |
-| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác | Chưa xong  |
 Còn thêm?
 
 #### Màn hình thông tin sản phẩm
@@ -71,17 +74,27 @@ Còn thêm?
 Còn thêm?
 
 #### Màn hình quản lý tài khoản
-| Task                                                                    | Trạng thái |
-|-------------------------------------------------------------------------|------------|
-| Layout thông tin người dùng                                             | Chưa làm   |
-| Layout chỉnh sửa thông tin                                              | Chưa làm   |
-| Layout quên mật khẩu / OTP                                              | Hoàn thành |
-| Xem và thay đổi thông tin cá nhân                                       | Chưa làm   |
-| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa làm   |
-| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa làm   |
-| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm   |
-| Đăng xuất                                                               | Chưa làm   |
+| Task                                                                    | Trạng thái  |
+|-------------------------------------------------------------------------|-------------|
+| Layout thông tin người dùng                                             | Hoàn thành* |
+| Layout chỉnh sửa thông tin                                              | Hoàn thành* |
+| Layout quên mật khẩu / OTP                                              | Hoàn thành  |
+| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Chưa test   |
+| Xem và thay đổi thông tin cá nhân                                       | Chưa test   |
+| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa làm    |
+| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa xong   |
+| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm    |
+| Đăng xuất                                                               | Chưa test   |
 Còn thêm?
+
+#### Màn hình chat người dùng
+- Layout lịch sử chat - xong
+- Layout chat 2 người - cần hoàn chỉnh
+- Chat function - chưa làm
+
+#### Cần thêm
+- Layout view người dùng khác (như view product) (có kèm theo nút chat với người dùng, liệt kê danh sách sản phẩm của người dùng này)
+- ...
 
 ### Các chức năng khác sẽ có hoặc không
 - Giao diện người bán

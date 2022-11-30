@@ -23,6 +23,7 @@ import com.facebook.login.LoginResult;
 import com.fpoly.project1.R;
 import com.fpoly.project1.activity.MainActivity;
 import com.fpoly.project1.firebase.Firebase;
+import com.fpoly.project1.firebase.SessionUser;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.model.Customer;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -197,7 +198,7 @@ public class AuthLoginActivity extends AppCompatActivity {
                 // if user is already exist
                 Log.i("LoginActivity::Google", "Got account from Firebase");
 
-                Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
+                SessionUser.setId(((Customer) matchingCustomer[0]).__id);
                 startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
             }
         } else {
@@ -244,7 +245,7 @@ public class AuthLoginActivity extends AppCompatActivity {
                                     // if user is already exist
                                     Log.i("LoginActivity::Facebook", "Got account from Firebase");
 
-                                    Firebase.setSessionId(((Customer) matchingCustomer[0]).__id);
+                                    SessionUser.setId(((Customer) matchingCustomer[0]).__id);
                                     startActivity(new Intent(AuthLoginActivity.this, MainActivity.class));
                                 }
                             } catch (JSONException e) {

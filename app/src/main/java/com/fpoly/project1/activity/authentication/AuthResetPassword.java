@@ -47,7 +47,8 @@ public class AuthResetPassword extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(AuthResetPassword.this, "Successfully reset password", Toast.LENGTH_SHORT).show();
 
-                                    startActivity(new Intent(AuthResetPassword.this, MainActivity.class));
+                                    startActivity(new Intent(AuthResetPassword.this, AuthLoginActivity.class));
+                                    finish();
                                 } else {
                                     Toast.makeText(AuthResetPassword.this, "Failed to set new password", Toast.LENGTH_SHORT).show();
                                 }

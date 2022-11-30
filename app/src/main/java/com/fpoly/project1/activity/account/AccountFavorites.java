@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.project1.R;
 import com.fpoly.project1.activity.account.adapter.FavoriteProductsAdapter;
 import com.fpoly.project1.firebase.Firebase;
+import com.fpoly.project1.firebase.SessionUser;
 import com.fpoly.project1.firebase.controller.ControllerCustomer;
 import com.fpoly.project1.firebase.controller.ControllerProduct;
 import com.fpoly.project1.firebase.model.Customer;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FavoriteProducts extends AppCompatActivity {
+public class AccountFavorites extends AppCompatActivity {
     private final List<Product> productList = new ArrayList<>();
     private final ControllerCustomer controllerCustomer = new ControllerCustomer();
     private final ControllerProduct controllerProduct = new ControllerProduct();
@@ -34,7 +35,7 @@ public class FavoriteProducts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_product);
 
-        Customer customer = controllerCustomer.getSync(Firebase.getSessionId());
+        Customer customer = controllerCustomer.getSync(SessionUser.sessionId);
         customer.favoriteIds.forEach(productId -> productList.add(controllerProduct.getSync(productId)));
 
         favoriteSearchBox = findViewById(R.id.favorite_edt_search);
