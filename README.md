@@ -2,15 +2,15 @@
 
 ## Chết hết đâu rồi
 
-#### Nhóm 6 (lần 2) - Tổng nghỉ: 3
+#### Nhóm 6 (lần 2) - Tổng nghỉ: 3 (4)
 
-**Layout**: Cao
+**Layout**: Chí Cao
 
-**Program**: Hiệp, acay
+**Program**: acay
 
-**Presentation**: Hưng
+**Presentation**: Hưng???????
 
-~~Cút: Hùng, Phi, 2 thằng nữa không biết~~
+~~Rút: Hùng, Phi, Hiệp, 2 thằng nữa không biết~~
 
 ## TODO List
 ### Mục khách hàng
