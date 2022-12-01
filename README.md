@@ -41,26 +41,27 @@ Còn thêm?
 | Liệt kê danh sách loại sản phẩm?                           | Chưa xong  |
 | Liệt kê danh sách sản phẩm nổi bật                         | Chưa xong  |
 | Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Chưa làm   |
-| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa làm   |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa test  |
 Còn thêm?
 
 #### Màn hình tìm kiếm sản phẩm
-| Task                                                     | Trạng thái |
-|----------------------------------------------------------|------------|
-| Layout tìm kiếm                                          | Hoàn thành |
-| Layout ưa thích                                          | Hoàn thành |
-| Liệt kê danh sách các sản phẩm                           | Chưa làm   |
-| Khung tìm kiếm theo tên / loại sản phẩm                  | Chưa làm   |
+| Task                                                       | Trạng thái |
+|------------------------------------------------------------|------------|
+| Layout tìm kiếm                                            | Hoàn thành |
+| Layout ưa thích                                            | Hoàn thành |
+| Liệt kê danh sách các sản phẩm                             | Chưa làm   |
+| Khung tìm kiếm theo tên / loại sản phẩm                    | Chưa làm   |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa test  |
 Còn thêm?
 
 #### Màn hình thông tin sản phẩm
 | Task                           | Trạng thái |
 |--------------------------------|------------|
-| Layout thông tin sản phẩm      | Chưa làm   |
+| Layout thông tin sản phẩm      | Hoàn thành |
 | Layout thông tin loại sản phẩm | Không rõ?  |
-| Hiển thị thông tin sản phẩm    | Chưa làm   |
-| Nút chọn thêm vào mục ưa thích | Chưa làm   |
-| Nút đặt mua sản phẩm           | Chưa làm   |
+| Hiển thị thông tin sản phẩm    | Chưa test  |
+| Nút chọn thêm vào mục ưa thích | Chưa test  |
+| Nút đặt mua sản phẩm           | Chưa test  |
 Còn thêm?
 
 #### Màn hình giỏ hàng
@@ -68,23 +69,23 @@ Còn thêm?
 |----------------------------------------------------|------------|
 | Layout giỏ hàng                                    | Chưa làm   |
 | Layout cổng thanh toán                             | Chưa làm   |
-| Layout xác nhận thanh toán                         | Chưa làm   |
+| Layout xác nhận thanh toán                         | Hoàn thành |
 | Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa làm   |
 | Đặt mua và thanh toán (giả)                        | Chưa làm   |
 Còn thêm?
 
 #### Màn hình quản lý tài khoản
-| Task                                                                    | Trạng thái  |
-|-------------------------------------------------------------------------|-------------|
-| Layout thông tin người dùng                                             | Hoàn thành* |
-| Layout chỉnh sửa thông tin                                              | Hoàn thành* |
-| Layout quên mật khẩu / OTP                                              | Hoàn thành  |
-| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Chưa test   |
-| Xem và thay đổi thông tin cá nhân                                       | Chưa test   |
-| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa làm    |
-| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa xong   |
-| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm    |
-| Đăng xuất                                                               | Chưa test   |
+| Task                                                                    | Trạng thái |
+|-------------------------------------------------------------------------|------------|
+| Layout thông tin người dùng                                             | Hoàn thành |
+| Layout chỉnh sửa thông tin                                              | Hoàn thành |
+| Layout quên mật khẩu / OTP                                              | Hoàn thành |
+| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Chưa test  |
+| Xem và thay đổi thông tin cá nhân                                       | Chưa test  |
+| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa test  |
+| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa xong  |
+| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm   |
+| Đăng xuất                                                               | Chưa test  |
 Còn thêm?
 
 #### Màn hình chat người dùng

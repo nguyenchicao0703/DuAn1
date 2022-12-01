@@ -2,10 +2,12 @@ package com.fpoly.project1.activity.product
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.firebase.SessionUser
@@ -28,14 +30,16 @@ class ProductDetails : AppCompatActivity() {
         }
 
         // bindings
+        findViewById<ImageView>(R.id.details_iv_back).setOnClickListener { finish() }
+
         findViewById<ImageView>(R.id.details_iv_product).let {
             Glide.with(this).load(product.thumbnails?.get(0)).into(it)
         }
         findViewById<TextView>(R.id.details_txt_name_product).text = product.name
-        findViewById<TextView>(R.id.details_txt_amount).text = product.price
+        findViewById<TextView>(R.id.details_txt_price).text = product.price
         findViewById<TextView>(R.id.details_txt_description).text = product.description
         findViewById<ImageView>(R.id.details_iv_favourite).setOnClickListener {
-            var isFavorite = false
+            val isFavorite: Boolean
             val currentFavoriteList = customer.favoriteIds
             val replicaFavoriteList = customer.favoriteIds?.toMutableList() ?: ArrayList()
 
@@ -59,6 +63,22 @@ class ProductDetails : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Failed to edit favorite status", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        val cartAmountView = findViewById<TextView>(R.id.details_txt_amount)
+        findViewById<AppCompatButton>(R.id.details_btn_add).setOnClickListener {
+            cartAmountView.text = (cartAmountView.text.toString().toInt() + 1).toString()
+        }
+        findViewById<AppCompatButton>(R.id.details_btn_minimize).setOnClickListener {
+            val cartAmountNumber = cartAmountView.text.toString().toInt()
+
+            cartAmountView.text =
+                if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
+        }
+        findViewById<Button>(R.id.details_btn_add_to_cart).setOnClickListener {
+            SessionUser.cart.add(Pair(product.__id, cartAmountView.text.toString().toInt()))
+
+            Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show()
         }
     }
 }

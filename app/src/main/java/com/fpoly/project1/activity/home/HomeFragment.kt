@@ -32,11 +32,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val menuView =
             requireActivity().findViewById<RecyclerView>(R.id.home_recyclerView_product_menu)
-        menuView.adapter = MenuAdapter(requireContext(), controllerProduct.getAllSync()!!)
+        menuView.adapter = MenuAdapter(requireContext(), controllerProduct.getAllSync()!!.take(10))
 
         // TODO implement featured products by purchase amounts for past week (or a period of time)
         val featuredView =
             requireActivity().findViewById<RecyclerView>(R.id.home_recyclerView_product_featured)
-        featuredView.adapter = FeaturedAdapter(requireContext(), controllerProduct.getAllSync()!!)
+        featuredView.adapter = FeaturedAdapter(requireContext(), controllerProduct.getAllSync()!!.take(10))
     }
 }

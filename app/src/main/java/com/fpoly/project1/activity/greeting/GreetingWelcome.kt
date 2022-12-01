@@ -9,14 +9,14 @@ import com.facebook.AccessToken
 import com.facebook.Profile
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
-import com.fpoly.project1.activity.authentication.AuthLoginActivity
+import com.fpoly.project1.activity.authentication.AuthLogin
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
 import java.util.stream.Collectors
 
-class WelcomeActivity : AppCompatActivity() {
+class GreetingWelcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hello_screen)
@@ -47,14 +47,14 @@ class WelcomeActivity : AppCompatActivity() {
                         )
 
                         // send to main screen
-                        Intent(this@WelcomeActivity, MainActivity::class.java)
+                        Intent(this@GreetingWelcome, MainActivity::class.java)
                     } else {
                         // send to login screen
-                        Intent(this@WelcomeActivity, AuthLoginActivity::class.java)
+                        Intent(this@GreetingWelcome, AuthLogin::class.java)
                     }
                 } else {
                     // send to introduction screen
-                    Intent(this@WelcomeActivity, IntroduceActivity::class.java)
+                    Intent(this@GreetingWelcome, GreetingIntroduction::class.java)
                 }
             startActivity(intent)
             finish()

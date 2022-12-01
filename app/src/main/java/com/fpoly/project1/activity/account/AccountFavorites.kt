@@ -26,7 +26,7 @@ class AccountFavorites : AppCompatActivity() {
 
         val customer = controllerCustomer.getSync(SessionUser.sessionId)
         customer?.favoriteIds?.forEach { productId: String? ->
-            productList.add(controllerProduct.getSync(productId))
+            productList.add(controllerProduct.getSync(productId)!!)
         }
 
         favoriteSearchBox = findViewById(R.id.favorite_edt_search)

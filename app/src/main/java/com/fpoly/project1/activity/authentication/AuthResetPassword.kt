@@ -46,7 +46,7 @@ class AuthResetPassword : AppCompatActivity() {
                             startActivity(
                                 Intent(
                                     this@AuthResetPassword,
-                                    AuthLoginActivity::class.java
+                                    AuthLogin::class.java
                                 )
                             )
                             finish()

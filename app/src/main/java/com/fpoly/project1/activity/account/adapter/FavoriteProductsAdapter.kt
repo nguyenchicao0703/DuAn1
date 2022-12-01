@@ -1,6 +1,8 @@
 package com.fpoly.project1.activity.account.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
+import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.controller.ControllerProductCategory
 import com.fpoly.project1.firebase.model.Customer
@@ -49,7 +52,15 @@ class FavoriteProductsAdapter(
                     product.categoryId
                 )
             }[0].name
-        holder.itemView.setOnClickListener { TODO("Send to detailed activity") }
+        holder.itemView.setOnClickListener {
+            val bundleData = Bundle()
+            bundleData.putString("id", product.__id)
+
+            val intentData = Intent(context, ProductDetails::class.java)
+            intentData.putExtras(bundleData)
+
+            context.startActivity(intentData)
+        }
         holder.favoriteStatus.setOnClickListener {
             productList.removeAt(position)
 

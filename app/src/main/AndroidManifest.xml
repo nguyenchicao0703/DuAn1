@@ -42,7 +42,7 @@
 
         <!-- Activities -->
         <activity
-            android:name=".activity.greeting.WelcomeActivity"
+            android:name=".activity.greeting.GreetingWelcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,16 +51,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.greeting.IntroduceActivity"
+            android:name=".activity.greeting.GreetingIntroduction"
             android:exported="true" />
         <activity
-            android:name=".activity.authentication.AuthLoginActivity"
+            android:name=".activity.authentication.AuthLogin"
             android:exported="true" />
         <activity
-            android:name=".activity.authentication.AuthRegisterActivity"
+            android:name=".activity.authentication.AuthRegister"
             android:exported="true" />
         <activity
-            android:name=".activity.authentication.AuthFillBioActivity"
+            android:name=".activity.authentication.AuthFillBio"
             android:exported="true" />
         <activity
             android:name=".activity.MainActivity"

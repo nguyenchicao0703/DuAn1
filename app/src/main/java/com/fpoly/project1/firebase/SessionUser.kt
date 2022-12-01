@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Tasks
 
 object SessionUser {
     var sessionId: String? = null
+    val cart: MutableList<Pair<String, Int>> = ArrayList()
 
     fun setId(id: String?) {
         sessionId = id

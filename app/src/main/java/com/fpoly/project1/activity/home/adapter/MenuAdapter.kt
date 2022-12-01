@@ -1,6 +1,8 @@
 package com.fpoly.project1.activity.home.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
+import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.controller.ControllerProductCategory
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
@@ -33,7 +36,15 @@ class MenuAdapter(private val context: Context, private val products: List<Produ
         holder.productType.text = categories.filter { productCategory: ProductCategory ->
             productCategory.__id.equals(product.categoryId)
         }[0].name
-        holder.itemView.setOnClickListener { TODO("Switch to detailed view") }
+        holder.itemView.setOnClickListener {
+            val bundleData = Bundle()
+            bundleData.putString("id", product.__id)
+
+            val intentData = Intent(context, ProductDetails::class.java)
+            intentData.putExtras(bundleData)
+
+            context.startActivity(intentData)
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

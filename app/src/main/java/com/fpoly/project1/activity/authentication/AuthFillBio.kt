@@ -14,7 +14,7 @@ import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
 
-class AuthFillBioActivity : AppCompatActivity() {
+class AuthFillBio : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

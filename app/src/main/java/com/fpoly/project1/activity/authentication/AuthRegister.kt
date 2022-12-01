@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fpoly.project1.R
 import com.google.firebase.auth.FirebaseAuth
 
-class AuthRegisterActivity : AppCompatActivity() {
+class AuthRegister : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -20,7 +20,7 @@ class AuthRegisterActivity : AppCompatActivity() {
         val inputPasswordConfirm = findViewById<EditText>(R.id.register_edt_confirm_password)
 
         findViewById<TextView>(R.id.register_txt_signIn).setOnClickListener {
-            startActivity(Intent(this@AuthRegisterActivity, AuthLoginActivity::class.java))
+            startActivity(Intent(this@AuthRegister, AuthLogin::class.java))
             finish()
         }
 
@@ -52,13 +52,13 @@ class AuthRegisterActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             startActivity(
                                 Intent(
-                                    this@AuthRegisterActivity,
-                                    AuthFillBioActivity::class.java
+                                    this@AuthRegister,
+                                    AuthFillBio::class.java
                                 ), null
                             )
                         } else {
                             Toast.makeText(
-                                this@AuthRegisterActivity,
+                                this@AuthRegister,
                                 "Failed to register. Error: " + task.exception!!.message,
                                 Toast.LENGTH_SHORT
                             ).show()

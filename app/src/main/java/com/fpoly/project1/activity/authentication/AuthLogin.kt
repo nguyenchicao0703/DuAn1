@@ -31,7 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import org.json.JSONException
 import org.json.JSONObject
 
-class AuthLoginActivity : AppCompatActivity() {
+class AuthLogin : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
     private val firebaseAuth = FirebaseAuth.getInstance()
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -51,7 +51,7 @@ class AuthLoginActivity : AppCompatActivity() {
 
         // switching between login and signup btn
         findViewById<TextView>(R.id.auth_tv_switch).setOnClickListener {
-            startActivity(Intent(this, AuthRegisterActivity::class.java))
+            startActivity(Intent(this, AuthRegister::class.java))
             finish()
         }
 
@@ -106,7 +106,7 @@ class AuthLoginActivity : AppCompatActivity() {
 
                 override fun onCancel() {
                     Toast.makeText(
-                        this@AuthLoginActivity,
+                        this@AuthLogin,
                         "User cancelled action",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -114,7 +114,7 @@ class AuthLoginActivity : AppCompatActivity() {
 
                 override fun onError(error: FacebookException) {
                     Toast.makeText(
-                        this@AuthLoginActivity,
+                        this@AuthLogin,
                         "Something went wrong",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -156,7 +156,7 @@ class AuthLoginActivity : AppCompatActivity() {
                 )
                 .addOnCompleteListener { task -> googleCompleteListener(task) }
         } catch (apiException: ApiException) {
-            Toast.makeText(this@AuthLoginActivity, "Something went wrong", Toast.LENGTH_SHORT)
+            Toast.makeText(this@AuthLogin, "Something went wrong", Toast.LENGTH_SHORT)
                 .show()
             apiException.printStackTrace()
         }
@@ -184,12 +184,12 @@ class AuthLoginActivity : AppCompatActivity() {
 
             // if there isn't any matching user, switch to fill bio activity
             if (matchingCustomer.isEmpty()) {
-                startActivity(Intent(this, AuthFillBioActivity::class.java))
+                startActivity(Intent(this, AuthFillBio::class.java))
             } else {
                 // if user is already exist
                 Log.i("LoginActivity::Google", "Got account from Firebase")
                 SessionUser.setId((matchingCustomer[0] as Customer).__id)
-                startActivity(Intent(this@AuthLoginActivity, MainActivity::class.java))
+                startActivity(Intent(this@AuthLogin, MainActivity::class.java))
             }
         } else {
             task.exception?.printStackTrace()
@@ -233,21 +233,21 @@ class AuthLoginActivity : AppCompatActivity() {
                                 .toArray()
 
                             if (matchingCustomer.isEmpty()) {
-                                startActivity(Intent(this, AuthFillBioActivity::class.java))
+                                startActivity(Intent(this, AuthFillBio::class.java))
                             } else {
                                 // if user is already exist
                                 Log.i("LoginActivity::Facebook", "Got account from Firebase")
                                 SessionUser.setId((matchingCustomer[0] as Customer).__id)
                                 startActivity(
                                     Intent(
-                                        this@AuthLoginActivity,
+                                        this@AuthLogin,
                                         MainActivity::class.java
                                     )
                                 )
                             }
                         } catch (e: JSONException) {
                             Toast.makeText(
-                                this@AuthLoginActivity,
+                                this@AuthLogin,
                                 "Something went wrong",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -261,7 +261,7 @@ class AuthLoginActivity : AppCompatActivity() {
                     request.executeAsync()
                 } else {
                     Toast.makeText(
-                        this@AuthLoginActivity,
+                        this@AuthLogin,
                         "Something went wrong",
                         Toast.LENGTH_SHORT
                     ).show()

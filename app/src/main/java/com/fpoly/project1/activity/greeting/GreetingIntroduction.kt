@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.fpoly.project1.R
-import com.fpoly.project1.activity.authentication.AuthLoginActivity
+import com.fpoly.project1.activity.authentication.AuthLogin
 
-class IntroduceActivity : AppCompatActivity() {
+class GreetingIntroduction : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_introduce)
@@ -23,8 +23,8 @@ class IntroduceActivity : AppCompatActivity() {
             .setOnClickListener {
                 startActivity(
                     Intent(
-                        this@IntroduceActivity,
-                        AuthLoginActivity::class.java
+                        this@GreetingIntroduction,
+                        AuthLogin::class.java
                     )
                 )
             }
