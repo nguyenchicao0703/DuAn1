@@ -1,6 +1,6 @@
 package com.fpoly.project1.firebase.model
 
-class Product(
+data class Product(
 	var __id: String,
 	val sellerId: String? = null,
 	val categoryId: String? = null,

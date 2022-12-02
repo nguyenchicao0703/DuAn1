@@ -1,6 +1,6 @@
 package com.fpoly.project1.firebase.model
 
-class Order(
+data class Order(
 	var __id: String,
 	val customerId: String,
 	val date: String,
