@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 class AuthRegister : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.auth_register)
 
         val inputEmail = findViewById<EditText>(R.id.register_edt_email)
         val inputPassword = findViewById<EditText>(R.id.register_edt_password)

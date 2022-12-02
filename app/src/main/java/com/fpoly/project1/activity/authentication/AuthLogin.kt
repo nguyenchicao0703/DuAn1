@@ -44,7 +44,7 @@ class AuthLogin : AppCompatActivity() {
         Companion.resources = resources
 
         // proceed with the activity
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.auth_login)
         val window = this.window
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
@@ -68,7 +68,7 @@ class AuthLogin : AppCompatActivity() {
 
         // login via google button
         findViewById<Button>(R.id.auth_btn_google).setOnClickListener {
-            startActivityForResult(googleSignInClient.signInIntent, RequestCode.GOOGLE_SIGNIN)
+	        startActivityForResult(googleSignInClient.signInIntent, RequestCode.GOOGLE_SIGN_IN)
         }
 
         // login via email and password
@@ -137,7 +137,7 @@ class AuthLogin : AppCompatActivity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
         // google auth
-        if (requestCode != RequestCode.GOOGLE_SIGNIN) return
+	    if (requestCode != RequestCode.GOOGLE_SIGN_IN) return
         try {
             val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(
                 ApiException::class.java

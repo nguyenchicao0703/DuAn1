@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.fpoly.project1.R
-import com.fpoly.project1.activity.authenticationimport.AuthForgotVerifyOTP
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +18,7 @@ class AuthForgotPassword : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgot_password)
+        setContentView(R.layout.auth_forgot_pwd)
 
         // get email data
         val requestData = intent.extras

@@ -10,7 +10,7 @@ import com.fpoly.project1.activity.authentication.AuthLogin
 class GreetingIntroduction : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_introduce)
+        setContentView(R.layout.welcome_introduction)
 
         // set as already seen introduction
         getSharedPreferences("firstLaunch", MODE_PRIVATE).edit().putBoolean("seen", true).apply()

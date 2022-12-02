@@ -50,7 +50,7 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
     private var timerObject: Timer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgot_password_otp_activity)
+        setContentView(R.layout.auth_forgot_pwd_otp)
 
         // check if activity was launched correctly
         val requestPhoneNumber = intent.extras!!

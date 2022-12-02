@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -21,7 +20,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/details_iv_product"
+                android:id="@+id/userPage_iv_product"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:src="@mipmap/iv_menu_hamburger_1"
@@ -31,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/details_iv_back"
+                android:id="@+id/userPage_iv_back"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="14dp"
@@ -39,9 +38,9 @@
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            
+
             <TextView
-                android:id="@+id/details_txt_name_product"
+                android:id="@+id/userPage_txt_name_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -52,10 +51,10 @@
                 android:textSize="35dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_iv_product" />
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <TextView
-                android:id="@+id/details_txt_price"
+                android:id="@+id/userPage_txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -65,7 +64,7 @@
                 android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_iv_product" />
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -73,10 +72,10 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_txt_price">
+                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_price">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/details_btn_minimize"
+                    android:id="@+id/userPage_btn_minimize"
                     android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
@@ -89,7 +88,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/details_txt_amount"
+                    android:id="@+id/userPage_txt_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -99,12 +98,12 @@
                     android:textColor="@color/black"
                     android:textSize="22dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/details_btn_add"
-                    app:layout_constraintStart_toEndOf="@+id/details_btn_minimize"
+                    app:layout_constraintEnd_toStartOf="@+id/userPage_btn_add"
+                    app:layout_constraintStart_toEndOf="@+id/userPage_btn_minimize"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/details_btn_add"
+                    android:id="@+id/userPage_btn_add"
                     android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
@@ -118,7 +117,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/details_iv_favourite"
+                android:id="@+id/userPage_iv_favourite"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="16dp"
@@ -126,11 +125,11 @@
                 android:background="@drawable/custom_forgotpassword_iv_chat"
                 android:padding="10dp"
                 android:src="@drawable/ic_heart_details"
-                app:layout_constraintStart_toEndOf="@+id/details_iv_location"
-                app:layout_constraintTop_toBottomOf="@+id/details_iv_product" />
+                app:layout_constraintStart_toEndOf="@+id/userPage_iv_location"
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <ImageView
-                android:id="@+id/details_iv_location"
+                android:id="@+id/userPage_iv_location"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="16dp"
@@ -139,15 +138,50 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_location"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_iv_product" />
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userPage_iv_avata"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="80dp"
+                android:src="@mipmap/iv_avt_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_name_product" />
 
             <TextView
-                android:id="@+id/details_txt_description"
+                android:id="@+id/userPage_txt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="80dp"
+                android:text="James"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avata"
+                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_name_product" />
+
+            <TextView
+                android:id="@+id/userPage_txt_user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="3dp"
+                android:text="nguyenchicao3007@gmail.com"
+                android:textColor="#5A5A5A"
+                android:textSize="15dp"
+                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avata"
+                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_user_name" />
+
+            <TextView
+                android:id="@+id/userPage_txt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="92dp"
                 android:layout_marginRight="24dp"
+                android:layout_marginTop="25dp"
                 android:lineHeight="23dp"
                 android:text="Yummie and lexat original salad made directly by our professional chef. Consists of a variety of selected quality vegetables and fruits:
                             \n\n•   Kale
@@ -161,28 +195,79 @@
                 android:textSize="17dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_txt_name_product" />
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_avata" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/details_btn_add_to_cart"
-                android:layout_width="360dp"
-                android:layout_height="51dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/custom_login_btn"
-                android:text="Add to cart"
-                android:drawableEnd="@drawable/ic_order_history"
-                android:paddingStart="110dp"
-                android:paddingRight="110dp"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18dp"
+            <TextView
+                android:id="@+id/userPage_users_txt_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Product"
+                android:textColor="#E4454E"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userPage_users_recyclerView_product"
+                android:layout_width="409dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="70dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_txt_description" />
-
+                app:layout_constraintTop_toBottomOf="@id/userPage_users_txt_product" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/userPage_users_btn_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#E4454E"
+            android:drawableEnd="@drawable/ic_chat_now"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Chat now"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/userPage_users_btn_cart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#E4454E"
+            android:drawableEnd="@drawable/ic_add_cart"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Add to cart"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

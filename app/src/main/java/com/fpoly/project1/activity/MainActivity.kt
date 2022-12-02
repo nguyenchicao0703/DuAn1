@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NonConstantResourceId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.__main)
         viewPager = findViewById(R.id.viewPager)
         viewPager.adapter = PagerAdapter(supportFragmentManager, 4)
 

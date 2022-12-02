@@ -46,7 +46,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/seach_constraint_search"
+                android:id="@+id/search_constraint_search"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
@@ -265,10 +265,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seach_constraint_search"
+                app:layout_constraintTop_toBottomOf="@+id/search_constraint_search"
                 tools:itemCount="2"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recycler_featured" />
+                tools:listitem="@layout/item_recycler_menu" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/search_btn_search"

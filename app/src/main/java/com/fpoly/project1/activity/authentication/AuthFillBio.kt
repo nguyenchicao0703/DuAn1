@@ -18,7 +18,7 @@ class AuthFillBio : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_profile)
+        setContentView(R.layout.auth_register_fill_bio)
 
         val inputFullName = findViewById<EditText>(R.id.registerProfile_edt_fullName)
         val inputBirthDate = findViewById<EditText>(R.id.registerProfile_edt_date)

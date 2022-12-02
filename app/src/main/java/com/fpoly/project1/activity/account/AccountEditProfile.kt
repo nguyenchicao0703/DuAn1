@@ -56,7 +56,7 @@ class AccountEditProfile : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_edit_profile)
+        setContentView(R.layout.account_profile_edit)
 
         // get account info
         val account = controllerCustomer.getSync(SessionUser.sessionId)!!

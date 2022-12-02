@@ -19,7 +19,7 @@ import java.util.stream.Collectors
 class GreetingWelcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hello_screen)
+        setContentView(R.layout.welcome_splash)
 
         window.setBackgroundDrawable(resources.getDrawable(R.mipmap.splash))
         window.statusBarColor = resources.getColor(android.R.color.white)

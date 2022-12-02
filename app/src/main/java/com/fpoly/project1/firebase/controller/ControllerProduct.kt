@@ -12,13 +12,13 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         return try {
             if (!update) {
                 rowReference = tableReference.push()
-                value.__id = rowReference.key
+	            value.__id = rowReference.key!!
                 Tasks.await(
-                    Firebase.database.child(table).child(value.__id!!)
+	                Firebase.database.child(table).child(value.__id)
                         .setValue(value)
                 )
             } else {
-                rowReference = tableReference.child(value.__id!!)
+	            rowReference = tableReference.child(value.__id)
                 Tasks.await(rowReference.setValue(value))
             }
             true

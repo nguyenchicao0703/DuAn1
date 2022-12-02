@@ -14,7 +14,6 @@ import com.fpoly.project1.firebase.controller.ControllerProduct
 import java.util.*
 
 class ProductSearch : AppCompatActivity() {
-	private var searchTimer: Timer? = null
 	private val products = ControllerProduct().getAllSync()!!
 	private lateinit var productRecycler: RecyclerView
 	private lateinit var productSearchAdapter: ProductSearchAdapter
@@ -30,6 +29,8 @@ class ProductSearch : AppCompatActivity() {
 
 		findViewById<ImageView>(R.id.search_iv_back).setOnClickListener { finish() }
 		findViewById<EditText>(R.id.search_edt_search).let {
+			var searchTimer: Timer? = null
+
 			it.addTextChangedListener(
 				object : TextWatcher {
 					override fun beforeTextChanged(
