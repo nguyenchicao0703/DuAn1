@@ -20,7 +20,7 @@ class ProductSearch : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
 		super.onCreate(savedInstanceState, persistentState)
-		setContentView(R.layout.layout_search)
+		setContentView(R.layout.product_search)
 
 		// bindings
 		productSearchAdapter = ProductSearchAdapter(this, products)

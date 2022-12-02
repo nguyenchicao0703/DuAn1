@@ -8,6 +8,6 @@ import com.fpoly.project1.R
 class ChatView : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
 		super.onCreate(savedInstanceState, persistentState)
-		setContentView(R.layout.activity_chat)
+		setContentView(R.layout.chat_session)
 	}
 }
