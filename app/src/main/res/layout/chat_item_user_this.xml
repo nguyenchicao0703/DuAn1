@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/item_iv_chat_sender"
+        android:id="@+id/item_iv_chat"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
@@ -28,11 +28,11 @@
         android:paddingTop="5dp"
         android:paddingRight="15dp"
         android:paddingBottom="5dp"
-        app:layout_constraintEnd_toStartOf="@+id/item_iv_chat_sender"
+        app:layout_constraintEnd_toStartOf="@+id/item_iv_chat"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/item_txt_chat_receiver"
+            android:id="@+id/item_txt_chat_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -42,7 +42,7 @@
             android:textSize="17dp" />
 
         <TextView
-            android:id="@+id/item_txt_chat_time_receiver"
+            android:id="@+id/item_txt_chat_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

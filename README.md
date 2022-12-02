@@ -2,15 +2,15 @@
 
 ## Chết hết đâu rồi
 
-#### Nhóm 6 (lần 2) - Tổng nghỉ: 3 (4)
+#### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 
 **Layout**: Chí Cao
 
-**Program**: acay
+**Program**: acay, Phi*
 
-**Presentation**: Hưng???????
+**Presentation**: Hưng*
 
-~~Rút: Hùng, Phi, Hiệp, 2 thằng nữa không biết~~
+~~Rút: Hùng, Hiệp, 2 thằng nữa không biết~~
 
 ## TODO List
 ### Mục khách hàng
@@ -40,17 +40,18 @@ Còn thêm?
 | Layout homepage                                            | Hoàn thành |
 | Liệt kê danh sách loại sản phẩm?                           | Chưa xong  |
 | Liệt kê danh sách sản phẩm nổi bật                         | Chưa xong  |
-| Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Chưa làm   |
+| Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Chưa test  |
 | Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa test  |
 Còn thêm?
 
 #### Màn hình tìm kiếm sản phẩm
+
 | Task                                                       | Trạng thái |
 |------------------------------------------------------------|------------|
 | Layout tìm kiếm                                            | Hoàn thành |
 | Layout ưa thích                                            | Hoàn thành |
-| Liệt kê danh sách các sản phẩm                             | Chưa làm   |
-| Khung tìm kiếm theo tên / loại sản phẩm                    | Chưa làm   |
+| Liệt kê danh sách các sản phẩm                             | Chưa test  |
+| Khung tìm kiếm theo tên / loại sản phẩm                    | Chưa test  |
 | Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Chưa test  |
 Còn thêm?
 
@@ -65,13 +66,14 @@ Còn thêm?
 Còn thêm?
 
 #### Màn hình giỏ hàng
+
 | Task                                               | Trạng thái |
 |----------------------------------------------------|------------|
-| Layout giỏ hàng                                    | Chưa làm   |
-| Layout cổng thanh toán                             | Chưa làm   |
+| Layout giỏ hàng                                    | Hoàn thành |
+| Layout cổng thanh toán                             | Bỏ qua     |
 | Layout xác nhận thanh toán                         | Hoàn thành |
-| Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa làm   |
-| Đặt mua và thanh toán (giả)                        | Chưa làm   |
+| Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa test  |
+| Đặt mua và thanh toán (giả)                        | Chưa test  |
 Còn thêm?
 
 #### Màn hình quản lý tài khoản
@@ -84,25 +86,41 @@ Còn thêm?
 | Xem và thay đổi thông tin cá nhân                                       | Chưa test  |
 | Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Chưa test  |
 | Xem những hoá đơn đã hoàn thành trước đó                                | Chưa xong  |
-| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa làm   |
+| Liên kết tài khoản Google / Facebook (nếu không có)                     | Chưa xong  |
 | Đăng xuất                                                               | Chưa test  |
+
 Còn thêm?
 
 #### Màn hình chat người dùng
-- Layout lịch sử chat - xong
-- Layout chat 2 người - cần hoàn chỉnh
-- Chat function - chưa làm
+
+| Task                          | Trạng thái |
+|-------------------------------|------------|
+| Layout lịch sử chat           | Hoàn thành |
+| Layout chat với người dùng    | Hoàn thành |
+| Chức năng chat với người dùng | Chưa test  |
+
+Còn thêm?
+
+#### Màn hình thông tin người dùng
+
+| Task                                | Trạng thái |
+|-------------------------------------|------------|
+| Layout thông tin người dùng         | Hoàn thành |
+| Nút chuyển sang chat với người dùng | Chưa test  |
+
+Còn thêm?
 
 #### Cần thêm
-- Layout view người dùng khác (như view product) (có kèm theo nút chat với người dùng, liệt kê danh sách sản phẩm của người dùng này)
-- ...
+
+- ... chưa biết
 
 ### Các chức năng khác sẽ có hoặc không
+
 - Giao diện người bán
 - Giao diện người giao hàng
 - Live chat với người bán / người giao (phải có app người bán / người giao)
-Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể bán và mua cùng lúc
-
+  Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể bán và
+  mua cùng lúc
 
 ## Chú ý
 - Sử dụng Tiếng Anh (sớm sau gì tất cả code đều làm bằng tiếng Anh cả thôi)

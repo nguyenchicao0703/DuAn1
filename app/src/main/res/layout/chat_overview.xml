@@ -57,7 +57,7 @@
             android:layout_marginTop="24dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            tools:listitem="@layout/item_recycler_chat"
+            tools:listitem="@layout/chat_item_selector"
             android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

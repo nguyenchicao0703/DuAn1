@@ -57,9 +57,9 @@ abstract class ControllerBase<T>(protected val table: String) {
 
     // Success listener
     abstract class SuccessListener {
-        fun run() {}
-        fun run(unused: Any?) {}
-        fun run(dataSnapshot: DataSnapshot?) {}
+        abstract fun run()
+        abstract fun run(unused: Any?)
+        abstract fun run(dataSnapshot: DataSnapshot?)
     }
 
     // Failure listener

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,18 +7,16 @@
     android:elevation="15dp"
     android:padding="30dp"
     app:cardUseCompatPadding="true"
-    android:backgroundTint="@color/white"
-    >
+    android:backgroundTint="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/custom_item_chat"
-        >
+        android:background="@drawable/custom_item_chat">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/item_chat_iv_avata"
+            android:id="@+id/item_chat_iv_avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
@@ -41,7 +38,7 @@
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avata"
+            app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -54,12 +51,12 @@
             android:text="Hello, can we talk to each other?"
             android:textColor="#777777"
             android:textSize="18dp"
-            app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avata"
+            app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avatar"
             app:layout_constraintTop_toBottomOf="@+id/item_chat_txt_name" />
 
 <!--    có thể có hoặc không-->
         <TextView
-            android:id="@+id/item_chat_time"
+            android:id="@+id/item_chat_txt_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
