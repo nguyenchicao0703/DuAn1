@@ -1,8 +1,10 @@
 package com.fpoly.project1.firebase.controller
 
+import android.util.Log
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.model.Product
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.FirebaseException
 import com.google.firebase.database.DatabaseReference
 
 class ControllerProduct : ControllerBase<Product>("table_products") {
@@ -12,18 +14,18 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         return try {
             if (!update) {
                 rowReference = tableReference.push()
-	            value.__id = rowReference.key!!
+                value.id = rowReference.key!!
                 Tasks.await(
-	                Firebase.database.child(table).child(value.__id)
+                    Firebase.database.child(table).child(value.id)
                         .setValue(value)
                 )
             } else {
-	            rowReference = tableReference.child(value.__id)
+                rowReference = tableReference.child(value.id)
                 Tasks.await(rowReference.setValue(value))
             }
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while setting ${value.id}", e)
             false
         }
     }
@@ -34,6 +36,7 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun removeSync(referenceId: String?): Boolean {
@@ -45,8 +48,9 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
                     .setValue(null)
             )
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while removing $referenceId", e)
+
             false
         }
     }
@@ -56,6 +60,7 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getSync(referenceId: String?): Product? {
@@ -66,8 +71,9 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
                     .child(referenceId!!)
                     .get()
             ).getValue(Product::class.java)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting $referenceId", e)
+
             null
         }
     }
@@ -77,15 +83,18 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getAllSync(): ArrayList<Product>? {
         return try {
             val list = ArrayList<Product>()
 
-            for (dataSnapshot in Tasks.await(
+            for (
+            dataSnapshot in Tasks.await(
                 Firebase.database.child(table).get()
-            ).children) dataSnapshot.getValue(
+            ).children
+            ) dataSnapshot.getValue(
                 Product::class.java
             )?.let {
                 list.add(
@@ -94,8 +103,8 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
             }
 
             list
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting all entries", e)
 
             null
         }
@@ -105,5 +114,6 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 }

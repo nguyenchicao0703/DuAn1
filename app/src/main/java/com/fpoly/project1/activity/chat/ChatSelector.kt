@@ -15,9 +15,12 @@ class ChatSelector : AppCompatActivity() {
 
         findViewById<RecyclerView>(R.id.home_chat_recyclerView).let {
             it.adapter =
-                ChatSelectorAdapter(this, ControllerChatSession().getAllSync()!!.filter { session ->
-                    session.sendingUser == SessionUser.sessionId
-                })
+                ChatSelectorAdapter(
+                    this,
+                    ControllerChatSession().getAllSync()!!.filter { session ->
+                        session.sendingUser == SessionUser.sessionId
+                    }
+                )
         }
     }
 }

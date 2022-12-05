@@ -1,8 +1,10 @@
 package com.fpoly.project1.firebase.controller
 
+import android.util.Log
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.FirebaseException
 import com.google.firebase.database.DatabaseReference
 
 class ControllerCustomer : ControllerBase<Customer>("table_customers") {
@@ -32,18 +34,19 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
                 rowReference = tableReference.push()
 
                 // override ID
-                value.__id = rowReference.key
+                value.id = rowReference.key
                 Tasks.await(
-                    Firebase.database.child(table).child(value.__id!!)
+                    Firebase.database.child(table).child(value.id!!)
                         .setValue(value)
                 )
             } else {
-                rowReference = tableReference.child(value.__id!!)
+                rowReference = tableReference.child(value.id!!)
                 Tasks.await(rowReference.setValue(value))
             }
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while setting ${value.id}", e)
+
             false
         }
     }
@@ -54,20 +57,27 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         return try {
             val listUsers = this.getAllSync() ?: return null
             if (listUsers.stream()
-                    .anyMatch { account: Customer? -> account!!.emailAddress == value.emailAddress || account.gid == value.gid || account.fid == value.fid }
-            ) return null
+                    .anyMatch { account: Customer? ->
+                        account!!.emailAddress == value.emailAddress ||
+                                account.gid == value.gid ||
+                                account.fid == value.fid
+                    }
+            ) {
+                null
+            } else {
+                rowReference = tableReference.push()
 
-            rowReference = tableReference.push()
+                // override ID
+                value.id = rowReference.key
+                Tasks.await(
+                    Firebase.database.child(table).child(value.id!!)
+                        .setValue(value)
+                )
+                value.id
+            }
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while adding ${value.id}", e)
 
-            // override ID
-            value.__id = rowReference.key
-            Tasks.await(
-                Firebase.database.child(table).child(value.__id!!)
-                    .setValue(value)
-            )
-            value.__id
-        } catch (e: Exception) {
-            e.printStackTrace()
             null
         }
     }
@@ -78,6 +88,7 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun removeSync(referenceId: String?): Boolean {
@@ -89,8 +100,9 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
                     .setValue(null)
             )
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while removing $referenceId", e)
+
             false
         }
     }
@@ -100,6 +112,7 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getSync(referenceId: String?): Customer? {
@@ -110,8 +123,9 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
                     .child(referenceId!!)
                     .get()
             ).getValue(Customer::class.java)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting $referenceId", e)
+
             null
         }
     }
@@ -121,6 +135,7 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getAllSync(): ArrayList<Customer>? {
@@ -131,8 +146,8 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
             }
 
             list
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting all entries", e)
 
             null
         }
@@ -142,5 +157,6 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 }

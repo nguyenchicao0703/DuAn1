@@ -15,13 +15,21 @@ abstract class ControllerBase<T>(protected val table: String) {
                         .child(table)
                         .setValue(0)
                         .addOnCompleteListener { task2 ->
-                            Log.i(
-                                "Controller - $table",
-                                (if (task2.isSuccessful) "Created table" else task2.exception!!.message)!!
-                            )
+                            if (task2.isSuccessful)
+                                Log.i("${this.javaClass.simpleName} - $table", "Created table")
+                            else
+                                Log.e(
+                                    "${this.javaClass.simpleName} - $table",
+                                    "Error while creating table",
+                                    task2.exception
+                                )
                         }
                 } else {
-                    if (task.exception != null) task.exception!!.printStackTrace()
+                    Log.e(
+                        "${this.javaClass.simpleName} - $table",
+                        "Error while creating table",
+                        task.exception
+                    )
                 }
             }
     }

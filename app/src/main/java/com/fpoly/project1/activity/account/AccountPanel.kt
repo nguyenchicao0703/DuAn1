@@ -11,23 +11,22 @@ import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatSelector
-import com.fpoly.project1.activity.request_codes.RequestCode
+import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.google.firebase.auth.FirebaseAuth
 
-
 class AccountPanel : Fragment(R.layout.profile_overview) {
-	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-		super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-		if (requestCode != RequestCode.PROFILE_IMAGE_UPLOAD || resultCode != Activity.RESULT_OK) {
-			Toast.makeText(requireContext(), "User cancelled action", Toast.LENGTH_SHORT).show()
-			return
-		}
+        if (requestCode != RequestCode.PROFILE_IMAGE_UPLOAD || resultCode != Activity.RESULT_OK) {
+            Toast.makeText(requireContext(), "User cancelled action", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-		data?.data?.let { requireContext().contentResolver.openInputStream(it) }?.let {
-			Firebase.storage.child("/avatars/${SessionUser.sessionId}.jpg").putStream(it)
+        data?.data?.let { requireContext().contentResolver.openInputStream(it) }?.let {
+            Firebase.storage.child("/avatars/${SessionUser.sessionId}.jpg").putStream(it)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(requireContext(), "Updated avatar", Toast.LENGTH_SHORT)

@@ -129,19 +129,22 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
 
         // start the timer task
         timerObject = Timer()
-        timerObject!!.schedule(object : TimerTask() {
-            override fun run() {
-                if (timerSeconds > 0) {
-                    resendTxt!!.text = "Resend code in ${--timerSeconds} seconds"
-                } else {
-                    // cancel
-                    timerObject!!.cancel()
+        timerObject!!.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    if (timerSeconds > 0) {
+                        resendTxt!!.text = "Resend code in ${--timerSeconds} seconds"
+                    } else {
+                        // cancel
+                        timerObject!!.cancel()
 
-                    // set back to normal
-                    resendTxt!!.text = "Resend code"
-                    resendTxt!!.isClickable = true
+                        // set back to normal
+                        resendTxt!!.text = "Resend code"
+                        resendTxt!!.isClickable = true
+                    }
                 }
-            }
-        }, 0L, 1000L)
+            },
+            0L, 1000L
+        )
     }
 }

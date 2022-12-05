@@ -27,23 +27,28 @@ class GreetingWelcome : AppCompatActivity() {
 
         Glide.with(this).load(R.mipmap.splash).into(findViewById(R.id.welcome_iv_splash))
 
-        //delay qua man hinh cho
+        // delay qua man hinh cho
         val accessToken = AccessToken.getCurrentAccessToken()
         Handler().postDelayed({
             // check if user already launched the app once
             val intent: Intent =
                 if (getSharedPreferences("firstLaunch", MODE_PRIVATE).getBoolean("seen", false)) {
                     // check if user session is still available
-                    if (FirebaseAuth.getInstance().currentUser != null || Profile.getCurrentProfile() != null && accessToken != null && !accessToken.isExpired) {
+                    val hasFirebaseSession = FirebaseAuth.getInstance().currentUser != null
+                    val hasFacebookSession =
+                        Profile.getCurrentProfile() != null && accessToken != null && !accessToken.isExpired
+                    if (hasFirebaseSession || hasFacebookSession) {
                         // set session ID
                         SessionUser.setId(
                             ControllerCustomer().getAllSync()!!.stream()
                                 .filter { customer: Customer ->
-                                    (customer.gid.equals(
-                                        FirebaseAuth.getInstance().currentUser!!.uid
-                                    )
-                                            || customer.fid.equals(Profile.getCurrentProfile()!!.id))
-                                }.collect(Collectors.toList())[0].__id
+                                    (
+                                            customer.gid.equals(
+                                                FirebaseAuth.getInstance().currentUser!!.uid
+                                            ) ||
+                                                    customer.fid.equals(Profile.getCurrentProfile()!!.id)
+                                            )
+                                }.collect(Collectors.toList())[0].id
                         )
 
                         // send to main screen
@@ -58,6 +63,6 @@ class GreetingWelcome : AppCompatActivity() {
                 }
             startActivity(intent)
             finish()
-        }, 3000L)
+        }, 3_000L)
     }
 }

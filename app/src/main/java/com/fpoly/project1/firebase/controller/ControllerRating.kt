@@ -1,8 +1,10 @@
 package com.fpoly.project1.firebase.controller
 
+import android.util.Log
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.model.Rating
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.FirebaseException
 import com.google.firebase.database.DatabaseReference
 
 class ControllerRating : ControllerBase<Rating>("table_ratings") {
@@ -12,18 +14,18 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
         return try {
             if (!update) {
                 rowReference = tableReference.push()
-                value.__id = rowReference.key
+                value.id = rowReference.key
                 Tasks.await(
-                    Firebase.database.child(table).child(value.__id!!)
+                    Firebase.database.child(table).child(value.id!!)
                         .setValue(value)
                 )
             } else {
-                rowReference = tableReference.child(value.__id!!)
+                rowReference = tableReference.child(value.id!!)
                 Tasks.await(rowReference.setValue(value))
             }
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while creating table", e)
             false
         }
     }
@@ -34,14 +36,15 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun removeSync(referenceId: String?): Boolean {
         return try {
             Tasks.await(Firebase.database.child(table).child(referenceId!!).setValue(null))
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while removing $referenceId", e)
             false
         }
     }
@@ -51,6 +54,7 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getSync(referenceId: String?): Rating? {
@@ -58,8 +62,8 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
             Tasks.await(Firebase.database.child(table).child(referenceId!!).get()).getValue(
                 Rating::class.java
             )
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting $referenceId", e)
             null
         }
     }
@@ -69,14 +73,17 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 
     override fun getAllSync(): ArrayList<Rating>? {
         return try {
             val list = ArrayList<Rating>()
-            for (dataSnapshot in Tasks.await(
+            for (
+            dataSnapshot in Tasks.await(
                 Firebase.database.child(table).get()
-            ).children) dataSnapshot.getValue(
+            ).children
+            ) dataSnapshot.getValue(
                 Rating::class.java
             )?.let {
                 list.add(
@@ -84,8 +91,8 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
                 )
             }
             list
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: FirebaseException) {
+            Log.e(this.javaClass.simpleName, "Error while getting all entries", e)
             null
         }
     }
@@ -94,5 +101,6 @@ class ControllerRating : ControllerBase<Rating>("table_ratings") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        return
     }
 }

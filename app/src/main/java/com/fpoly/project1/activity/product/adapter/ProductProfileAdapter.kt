@@ -17,58 +17,58 @@ import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 
 class ProductProfileAdapter(
-	private val context: Context,
-	private var list: List<Product>
+    private val context: Context,
+    private var list: List<Product>
 ) : RecyclerView.Adapter<ProductProfileAdapter.ViewHolder>() {
-	private val layoutInflater = LayoutInflater.from(context)
-	private val categories = ControllerProductCategory().getAllSync()
+    private val layoutInflater = LayoutInflater.from(context)
+    private val categories = ControllerProductCategory().getAllSync()
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-		ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent))
 
-	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		val product = list[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val product = list[position]
 
-		Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
+        Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
-		holder.productName.text = product.name
-		holder.productPrice.text = product.price
-		holder.productType.text =
-			categories!!.filter { productCategory: ProductCategory ->
-				productCategory.__id.equals(
-					product.categoryId
-				)
-			}[0].name
-		holder.itemView.setOnClickListener {
-			val bundleData = Bundle()
-			bundleData.putString("id", product.__id)
+        holder.productName.text = product.name
+        holder.productPrice.text = product.price
+        holder.productType.text =
+            categories!!.filter { productCategory: ProductCategory ->
+                productCategory.id.equals(
+                    product.categoryId
+                )
+            }[0].name
+        holder.itemView.setOnClickListener {
+            val bundleData = Bundle()
+            bundleData.putString("id", product.id)
 
-			val intentData = Intent(context, ProductDetails::class.java)
-			intentData.putExtras(bundleData)
+            val intentData = Intent(context, ProductDetails::class.java)
+            intentData.putExtras(bundleData)
 
-			context.startActivity(intentData)
-		}
-	}
+            context.startActivity(intentData)
+        }
+    }
 
-	override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = list.size
 
-	fun updateList(newList: List<Product>) {
-		notifyItemRangeRemoved(0, list.size)
-		this.list = newList
-		notifyItemRangeInserted(0, newList.size)
-	}
+    fun updateList(newList: List<Product>) {
+        notifyItemRangeRemoved(0, list.size)
+        this.list = newList
+        notifyItemRangeInserted(0, newList.size)
+    }
 
-	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-		var productThumbnail: ImageView
-		var productName: TextView
-		var productType: TextView
-		var productPrice: TextView
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var productThumbnail: ImageView
+        var productName: TextView
+        var productType: TextView
+        var productPrice: TextView
 
-		init {
-			productThumbnail = itemView.findViewById(R.id.item_iv_products_menu)
-			productName = itemView.findViewById(R.id.item_txt_menu_name)
-			productType = itemView.findViewById(R.id.item_txt_menu_type)
-			productPrice = itemView.findViewById(R.id.item_txt_menu_price)
-		}
-	}
+        init {
+            productThumbnail = itemView.findViewById(R.id.item_iv_products_menu)
+            productName = itemView.findViewById(R.id.item_txt_menu_name)
+            productType = itemView.findViewById(R.id.item_txt_menu_type)
+            productPrice = itemView.findViewById(R.id.item_txt_menu_price)
+        }
+    }
 }

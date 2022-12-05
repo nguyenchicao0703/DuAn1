@@ -15,7 +15,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
-import com.fpoly.project1.activity.request_codes.RequestCode
+import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
@@ -188,7 +188,7 @@ class AuthLogin : AppCompatActivity() {
             } else {
                 // if user is already exist
                 Log.i("LoginActivity::Google", "Got account from Firebase")
-                SessionUser.setId((matchingCustomer[0] as Customer).__id)
+                SessionUser.setId((matchingCustomer[0] as Customer).id)
                 startActivity(Intent(this@AuthLogin, MainActivity::class.java))
             }
         } else {
@@ -237,7 +237,7 @@ class AuthLogin : AppCompatActivity() {
                             } else {
                                 // if user is already exist
                                 Log.i("LoginActivity::Facebook", "Got account from Firebase")
-                                SessionUser.setId((matchingCustomer[0] as Customer).__id)
+                                SessionUser.setId((matchingCustomer[0] as Customer).id)
                                 startActivity(
                                     Intent(
                                         this@AuthLogin,

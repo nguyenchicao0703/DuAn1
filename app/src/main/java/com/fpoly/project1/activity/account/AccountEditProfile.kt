@@ -82,39 +82,49 @@ class AccountEditProfile : AppCompatActivity() {
         findViewById<Button>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
 
         // toggle update button
-        for (element in arrayOf(
+        for (
+        element in arrayOf(
             profileName,
             profileEmail,
             profilePhone,
             profileAddress,
             profileBirthDate
-        )) {
+        )
+        ) {
             element.setOnFocusChangeListener { _: View, _: Boolean ->
                 when (element) {
-                    profileName -> if (profileName.text.toString() == account.fullName) View.GONE else View.VISIBLE
-                    profileEmail -> if (profileEmail.text.toString() == account.emailAddress) View.GONE else View.VISIBLE
-                    profilePhone -> if (profilePhone.text.toString() == account.phoneNumber) View.GONE else View.VISIBLE
-                    profileAddress -> if (profileAddress.text.toString() == account.postalAddress) View.GONE else View.VISIBLE
-                    profileBirthDate -> if (profileBirthDate.text.toString() == account.birthDate) View.GONE else View.VISIBLE
+                    profileName ->
+                        if (profileName.text.toString() == account.fullName) View.GONE else View.VISIBLE
+                    profileEmail ->
+                        if (profileEmail.text.toString() == account.emailAddress) View.GONE else View.VISIBLE
+                    profilePhone ->
+                        if (profilePhone.text.toString() == account.phoneNumber) View.GONE else View.VISIBLE
+                    profileAddress ->
+                        if (profileAddress.text.toString() == account.postalAddress) View.GONE else View.VISIBLE
+                    profileBirthDate ->
+                        if (profileBirthDate.text.toString() == account.birthDate) View.GONE else View.VISIBLE
                 }
             }
         }
 
         // toggle edit text
-        for (element in arrayOf(
+        for (
+        element in arrayOf(
             profileNameToggle,
             profileEmailToggle,
             profilePhoneToggle,
             profileAddressToggle,
             profileBirthDateToggle
-        )) {
+        )
+        ) {
             element.setOnClickListener {
                 when (element) {
                     profileNameToggle -> profileName.isEnabled = !profileName.isEnabled
                     profileEmailToggle -> profileEmail.isEnabled = !profileEmail.isEnabled
                     profilePhoneToggle -> profilePhone.isEnabled = !profilePhone.isEnabled
                     profileAddressToggle -> profileAddress.isEnabled = !profileAddress.isEnabled
-                    profileBirthDateToggle -> profileBirthDate.isEnabled = !profileBirthDate.isEnabled
+                    profileBirthDateToggle -> profileBirthDate.isEnabled =
+                        !profileBirthDate.isEnabled
                 }
             }
         }
@@ -126,17 +136,18 @@ class AccountEditProfile : AppCompatActivity() {
         buttonUpdateProfile.setOnClickListener {
             if (controllerCustomer.setSync(
                     Customer(
-                        account.__id,  // keep, reference ID
-                        account.gid,  // keep
-                        account.fid,  // keep
-                        account.avatarUrl,  // keep
-                        profileName.text.toString(),  // override
-                        profileBirthDate.text.toString(),  // override
-                        profileEmail.text.toString(),  // override
-                        profilePhone.text.toString(),  // override
-                        profileAddress.text.toString(),  // override
+                        account.id, // keep, reference ID
+                        account.gid, // keep
+                        account.fid, // keep
+                        account.avatarUrl, // keep
+                        profileName.text.toString(), // override
+                        profileBirthDate.text.toString(), // override
+                        profileEmail.text.toString(), // override
+                        profilePhone.text.toString(), // override
+                        profileAddress.text.toString(), // override
                         account.favoriteIds // keep
-                    ), true
+                    ),
+                    true
                 )
             ) {
                 Toast.makeText(this, "Successfully updated profile", Toast.LENGTH_SHORT).show()

@@ -12,19 +12,20 @@ import com.google.firebase.auth.FirebaseAuth
 class AuthResetPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reset_password)
+        setContentView(R.layout.account_change_pwd)
 
-        val inputPassword = findViewById<EditText>(R.id.resetPassword_edt_newPass)
-        val inputPasswordConfirm = findViewById<EditText>(R.id.resetPassword_edt_confirmNewPass)
+        val inputPassword = findViewById<EditText>(R.id.changePassword_edt_newPass)
+        val inputPasswordConfirm = findViewById<EditText>(R.id.changePassword_edt_confirmNewPass)
 
-        findViewById<Button>(R.id.resetPassword_btn_save).setOnClickListener {
+        findViewById<Button>(R.id.changePassword_btn_save).setOnClickListener {
             var hasError = false
             if (inputPassword.text.toString().isEmpty()) {
                 inputPassword.error = "Field must not be empty"
                 hasError = true
             }
             if (
-                inputPasswordConfirm.text.toString().isEmpty()) {
+                inputPasswordConfirm.text.toString().isEmpty()
+            ) {
                 inputPasswordConfirm.error = "Field must not be empty"
                 hasError = true
             }

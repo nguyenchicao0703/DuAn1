@@ -15,10 +15,10 @@ object SessionUser {
         get() = try {
             Tasks.await(
                 Firebase.storage
-                    .child("/avatars/${sessionId}.jpg")
+                    .child("/avatars/$sessionId.jpg")
                     .downloadUrl
             )
-        } catch (e: Exception) {
+        } catch (_: Throwable) {
             null
         }
 }

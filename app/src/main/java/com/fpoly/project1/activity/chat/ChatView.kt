@@ -24,111 +24,115 @@ import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class ChatView : AppCompatActivity() {
-	private lateinit var messageBox: EditText
-	private lateinit var messageRecycler: RecyclerView
-	private lateinit var messageRecyclerAdapter: ChatViewAdapter
-	private var chatSession: ChatSession? = null
-	private val controllerCustomer = ControllerCustomer()
-	private val controllerChatSession = ControllerChatSession()
+    private lateinit var messageBox: EditText
+    private lateinit var messageRecycler: RecyclerView
+    private lateinit var messageRecyclerAdapter: ChatViewAdapter
+    private var chatSession: ChatSession? = null
+    private val controllerCustomer = ControllerCustomer()
+    private val controllerChatSession = ControllerChatSession()
 
-	override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-		super.onCreate(savedInstanceState, persistentState)
-		setContentView(R.layout.chat_session)
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        setContentView(R.layout.chat_session)
 
-		// get target user
-		val targetUser = controllerCustomer.getSync(intent.extras?.getString("id", null))
-		if (targetUser == null) {
-			Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
-			return
-		}
+        // get target user
+        val targetUser = controllerCustomer.getSync(intent.extras?.getString("id", null))
+        if (targetUser == null) {
+            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-		// load session
-		loadChatSession(targetUser)
+        // load session
+        loadChatSession(targetUser)
 
-		// register listener
-		registerChatListener()
+        // register listener
+        registerChatListener()
 
-		// bindings
-		findViewById<ImageView>(R.id.chat_iv_back).setOnClickListener { finish() }
-		messageBox = findViewById(R.id.chat_edt_messenger)
-		messageRecycler = findViewById(R.id.chat_recycler_content)
-		messageRecycler.let {
-			messageRecyclerAdapter = ChatViewAdapter(this, chatSession!!.messages!!)
-			it.adapter = messageRecyclerAdapter
-		}
+        // bindings
+        findViewById<ImageView>(R.id.chat_iv_back).setOnClickListener { finish() }
+        messageBox = findViewById(R.id.chat_edt_messenger)
+        messageRecycler = findViewById(R.id.chat_recycler_content)
+        messageRecycler.let {
+            messageRecyclerAdapter = ChatViewAdapter(this, chatSession!!.messages!!)
+            it.adapter = messageRecyclerAdapter
+        }
 
-		// message box handler
-		findViewById<ImageView>(R.id.chat_iv_send).setOnClickListener(messageSendListener)
-	}
+        // message box handler
+        findViewById<ImageView>(R.id.chat_iv_send).setOnClickListener(messageSendListener)
+    }
 
-	private fun loadChatSession(targetUser: Customer) {
-		// get session
-		chatSession =
-			controllerChatSession.getSync("${SessionUser.sessionId}_${targetUser.__id}")
-				?: controllerChatSession.getSync("${targetUser.__id}_${SessionUser.sessionId}")
+    private fun loadChatSession(targetUser: Customer) {
+        // get session
+        chatSession =
+            controllerChatSession.getSync("${SessionUser.sessionId}_${targetUser.id}")
+                ?: controllerChatSession.getSync("${targetUser.id}_${SessionUser.sessionId}")
 
-		// if session is null, create one
-		if (chatSession == null) {
-			chatSession = ChatSession(
-				null,
-				SessionUser.sessionId,
-				targetUser.__id,
-				mutableListOf()
-			)
-			controllerChatSession.setSync(chatSession!!, false)
-		}
-	}
+        // if session is null, create one
+        if (chatSession == null) {
+            chatSession = ChatSession(
+                null,
+                SessionUser.sessionId,
+                targetUser.id,
+                mutableListOf()
+            )
+            controllerChatSession.setSync(chatSession!!, false)
+        }
+    }
 
-	private fun registerChatListener() {
-		// value change listener
-		controllerChatSession.registerValueChangeListener(chatSession!!, object :
-			ValueEventListener {
-			override fun onDataChange(snapshot: DataSnapshot) {
-				// override current chat session
-				chatSession = snapshot.getValue(ChatSession::class.java)
+    private fun registerChatListener() {
+        // value change listener
+        controllerChatSession.registerValueChangeListener(
+            chatSession!!,
+            object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    // override current chat session
+                    chatSession = snapshot.getValue(ChatSession::class.java)
 
-				// update recycler list
-				messageRecyclerAdapter.updateList(chatSession!!.messages!!)
-			}
+                    // update recycler list
+                    messageRecyclerAdapter.updateList(chatSession!!.messages!!)
+                }
 
-			override fun onCancelled(error: DatabaseError) {
-				Log.e(this@ChatView::class.simpleName, "Failed to fetch chat messages")
-				println(error)
-			}
-		})
-	}
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(this@ChatView::class.simpleName, "Failed to fetch chat messages")
+                    println(error)
+                }
+            }
+        )
+    }
 
-	private val messageSendListener =
-		View.OnClickListener { // create new message object and add it to session
-			chatSession!!.messages!!.add(
-				ChatMessage(
-					SessionUser.sessionId,
-					messageBox.text.toString(),
-					Date().time.toString()
-				)
-			)
+    private val messageSendListener =
+        View.OnClickListener { // create new message object and add it to session
+            chatSession!!.messages!!.add(
+                ChatMessage(
+                    SessionUser.sessionId,
+                    messageBox.text.toString(),
+                    Date().time.toString()
+                )
+            )
 
-			// update the chat session asynchronously
-			controllerChatSession.setAsync(chatSession!!, true,
-				successListener = object : ControllerBase.SuccessListener() {
-					override fun run() {
-						Log.i(this@ChatView::class.simpleName, "Updated chat session")
-					}
+            // update the chat session asynchronously
+            controllerChatSession.setAsync(
+                chatSession!!, true,
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run() {
+                        Log.i(this@ChatView::class.simpleName, "Updated chat session")
+                    }
 
-					override fun run(unused: Any?) {
-						TODO("Not yet implemented")
-					}
+                    override fun run(unused: Any?) {
+                        TODO("Not yet implemented")
+                    }
 
-					override fun run(dataSnapshot: DataSnapshot?) {
-						TODO("Not yet implemented")
-					}
-				},
-				failureListener = object : ControllerBase.FailureListener() {
-					override fun run(error: Exception?) {
-						Toast.makeText(this@ChatView, "Failed to send message", Toast.LENGTH_SHORT)
-							.show()
-					}
-				}
-			)
-		}
+                    override fun run(dataSnapshot: DataSnapshot?) {
+                        TODO("Not yet implemented")
+                    }
+                },
+                failureListener = object : ControllerBase.FailureListener() {
+                    override fun run(error: Exception?) {
+                        Toast.makeText(this@ChatView, "Failed to send message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            )
+        }
 }

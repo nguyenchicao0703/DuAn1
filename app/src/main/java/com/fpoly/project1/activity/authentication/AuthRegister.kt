@@ -54,7 +54,8 @@ class AuthRegister : AppCompatActivity() {
                                 Intent(
                                     this@AuthRegister,
                                     AuthFillBio::class.java
-                                ), null
+                                ),
+                                null
                             )
                         } else {
                             Toast.makeText(

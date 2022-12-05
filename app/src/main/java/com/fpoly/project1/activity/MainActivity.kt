@@ -3,7 +3,6 @@ package com.fpoly.project1.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -14,6 +13,7 @@ import com.fpoly.project1.activity.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+    private val tabsCount = 4
     private lateinit var viewPager: ViewPager
 
     @SuppressLint("NonConstantResourceId")
@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.__main)
         viewPager = findViewById(R.id.viewPager)
-        viewPager.adapter = PagerAdapter(supportFragmentManager, 4)
+        viewPager.adapter = PagerAdapter(supportFragmentManager, tabsCount)
 
-        (findViewById<View>(R.id.home_bottom_navigation) as BottomNavigationView).setOnItemSelectedListener { item: MenuItem ->
+        findViewById<BottomNavigationView>(R.id.home_bottom_navigation).setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.mHome -> {
                     viewPager.currentItem = 0

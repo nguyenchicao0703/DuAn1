@@ -48,13 +48,13 @@ class FavoriteProductsAdapter(
         holder.productPrice.text = product.price
         holder.productType.text =
             categories!!.filter { productCategory: ProductCategory ->
-                productCategory.__id.equals(
+                productCategory.id.equals(
                     product.categoryId
                 )
             }[0].name
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
-            bundleData.putString("id", product.__id)
+            bundleData.putString("id", product.id)
 
             val intentData = Intent(context, ProductDetails::class.java)
             intentData.putExtras(bundleData)

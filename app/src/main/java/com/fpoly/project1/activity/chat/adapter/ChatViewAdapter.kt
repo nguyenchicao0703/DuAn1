@@ -16,65 +16,65 @@ import com.fpoly.project1.firebase.model.Customer
 import java.text.SimpleDateFormat
 
 class ChatViewAdapter(private val context: Context, private var list: List<ChatMessage>) :
-	RecyclerView.Adapter<ChatViewAdapter.ViewHolder>() {
-	// variables
-	private var targetUser: Customer? = null
-	private val layoutInflater = LayoutInflater.from(context)
+    RecyclerView.Adapter<ChatViewAdapter.ViewHolder>() {
+    // variables
+    private var targetUser: Customer? = null
+    private val layoutInflater = LayoutInflater.from(context)
 
-	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-		var chatAvatar: ImageView
-		var chatMessage: TextView
-		var chatDate: TextView
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var chatAvatar: ImageView
+        var chatMessage: TextView
+        var chatDate: TextView
 
-		init {
-			chatAvatar = itemView.findViewById(R.id.item_iv_chat)
-			chatMessage = itemView.findViewById(R.id.item_txt_chat_message)
-			chatDate = itemView.findViewById(R.id.item_txt_chat_time)
-		}
-	}
+        init {
+            chatAvatar = itemView.findViewById(R.id.item_iv_chat)
+            chatMessage = itemView.findViewById(R.id.item_txt_chat_message)
+            chatDate = itemView.findViewById(R.id.item_txt_chat_time)
+        }
+    }
 
-	override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = list.size
 
-	override fun getItemViewType(position: Int): Int {
-		return position % 2
-	}
+    override fun getItemViewType(position: Int): Int {
+        return position % 2
+    }
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-		when (viewType) {
-			1 -> ViewHolder(layoutInflater.inflate(R.layout.chat_item_user_this, parent))
-			else -> ViewHolder(layoutInflater.inflate(R.layout.chat_item_user_other, parent))
-		}
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        when (viewType) {
+            1 -> ViewHolder(layoutInflater.inflate(R.layout.chat_item_user_this, parent))
+            else -> ViewHolder(layoutInflater.inflate(R.layout.chat_item_user_other, parent))
+        }
 
-	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		// get view holder for corresponding message sender
-		val message = list[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // get view holder for corresponding message sender
+        val message = list[position]
 
-		// bind target user
-		if (targetUser == null)
-			targetUser = ControllerCustomer().getSync(message.senderId)
+        // bind target user
+        if (targetUser == null)
+            targetUser = ControllerCustomer().getSync(message.senderId)
 
-		// check for view type and load corresponding avatar
-		when (holder.itemViewType) {
-			1 -> {
-				// bind data
-				Glide.with(context)
-					.load(SessionUser.avatar)
-					.into(holder.chatAvatar)
-			}
-			else -> {
-				// bind data
-				Glide.with(context)
-					.load(targetUser!!.avatarUrl)
-					.into(holder.chatAvatar)
-			}
-		}
-		holder.chatMessage.text = message.messageContent
-		holder.chatDate.text = SimpleDateFormat.getDateInstance().format(message.sentDate)
-	}
+        // check for view type and load corresponding avatar
+        when (holder.itemViewType) {
+            1 -> {
+                // bind data
+                Glide.with(context)
+                    .load(SessionUser.avatar)
+                    .into(holder.chatAvatar)
+            }
+            else -> {
+                // bind data
+                Glide.with(context)
+                    .load(targetUser!!.avatarUrl)
+                    .into(holder.chatAvatar)
+            }
+        }
+        holder.chatMessage.text = message.messageContent
+        holder.chatDate.text = SimpleDateFormat.getDateInstance().format(message.sentDate)
+    }
 
-	fun updateList(newList: List<ChatMessage>) {
-		notifyItemRangeRemoved(0, list.size)
-		list = newList
-		notifyItemRangeInserted(0, newList.size)
-	}
+    fun updateList(newList: List<ChatMessage>) {
+        notifyItemRangeRemoved(0, list.size)
+        list = newList
+        notifyItemRangeInserted(0, newList.size)
+    }
 }

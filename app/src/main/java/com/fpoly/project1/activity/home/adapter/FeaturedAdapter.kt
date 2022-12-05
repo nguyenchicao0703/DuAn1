@@ -33,7 +33,7 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
         holder.productPrice.text = product.price
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
-            bundleData.putString("id", product.__id)
+            bundleData.putString("id", product.id)
 
             val intentData = Intent(context, ProductDetails::class.java)
             intentData.putExtras(bundleData)

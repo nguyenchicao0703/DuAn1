@@ -1,7 +1,7 @@
 package com.fpoly.project1.firebase.model
 
 data class Rating(
-    var __id: String? = null,
+    var id: String? = null,
     var customerId: String? = null,
     var sellerId: String? = null,
     var shipperId: String? = null,
