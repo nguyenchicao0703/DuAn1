@@ -1,5 +1,6 @@
 package com.fpoly.project1.activity.authentication
 
+import com.fpoly.project1.R
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -13,7 +14,6 @@ import androidx.core.content.ContextCompat
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.SessionUser
@@ -39,9 +39,6 @@ class AuthLogin : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // for use by Firebase
-        Companion.resources = resources
 
         // proceed with the activity
         setContentView(R.layout.auth_login)
@@ -268,9 +265,5 @@ class AuthLogin : AppCompatActivity() {
                     task.exception!!.printStackTrace()
                 }
             }
-    }
-
-    companion object {
-        var resources: Resources? = null
     }
 }

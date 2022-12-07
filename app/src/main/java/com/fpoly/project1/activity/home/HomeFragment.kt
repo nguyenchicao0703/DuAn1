@@ -23,7 +23,7 @@ class HomeFragment : Fragment(R.layout.home_main) {
 		super.onCreate(savedInstanceState)
 		statusBarWelcomeView = requireActivity().findViewById(R.id.home_txt_statusBar_title)
 
-		val email = requireActivity().getSharedPreferences("cheetah", Context.MODE_PRIVATE)
+		val email = requireActivity().getSharedPreferences("project1", Context.MODE_PRIVATE)
 			.getString("email", null)
 
 		// greeting

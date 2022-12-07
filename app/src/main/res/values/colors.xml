@@ -10,4 +10,5 @@
 
     <color name="accent">#FA616A</color>
     <color name="button_background">#FFE7E9</color>
+    <color name="red_login">#F44336</color>
 </resources>

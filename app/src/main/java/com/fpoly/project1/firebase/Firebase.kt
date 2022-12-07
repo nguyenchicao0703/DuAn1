@@ -12,13 +12,14 @@ object Firebase {
      * Global Firebase database reference
      */
     var database: DatabaseReference = FirebaseDatabase
-        .getInstance(AuthLogin.resources!!.getString(R.string.firebase_database_uri))
+            // TODO try to mix it with something instead of hard coded
+        .getInstance("https://duan1-a7273-default-rtdb.asia-southeast1.firebasedatabase.app")
         .reference
 
     /**
      * Global Firebase storage reference
      */
     var storage: StorageReference = FirebaseStorage
-        .getInstance(AuthLogin.resources!!.getString(R.string.firebase_storage_uri))
+        .getInstance("gs://duan1-a7273.appspot.com")
         .reference
 }

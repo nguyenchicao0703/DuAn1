@@ -32,8 +32,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <Rating android:name="android.intent.Rating.DEFAULT" />
-                <Rating android:name="android.intent.Rating.BROWSABLE" />
+                <!--<Rating android:name="android.intent.Rating.DEFAULT" />
+                <Rating android:name="android.intent.Rating.BROWSABLE" />-->
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
@@ -42,29 +42,67 @@
 
         <!-- Activities -->
         <activity
-            android:name=".activity.greeting.GreetingWelcome"
+            android:name="com.fpoly.project1.activity.greeting.GreetingWelcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <Rating android:name="android.intent.Rating.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.greeting.GreetingIntroduction"
-            android:exported="true" />
+            android:name="com.fpoly.project1.activity.greeting.GreetingIntroduction"
+            android:exported="false" />
+
         <activity
-            android:name=".activity.authentication.AuthLogin"
-            android:exported="true" />
+            android:name="com.fpoly.project1.activity.authentication.AuthLogin"
+            android:exported="false" />
         <activity
-            android:name=".activity.authentication.AuthRegister"
-            android:exported="true" />
+            android:name="com.fpoly.project1.activity.authentication.AuthRegister"
+            android:exported="false" />
         <activity
-            android:name=".activity.authentication.AuthFillBio"
-            android:exported="true" />
+            android:name="com.fpoly.project1.activity.authentication.AuthFillBio"
+            android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true" />
+            android:name="com.fpoly.project1.activity.authentication.AuthResetPassword"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.authentication.AuthForgotVerifyOTP"
+            android:exported="false" />
+
+        <activity
+            android:name="com.fpoly.project1.activity.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.fpoly.project1.activity.account.AccountEditProfile"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.account.AccountFavorites"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.account.AccountOrderHistory"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.account.AccountVerifyEmail"
+            android:exported="false" />
+
+        <activity
+            android:name="com.fpoly.project1.activity.chat.ChatSelector"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.chat.ChatView"
+            android:exported="false" />
+
+        <activity
+            android:name="com.fpoly.project1.activity.product.ProductSearch"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.product.ProductProfileView"
+            android:exported="false" />
+        <activity
+            android:name="com.fpoly.project1.activity.product.ProductDetails"
+            android:exported="false" />
     </application>
 
 </manifest>
