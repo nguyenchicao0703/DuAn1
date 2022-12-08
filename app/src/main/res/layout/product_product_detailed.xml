@@ -141,7 +141,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userPage_iv_avata"
+                android:id="@+id/userPage_iv_avatar"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="16dp"
@@ -160,7 +160,7 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avata"
+                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_name_product" />
 
             <TextView
@@ -172,7 +172,7 @@
                 android:text="nguyenchicao3007@gmail.com"
                 android:textColor="#5A5A5A"
                 android:textSize="15dp"
-                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avata"
+                app:layout_constraintStart_toEndOf="@+id/userPage_iv_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_user_name" />
 
             <TextView
@@ -195,7 +195,7 @@
                 android:textSize="17dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_avata" />
+                app:layout_constraintTop_toBottomOf="@+id/userPage_iv_avatar" />
 
             <TextView
                 android:id="@+id/userPage_users_txt_product"

@@ -8,23 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
-import com.fpoly.project1.firebase.controller.ControllerProductCategory
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 
 class ProductProfileAdapter(
     private val context: Context,
-    private var list: List<Product>
+    private var list: List<Product>,
+    private var categories: List<ProductCategory>
 ) : RecyclerView.Adapter<ProductProfileAdapter.ViewHolder>() {
+
     private val layoutInflater = LayoutInflater.from(context)
-    private val categories = ControllerProductCategory().getAllSync()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent))
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
@@ -34,28 +35,28 @@ class ProductProfileAdapter(
         holder.productName.text = product.name
         holder.productPrice.text = product.price.toString()
         holder.productType.text =
-            categories!!.filter { productCategory: ProductCategory ->
-                productCategory.id.equals(
-                    product.categoryId
-                )
+            categories.filter { productCategory: ProductCategory ->
+                productCategory.id.equals(product.categoryId)
             }[0].name
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
             bundleData.putString("id", product.id)
 
-            val intentData = Intent(context, ProductDetails::class.java)
-            intentData.putExtras(bundleData)
-
-            context.startActivity(intentData)
+            val fragment = ProductDetails()
+            fragment.arguments = bundleData
+            fragment.show((context as AppCompatActivity).supportFragmentManager, "product_details")
         }
     }
 
     override fun getItemCount(): Int = list.size
 
-    fun updateList(newList: List<Product>) {
+    fun updateList(newProductList: List<Product>, newCategoryList: List<ProductCategory>?) {
+        if (newCategoryList != null)
+            this.categories = newCategoryList
+
         notifyItemRangeRemoved(0, list.size)
-        this.list = newList
-        notifyItemRangeInserted(0, newList.size)
+        this.list = newProductList
+        notifyItemRangeInserted(0, newProductList.size)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

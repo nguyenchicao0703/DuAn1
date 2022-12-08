@@ -1,18 +1,17 @@
 package com.fpoly.project1.activity.product.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
-import com.fpoly.project1.firebase.controller.ControllerProductCategory
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 
@@ -44,10 +43,11 @@ class ProductSearchAdapter(
             val bundleData = Bundle()
             bundleData.putString("id", product.id)
 
-            val intentData = Intent(context, ProductDetails::class.java)
-            intentData.putExtras(bundleData)
-
-            context.startActivity(intentData)
+            val fragment = ProductDetails()
+            fragment.arguments = bundleData
+            fragment.show(
+                (context as AppCompatActivity).supportFragmentManager, "product_details"
+            )
         }
     }
 
