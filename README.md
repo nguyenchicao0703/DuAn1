@@ -1,6 +1,9 @@
-# DuAn1
+# Cheetah (not fast) Food Delivery
 
-## Chết hết đâu rồi
+### Note:
+- Google doesn't like hanging UI thread (main thread) so everything has to be asynchronous
+- Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
+activity in ``AuthRegister``
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 

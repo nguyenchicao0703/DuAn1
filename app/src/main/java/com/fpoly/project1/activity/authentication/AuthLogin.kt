@@ -1,8 +1,6 @@
 package com.fpoly.project1.activity.authentication
 
-import com.fpoly.project1.R
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -14,9 +12,11 @@ import androidx.core.content.ContextCompat
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.SessionUser
+import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -28,6 +28,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -40,6 +41,10 @@ class AuthLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // login via email and password
+        val etEmail = findViewById<EditText>(R.id.auth_et_email)
+        val etPass = findViewById<EditText>(R.id.auth_et_password)
+
         // proceed with the activity
         setContentView(R.layout.auth_login)
         val window = this.window
@@ -50,6 +55,21 @@ class AuthLogin : AppCompatActivity() {
         findViewById<TextView>(R.id.auth_tv_switch).setOnClickListener {
             startActivity(Intent(this, AuthRegister::class.java))
             finish()
+        }
+
+        // forgot password
+        findViewById<TextView>(R.id.auth_tv_forgot).setOnClickListener {
+            if (etEmail.text.toString().isEmpty()) {
+                etEmail.error = "This field is required"
+                return@setOnClickListener
+            }
+
+            val bundle = Bundle()
+            bundle.putString("email", etEmail.text.toString())
+            val intent = Intent(this@AuthLogin, AuthForgotPassword::class.java)
+            intent.putExtras(bundle)
+
+            startActivity(intent)
         }
 
         // ============================ GOOGLE AUTHENTICATION ============================
@@ -65,12 +85,8 @@ class AuthLogin : AppCompatActivity() {
 
         // login via google button
         findViewById<Button>(R.id.auth_btn_google).setOnClickListener {
-	        startActivityForResult(googleSignInClient.signInIntent, RequestCode.GOOGLE_SIGN_IN)
+            startActivityForResult(googleSignInClient.signInIntent, RequestCode.GOOGLE_SIGN_IN)
         }
-
-        // login via email and password
-        val etEmail = findViewById<EditText>(R.id.auth_et_email)
-        val etPass = findViewById<EditText>(R.id.auth_et_password)
 
         findViewById<Button>(R.id.auth_btn_submit)
             .setOnClickListener {
@@ -122,7 +138,8 @@ class AuthLogin : AppCompatActivity() {
         // login via facebook button
         findViewById<Button>(R.id.auth_btn_facebook)
             .setOnClickListener {
-                LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
+                LoginManager.getInstance()
+                    .logInWithReadPermissions(this, listOf("public_profile", "email"))
             }
     }
 
@@ -134,11 +151,10 @@ class AuthLogin : AppCompatActivity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
         // google auth
-	    if (requestCode != RequestCode.GOOGLE_SIGN_IN) return
+        if (requestCode != RequestCode.GOOGLE_SIGN_IN) return
         try {
-            val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(
-                ApiException::class.java
-            )
+            val googleSignInAccount =
+                GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java)
             if (googleSignInAccount == null) {
                 Toast.makeText(this, "Received Null while getting account", Toast.LENGTH_SHORT)
                     .show()
@@ -151,45 +167,56 @@ class AuthLogin : AppCompatActivity() {
                         null
                     )
                 )
-                .addOnCompleteListener { task -> googleCompleteListener(task) }
+                .addOnCompleteListener { googleCompleteListener(it) }
         } catch (apiException: ApiException) {
             Toast.makeText(this@AuthLogin, "Something went wrong", Toast.LENGTH_SHORT)
                 .show()
-            apiException.printStackTrace()
+            Log.e(this@AuthLogin::class.simpleName, "Error while getting results", apiException)
         }
     }
 
     // Google auth complete listener
     private fun googleCompleteListener(task: Task<AuthResult>) {
         if (task.isSuccessful) {
-            val customers = controllerCustomer.getAllSync()
-            if (customers == null) {
-                Toast.makeText(this, "Failed to get users from database", Toast.LENGTH_SHORT).show()
-                return
-            }
+            controllerCustomer.getAllAsync(
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run(dataSnapshot: DataSnapshot?) {
+                        val customers = ArrayList<Customer>()
+                        if (dataSnapshot != null)
+                            for (entry in dataSnapshot.children) {
+                                customers.add(entry.getValue(Customer::class.java)!!)
+                            }
 
-            // we will log user in via firebase since it include both
-            // password-based auth and google auth,
-            // here we're just creating a customer object linked to
-            // the firebase account
-            val user = FirebaseAuth.getInstance().currentUser!!
+                        // get user
+                        val user = FirebaseAuth.getInstance().currentUser!!
 
-            // get matching account
-            val matchingCustomer = customers.stream()
-                .filter { c: Customer -> c.emailAddress == user.email || c.gid == user.uid }
-                .toArray()
+                        // get matching account
+                        val matchingCustomer = customers.stream()
+                            .filter { c: Customer -> c.emailAddress == user.email || c.gid == user.uid }
+                            .toArray()
 
-            // if there isn't any matching user, switch to fill bio activity
-            if (matchingCustomer.isEmpty()) {
-                startActivity(Intent(this, AuthFillBio::class.java))
-            } else {
-                // if user is already exist
-                Log.i("LoginActivity::Google", "Got account from Firebase")
-                SessionUser.setId((matchingCustomer[0] as Customer).id)
-                startActivity(Intent(this@AuthLogin, MainActivity::class.java))
-            }
+                        // if there isn't any matching user, switch to fill bio activity
+                        if (matchingCustomer.isEmpty()) {
+                            startActivity(Intent(this@AuthLogin, AuthFillBio::class.java))
+                        } else {
+                            // if user is already exist
+                            Log.i("LoginActivity::Google", "Got account from Firebase")
+                            SessionUser.setId((matchingCustomer[0] as Customer).id)
+                            startActivity(Intent(this@AuthLogin, MainActivity::class.java))
+                        }
+                    }
+                },
+                failureListener = object : ControllerBase.FailureListener() {
+                    override fun run(error: Exception?) {
+                        Log.e(
+                            this@AuthLogin::class.simpleName,
+                            "Error while getting all users", task.exception
+                        )
+                    }
+                }
+            )
         } else {
-            task.exception?.printStackTrace()
+            Log.e(this@AuthLogin::class.simpleName, "Error while authenticating", task.exception)
             Toast.makeText(
                 this,
                 "Auth failed: " + task.exception?.message,
@@ -203,7 +230,7 @@ class AuthLogin : AppCompatActivity() {
         // Authenticate with firebase
         val authCredential = FacebookAuthProvider.getCredential(loginResult.accessToken.token)
         firebaseAuth.signInWithCredential(authCredential)
-            .addOnCompleteListener { task: Task<AuthResult?> ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val customers = controllerCustomer.getAllSync()
 
@@ -216,7 +243,8 @@ class AuthLogin : AppCompatActivity() {
                         return@addOnCompleteListener
                     }
 
-                    // TODO test and see if Facebook's Firebase user has the necessary credentials or not and remove GraphRequest code below
+                    // TODO test and see if Facebook's Firebase user has the necessary
+                    //  credentials or not and remove GraphRequest code below
                     // Get facebook related information
                     val request = GraphRequest.newMeRequest(
                         loginResult.accessToken
@@ -262,7 +290,10 @@ class AuthLogin : AppCompatActivity() {
                         "Something went wrong",
                         Toast.LENGTH_SHORT
                     ).show()
-                    task.exception!!.printStackTrace()
+                    Log.e(this@AuthLogin::class.simpleName,
+                        "Error while requesting data from Facebook",
+                        task.exception
+                    )
                 }
             }
     }

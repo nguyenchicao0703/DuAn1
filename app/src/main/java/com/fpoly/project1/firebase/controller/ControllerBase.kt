@@ -65,13 +65,23 @@ abstract class ControllerBase<T>(protected val table: String) {
 
     // Success listener
     abstract class SuccessListener {
-        abstract fun run()
-        abstract fun run(unused: Any?)
-        abstract fun run(dataSnapshot: DataSnapshot?)
+        open fun run() {
+            return
+        }
+
+        open fun run(unused: Any?) {
+            return
+        }
+
+        open fun run(dataSnapshot: DataSnapshot?) {
+            return
+        }
     }
 
     // Failure listener
     abstract class FailureListener {
-        abstract fun run(error: Exception?)
+        open fun run(error: Exception?) {
+            return
+        }
     }
 }

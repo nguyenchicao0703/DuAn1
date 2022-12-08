@@ -3,6 +3,8 @@ package com.fpoly.project1.activity.greeting
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.facebook.AccessToken
@@ -11,9 +13,11 @@ import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.authentication.AuthLogin
 import com.fpoly.project1.firebase.SessionUser
+import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 import java.util.stream.Collectors
 
 class GreetingWelcome : AppCompatActivity() {
@@ -31,37 +35,57 @@ class GreetingWelcome : AppCompatActivity() {
         val accessToken = AccessToken.getCurrentAccessToken()
         Handler().postDelayed({
             // check if user already launched the app once
-            val intent: Intent =
-                if (getSharedPreferences("firstLaunch", MODE_PRIVATE).getBoolean("seen", false)) {
-                    // check if user session is still available
-                    val hasFirebaseSession = FirebaseAuth.getInstance().currentUser != null
-                    val hasFacebookSession =
-                        Profile.getCurrentProfile() != null && accessToken != null && !accessToken.isExpired
-                    if (hasFirebaseSession || hasFacebookSession) {
-                        // set session ID
-                        SessionUser.setId(
-                            ControllerCustomer().getAllSync()!!.stream()
-                                .filter { customer: Customer ->
-                                    (
-                                            customer.gid.equals(
-                                                FirebaseAuth.getInstance().currentUser!!.uid
-                                            ) ||
-                                                    customer.fid.equals(Profile.getCurrentProfile()!!.id)
-                                            )
-                                }.collect(Collectors.toList())[0].id
-                        )
+            if (getSharedPreferences("firstLaunch", MODE_PRIVATE).getBoolean("seen", false)) {
+                // check if user session is still available
+                val hasFirebaseSession = FirebaseAuth.getInstance().currentUser != null
+                val hasFacebookSession =
+                    Profile.getCurrentProfile() != null && accessToken != null && !accessToken.isExpired
 
-                        // send to main screen
-                        Intent(this@GreetingWelcome, MainActivity::class.java)
-                    } else {
-                        // send to login screen
-                        Intent(this@GreetingWelcome, AuthLogin::class.java)
-                    }
+                if (hasFirebaseSession || hasFacebookSession) {
+                    ControllerCustomer().getAllAsync(
+                        successListener = object : ControllerBase.SuccessListener() {
+                            override fun run(dataSnapshot: DataSnapshot?) {
+                                val customers = ArrayList<Customer>()
+                                if (dataSnapshot != null)
+                                    for (entry in dataSnapshot.children)
+                                        customers.add(entry.getValue(Customer::class.java)!!)
+
+                                SessionUser.setId(
+                                    customers.stream()
+                                        .filter { customer: Customer ->
+                                            (customer.gid.equals(FirebaseAuth.getInstance().currentUser!!.uid)
+                                                    || customer.fid.equals(Profile.getCurrentProfile()!!.id))
+                                        }.collect(Collectors.toList())[0].id
+                                )
+
+                                // send to main screen
+                                startActivity(
+                                    Intent(
+                                        this@GreetingWelcome,
+                                        MainActivity::class.java
+                                    )
+                                )
+                            }
+                        },
+                        failureListener = object : ControllerBase.FailureListener() {
+                            override fun run(error: Exception?) {
+                                Toast.makeText(
+                                    this@GreetingWelcome,
+                                    "Unable to find matching account",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e(this@GreetingWelcome::class.simpleName, "Error", error)
+                            }
+                        }
+                    )
                 } else {
-                    // send to introduction screen
-                    Intent(this@GreetingWelcome, GreetingIntroduction::class.java)
+                    // send to login screen
+                    startActivity(Intent(this@GreetingWelcome, AuthLogin::class.java))
                 }
-            startActivity(intent)
+            } else {
+                // send to introduction screen
+                startActivity(Intent(this@GreetingWelcome, GreetingIntroduction::class.java))
+            }
             finish()
         }, 3_000L)
     }

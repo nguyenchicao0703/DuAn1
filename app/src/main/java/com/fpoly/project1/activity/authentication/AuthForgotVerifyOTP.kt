@@ -144,7 +144,7 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
                     }
                 }
             },
-            0L, 1000L
+            0L, 1_000L
         )
     }
 }

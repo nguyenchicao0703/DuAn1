@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "796777611334-n3jumh1shlvftofg9mvaaubq1tool99p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpoly.project1",
+            "certificate_hash": "260eecacd26631f56229753ae771c3f5fdc1b0e0"
+          }
+        },
+        {
           "client_id": "796777611334-s3dsvqi3ui37m5g585tpops14bvdgrd2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

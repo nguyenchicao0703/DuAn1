@@ -5,7 +5,9 @@ import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.FirebaseException
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
+import kotlinx.coroutines.newFixedThreadPoolContext
 
 class ControllerCustomer : ControllerBase<Customer>("table_customers") {
     /**
@@ -80,6 +82,41 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
 
             null
         }
+    }
+
+    fun addAsync(value: Customer, successListener: SuccessListener?, failureListener: FailureListener?) {
+        getAllAsync(
+            successListener = object: SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    val customers = ArrayList<Customer>()
+                    if (dataSnapshot != null)
+                        for (entry in dataSnapshot.children)
+                            customers.add(entry.getValue(Customer::class.java)!!)
+
+                    if (customers.stream().anyMatch {
+                            it!!.emailAddress == value.emailAddress ||
+                                    it.gid == value.gid ||
+                                    it.fid == value.fid
+                        }) {
+                        failureListener?.run(Exception("Entry already exists"))
+                    } else {
+                        val rowReference = Firebase.database.child(table).push()
+
+                        // override ID
+                        value.id = rowReference.key
+                        Firebase.database.child(table).child(value.id!!)
+                            .setValue(value)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful)
+                                    successListener?.run(value.id)
+                                else
+                                    failureListener?.run(it.exception)
+                            }
+                    }
+                }
+            },
+            failureListener
+        )
     }
 
     override fun setAsync(
@@ -157,6 +194,11 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        Firebase.database.child(table).get().addOnCompleteListener {
+            if (it.isSuccessful)
+                successListener?.run(it.result)
+            else
+                failureListener?.run(it.exception)
+        }
     }
 }
