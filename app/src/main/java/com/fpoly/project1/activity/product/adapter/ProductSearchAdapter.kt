@@ -18,13 +18,14 @@ import com.fpoly.project1.firebase.model.ProductCategory
 
 class ProductSearchAdapter(
     private val context: Context,
-    private var list: List<Product>
+    private var list: List<Product>,
+    private var categories: List<ProductCategory>
 ) : RecyclerView.Adapter<ProductSearchAdapter.ViewHolder>() {
+
     private val layoutInflater = LayoutInflater.from(context)
-    private val categories = ControllerProductCategory().getAllSync()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent))
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
@@ -32,9 +33,9 @@ class ProductSearchAdapter(
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price
+        holder.productPrice.text = product.price.toString()
         holder.productType.text =
-            categories!!.filter { productCategory: ProductCategory ->
+            categories.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(
                     product.categoryId
                 )
@@ -52,10 +53,14 @@ class ProductSearchAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    fun updateList(newList: List<Product>) {
+    fun updateList(newProductList: List<Product>, newCategoryList: List<ProductCategory>?) {
+        println("Trying to update recycler")
+        if (newCategoryList != null)
+            this.categories = newCategoryList
+
         notifyItemRangeRemoved(0, list.size)
-        this.list = newList
-        notifyItemRangeInserted(0, newList.size)
+        this.list = newProductList
+        notifyItemRangeInserted(0, newProductList.size)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

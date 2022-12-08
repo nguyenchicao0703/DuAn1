@@ -16,11 +16,11 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
                 rowReference = tableReference.push()
                 value.id = rowReference.key!!
                 Tasks.await(
-                    Firebase.database.child(table).child(value.id)
+                    Firebase.database.child(table).child(value.id!!)
                         .setValue(value)
                 )
             } else {
-                rowReference = tableReference.child(value.id)
+                rowReference = tableReference.child(value.id!!)
                 Tasks.await(rowReference.setValue(value))
             }
             true
@@ -36,7 +36,27 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        val tableReference = Firebase.database.child(table)
+        val rowReference: DatabaseReference
+        if (update) {
+            rowReference = tableReference.push()
+            value.id = rowReference.key
+
+            rowReference.setValue(value).addOnCompleteListener {
+                if (it.isSuccessful)
+                    successListener?.run(it.result)
+                else
+                    failureListener?.run(it.exception)
+            }
+        } else {
+            tableReference.child(value.id!!).setValue(value)
+                .addOnCompleteListener {
+                    if (it.isSuccessful)
+                        successListener?.run(it.result)
+                    else
+                        failureListener?.run(it.exception)
+                }
+        }
     }
 
     override fun removeSync(referenceId: String?): Boolean {
@@ -55,14 +75,6 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         }
     }
 
-    override fun removeAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
-    }
-
     override fun getSync(referenceId: String?): Product? {
         return try {
             Tasks.await(
@@ -76,14 +88,6 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
 
             null
         }
-    }
-
-    override fun getAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
     }
 
     override fun getAllSync(): ArrayList<Product>? {
@@ -108,12 +112,5 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
 
             null
         }
-    }
-
-    override fun getAllAsync(
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
     }
 }

@@ -45,7 +45,7 @@ class FavoriteProductsAdapter(
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price
+        holder.productPrice.text = product.price.toString()
         holder.productType.text =
             categories!!.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(

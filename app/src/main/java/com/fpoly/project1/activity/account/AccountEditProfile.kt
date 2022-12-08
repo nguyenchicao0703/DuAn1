@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fpoly.project1.R
 import com.fpoly.project1.firebase.SessionUser
+import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 
 class AccountEditProfile : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
@@ -59,122 +61,151 @@ class AccountEditProfile : AppCompatActivity() {
         setContentView(R.layout.account_profile_edit)
 
         // get account info
-        val account = controllerCustomer.getSync(SessionUser.sessionId)!!
+        controllerCustomer.getAsync(
+            SessionUser.sessionId,
+            successListener = object : ControllerBase.SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    val account = dataSnapshot!!.getValue(Customer::class.java)!!
 
-        // bindings
-        val buttonUpdateProfile = findViewById<Button>(R.id.edit_profile_btn_save_changes)
-        val buttonUpdatePassword = findViewById<Button>(R.id.edit_profile_btn_change_password)
+                    // bindings
+                    val buttonUpdateProfile =
+                        findViewById<Button>(R.id.edit_profile_btn_save_changes)
+                    val buttonUpdatePassword =
+                        findViewById<Button>(R.id.edit_profile_btn_change_password)
 
-        // edit text bindings
-        profileName = findViewById(R.id.edit_profile_txt_name)
-        profileEmail = findViewById(R.id.edit_profile_txt_email)
-        profileAddress = findViewById(R.id.edit_profile_txt_address)
-        profilePhone = findViewById(R.id.edit_profile_txt_phoneNumber)
-        profileBirthDate = findViewById(R.id.edit_profile_txt_birthDate)
+                    // edit text bindings
+                    profileName = findViewById(R.id.edit_profile_txt_name)
+                    profileEmail = findViewById(R.id.edit_profile_txt_email)
+                    profileAddress = findViewById(R.id.edit_profile_txt_address)
+                    profilePhone = findViewById(R.id.edit_profile_txt_phoneNumber)
+                    profileBirthDate = findViewById(R.id.edit_profile_txt_birthDate)
 
-        // image view bindings
-        profileNameToggle = findViewById(R.id.edit_profile_iv_edit_name)
-        profileEmailToggle = findViewById(R.id.edit_profile_iv_edit_email)
-        profileAddressToggle = findViewById(R.id.edit_profile_iv_edit_address)
-        profilePhoneToggle = findViewById(R.id.edit_profile_iv_edit_phoneNumber)
-        profileBirthDateToggle = findViewById(R.id.edit_profile_iv_edit_birthDate)
+                    // image view bindings
+                    profileNameToggle = findViewById(R.id.edit_profile_iv_edit_name)
+                    profileEmailToggle = findViewById(R.id.edit_profile_iv_edit_email)
+                    profileAddressToggle = findViewById(R.id.edit_profile_iv_edit_address)
+                    profilePhoneToggle = findViewById(R.id.edit_profile_iv_edit_phoneNumber)
+                    profileBirthDateToggle = findViewById(R.id.edit_profile_iv_edit_birthDate)
 
-        findViewById<Button>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
+                    findViewById<ImageView>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
 
-        // toggle update button
-        for (
-        element in arrayOf(
-            profileName,
-            profileEmail,
-            profilePhone,
-            profileAddress,
-            profileBirthDate
-        )
-        ) {
-            element.setOnFocusChangeListener { _: View, _: Boolean ->
-                when (element) {
-                    profileName ->
-                        if (profileName.text.toString() == account.fullName) View.GONE else View.VISIBLE
-                    profileEmail ->
-                        if (profileEmail.text.toString() == account.emailAddress) View.GONE else View.VISIBLE
-                    profilePhone ->
-                        if (profilePhone.text.toString() == account.phoneNumber) View.GONE else View.VISIBLE
-                    profileAddress ->
-                        if (profileAddress.text.toString() == account.postalAddress) View.GONE else View.VISIBLE
-                    profileBirthDate ->
-                        if (profileBirthDate.text.toString() == account.birthDate) View.GONE else View.VISIBLE
-                }
-            }
-        }
+                    // toggle update button
+                    for (
+                    element in arrayOf(
+                        profileName,
+                        profileEmail,
+                        profilePhone,
+                        profileAddress,
+                        profileBirthDate
+                    )
+                    ) {
+                        element.setOnFocusChangeListener { _: View, _: Boolean ->
+                            when (element) {
+                                profileName ->
+                                    if (profileName.text.toString() == account.fullName) View.GONE else View.VISIBLE
+                                profileEmail ->
+                                    if (profileEmail.text.toString() == account.emailAddress) View.GONE else View.VISIBLE
+                                profilePhone ->
+                                    if (profilePhone.text.toString() == account.phoneNumber) View.GONE else View.VISIBLE
+                                profileAddress ->
+                                    if (profileAddress.text.toString() == account.postalAddress) View.GONE else View.VISIBLE
+                                profileBirthDate ->
+                                    if (profileBirthDate.text.toString() == account.birthDate) View.GONE else View.VISIBLE
+                            }
+                        }
+                    }
 
-        // toggle edit text
-        for (
-        element in arrayOf(
-            profileNameToggle,
-            profileEmailToggle,
-            profilePhoneToggle,
-            profileAddressToggle,
-            profileBirthDateToggle
-        )
-        ) {
-            element.setOnClickListener {
-                when (element) {
-                    profileNameToggle -> profileName.isEnabled = !profileName.isEnabled
-                    profileEmailToggle -> profileEmail.isEnabled = !profileEmail.isEnabled
-                    profilePhoneToggle -> profilePhone.isEnabled = !profilePhone.isEnabled
-                    profileAddressToggle -> profileAddress.isEnabled = !profileAddress.isEnabled
-                    profileBirthDateToggle -> profileBirthDate.isEnabled =
-                        !profileBirthDate.isEnabled
-                }
-            }
-        }
+                    // toggle edit text
+                    for (
+                    element in arrayOf(
+                        profileNameToggle,
+                        profileEmailToggle,
+                        profilePhoneToggle,
+                        profileAddressToggle,
+                        profileBirthDateToggle
+                    )
+                    ) {
+                        element.setOnClickListener {
+                            when (element) {
+                                profileNameToggle -> profileName.isEnabled = !profileName.isEnabled
+                                profileEmailToggle -> profileEmail.isEnabled =
+                                    !profileEmail.isEnabled
+                                profilePhoneToggle -> profilePhone.isEnabled =
+                                    !profilePhone.isEnabled
+                                profileAddressToggle -> profileAddress.isEnabled =
+                                    !profileAddress.isEnabled
+                                profileBirthDateToggle -> profileBirthDate.isEnabled =
+                                    !profileBirthDate.isEnabled
+                            }
+                        }
+                    }
 
-        // update edit text fields
-        updateFields(account)
+                    // update edit text fields
+                    updateFields(account)
 
-        // update profile
-        buttonUpdateProfile.setOnClickListener {
-            if (controllerCustomer.setSync(
-                    Customer(
-                        account.id, // keep, reference ID
-                        account.gid, // keep
-                        account.fid, // keep
-                        account.avatarUrl, // keep
-                        profileName.text.toString(), // override
-                        profileBirthDate.text.toString(), // override
-                        profileEmail.text.toString(), // override
-                        profilePhone.text.toString(), // override
-                        profileAddress.text.toString(), // override
-                        account.favoriteIds // keep
-                    ),
-                    true
-                )
-            ) {
-                Toast.makeText(this, "Successfully updated profile", Toast.LENGTH_SHORT).show()
+                    // update profile
+                    buttonUpdateProfile.setOnClickListener {
+                        controllerCustomer.setAsync(
+                            Customer(
+                                account.id, // keep, reference ID
+                                account.gid, // keep
+                                account.fid, // keep
+                                account.avatarUrl, // keep
+                                profileName.text.toString(), // override
+                                profileBirthDate.text.toString(), // override
+                                profileEmail.text.toString(), // override
+                                profilePhone.text.toString(), // override
+                                profileAddress.text.toString(), // override
+                                account.favoriteIds // keep
+                            ),
+                            true,
+                            successListener = object : ControllerBase.SuccessListener() {
+                                override fun run() {
+                                    Toast.makeText(
+                                        this@AccountEditProfile, "Successfully updated profile",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                // update edit text fields
-                updateFields(null)
-            } else {
-                Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
-            }
-        }
+                                    // update edit text fields
+                                    updateFields(null)
+                                }
+                            },
+                            failureListener = object : ControllerBase.FailureListener() {
+                                override fun run(error: Exception?) {
+                                    Toast.makeText(
+                                        this@AccountEditProfile,
+                                        "Failed to update profile",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            }
+                        )
+                    }
 
-        // Change password button callback
-        buttonUpdatePassword.setOnClickListener {
-            FirebaseAuth.getInstance()
-                .sendPasswordResetEmail(FirebaseAuth.getInstance().currentUser!!.email!!)
-                .addOnCompleteListener { task: Task<Void?> ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            this,
-                            "Reset password email has been sent, please check your inbox",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(this, "Failed to send email", Toast.LENGTH_SHORT).show()
-                        task.exception!!.printStackTrace()
+                    // Change password button callback
+                    buttonUpdatePassword.setOnClickListener {
+                        FirebaseAuth.getInstance()
+                            .sendPasswordResetEmail(FirebaseAuth.getInstance().currentUser!!.email!!)
+                            .addOnCompleteListener { task: Task<Void?> ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        this@AccountEditProfile,
+                                        "Reset password email has been sent, please check your inbox",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        this@AccountEditProfile, "Failed to send email", Toast
+                                            .LENGTH_SHORT
+                                    ).show()
+                                    task.exception!!.printStackTrace()
+                                }
+                            }
                     }
                 }
-        }
+            },
+            null
+        )
     }
 }

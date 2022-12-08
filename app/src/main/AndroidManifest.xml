@@ -67,6 +67,9 @@
             android:name="com.fpoly.project1.activity.authentication.AuthResetPassword"
             android:exported="false" />
         <activity
+            android:name="com.fpoly.project1.activity.authentication.AuthForgotPassword"
+            android:exported="false" />
+        <activity
             android:name="com.fpoly.project1.activity.authentication.AuthForgotVerifyOTP"
             android:exported="false" />
 

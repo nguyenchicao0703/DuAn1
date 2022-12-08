@@ -55,14 +55,6 @@ class ControllerOrder : ControllerBase<Order>("table_orders") {
         }
     }
 
-    override fun removeAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
-    }
-
     override fun getSync(referenceId: String?): Order? {
         return try {
             Tasks.await(
@@ -76,14 +68,6 @@ class ControllerOrder : ControllerBase<Order>("table_orders") {
 
             null
         }
-    }
-
-    override fun getAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
     }
 
     override fun getAllSync(): ArrayList<Order>? {
@@ -108,12 +92,5 @@ class ControllerOrder : ControllerBase<Order>("table_orders") {
 
             null
         }
-    }
-
-    override fun getAllAsync(
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
     }
 }

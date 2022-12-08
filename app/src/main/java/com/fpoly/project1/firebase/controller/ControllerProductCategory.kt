@@ -24,7 +24,7 @@ class ControllerProductCategory : ControllerBase<ProductCategory>("table_product
             }
             true
         } catch (e: FirebaseException) {
-            Log.e(this.javaClass.simpleName, "Error while creating table", e)
+            Log.e(this.javaClass.simpleName, "Error while setting value", e)
             false
         }
     }
@@ -35,6 +35,27 @@ class ControllerProductCategory : ControllerBase<ProductCategory>("table_product
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
+        val tableReference = Firebase.database.child(table)
+        val rowReference: DatabaseReference
+        if (update) {
+            rowReference = tableReference.push()
+            value.id = rowReference.key
+
+            rowReference.setValue(value).addOnCompleteListener {
+                if (it.isSuccessful)
+                    successListener?.run()
+                else
+                    failureListener?.run(it.exception)
+            }
+        } else {
+            tableReference.child(value.id!!).setValue(value)
+                .addOnCompleteListener {
+                    if (it.isSuccessful)
+                        successListener?.run()
+                    else
+                        failureListener?.run(it.exception)
+                }
+        }
     }
 
     override fun removeSync(referenceId: String?): Boolean {
@@ -54,7 +75,13 @@ class ControllerProductCategory : ControllerBase<ProductCategory>("table_product
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        Firebase.database.child(table).child(referenceId!!).setValue(null)
+            .addOnCompleteListener {
+                if (it.isSuccessful)
+                    successListener?.run()
+                else
+                    failureListener?.run(it.exception)
+            }
     }
 
     override fun getSync(referenceId: String?): ProductCategory? {
@@ -73,7 +100,13 @@ class ControllerProductCategory : ControllerBase<ProductCategory>("table_product
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        Firebase.database.child(table).child(referenceId!!).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful)
+                    successListener?.run(it.result)
+                else
+                    failureListener?.run(it.exception)
+            }
     }
 
     override fun getAllSync(): ArrayList<ProductCategory>? {
@@ -104,6 +137,12 @@ class ControllerProductCategory : ControllerBase<ProductCategory>("table_product
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        Firebase.database.child(table).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful)
+                    successListener?.run(it.result)
+                else
+                    failureListener?.run(it.exception)
+            }
     }
 }

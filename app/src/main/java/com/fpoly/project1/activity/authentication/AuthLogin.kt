@@ -40,13 +40,13 @@ class AuthLogin : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.auth_login)
 
         // login via email and password
         val etEmail = findViewById<EditText>(R.id.auth_et_email)
         val etPass = findViewById<EditText>(R.id.auth_et_password)
 
         // proceed with the activity
-        setContentView(R.layout.auth_login)
         val window = this.window
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
@@ -66,6 +66,7 @@ class AuthLogin : AppCompatActivity() {
 
             val bundle = Bundle()
             bundle.putString("email", etEmail.text.toString())
+
             val intent = Intent(this@AuthLogin, AuthForgotPassword::class.java)
             intent.putExtras(bundle)
 

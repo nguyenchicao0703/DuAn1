@@ -22,7 +22,7 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
     override fun getItemCount(): Int = products.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_featured_products, parent))
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_featured_products, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
@@ -30,7 +30,7 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price
+        holder.productPrice.text = product.price.toString()
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
             bundleData.putString("id", product.id)

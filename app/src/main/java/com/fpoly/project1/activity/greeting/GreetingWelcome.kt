@@ -51,11 +51,11 @@ class GreetingWelcome : AppCompatActivity() {
                                         customers.add(entry.getValue(Customer::class.java)!!)
 
                                 SessionUser.setId(
-                                    customers.stream()
+                                    customers
                                         .filter { customer: Customer ->
-                                            (customer.gid.equals(FirebaseAuth.getInstance().currentUser!!.uid)
-                                                    || customer.fid.equals(Profile.getCurrentProfile()!!.id))
-                                        }.collect(Collectors.toList())[0].id
+                                            (customer.gid.equals(FirebaseAuth.getInstance().currentUser?.uid)
+                                                    || customer.fid.equals(Profile.getCurrentProfile()?.id))
+                                        }[0].id
                                 )
 
                                 // send to main screen

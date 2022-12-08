@@ -53,12 +53,12 @@ class ProductDetails : AppCompatActivity() {
             val currentFavoriteList = customer.favoriteIds
             val replicaFavoriteList = customer.favoriteIds?.toMutableList() ?: ArrayList()
 
-            if (currentFavoriteList != null && currentFavoriteList.contains(product.id)) {
+            if (currentFavoriteList != null && currentFavoriteList.contains(product.id!!)) {
                 isFavorite = false
-                replicaFavoriteList.remove(product.id)
+                replicaFavoriteList.remove(product.id!!)
             } else {
                 isFavorite = true
-                replicaFavoriteList.add(product.id)
+                replicaFavoriteList.add(product.id!!)
             }
 
             customer.favoriteIds = replicaFavoriteList
@@ -94,7 +94,7 @@ class ProductDetails : AppCompatActivity() {
                 if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
         }
         findViewById<Button>(R.id.userPage_users_btn_cart).setOnClickListener {
-            SessionUser.cart.add(Pair(product.id, cartAmountView.text.toString().toInt()))
+            SessionUser.cart.add(Pair(product.id!!, cartAmountView.text.toString().toInt()))
 
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show()
         }

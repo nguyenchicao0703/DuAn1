@@ -1,11 +1,13 @@
 package com.fpoly.project1.activity.chat.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -57,9 +59,10 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
         when (holder.itemViewType) {
             1 -> {
                 // bind data
-                Glide.with(context)
-                    .load(SessionUser.avatar)
-                    .into(holder.chatAvatar)
+                SessionUser.avatar.addOnCompleteListener { uri ->
+                    Glide.with(context).load(uri.result)
+                        .into((context as Activity).findViewById(R.id.profile_iv_avt))
+                }
             }
             else -> {
                 // bind data

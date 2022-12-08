@@ -1,11 +1,10 @@
 package com.fpoly.project1.activity.account
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
@@ -32,8 +31,10 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
                         Toast.makeText(requireContext(), "Updated avatar", Toast.LENGTH_SHORT)
                             .show()
 
-                        Glide.with(requireContext()).load(SessionUser.avatar)
-                            .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                        SessionUser.avatar.addOnCompleteListener { uri ->
+                            Glide.with(requireContext()).load(uri.result)
+                                .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                        }
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -45,17 +46,23 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity = context as Activity
+    override fun onResume() {
+        super.onResume()
 
         // back button?
-        activity.findViewById<ImageView>(R.id.profile_iv_back)
-            .setOnClickListener { TODO("Add back function, if any") }
+        requireActivity().findViewById<ImageView>(R.id.profile_iv_back)
+            .setOnClickListener {
+                if (parentFragmentManager.backStackEntryCount > 0)
+                    parentFragmentManager.popBackStack()
+            }
 
         // set avatar
-        activity.findViewById<ImageView>(R.id.profile_iv_avt).let {
-            Glide.with(context).load(SessionUser.avatar).into(it)
+        requireActivity().findViewById<ImageView>(R.id.profile_iv_avt).let {
+            SessionUser.avatar.addOnCompleteListener { uri ->
+                Glide.with(requireContext()).load(uri.result)
+                    .into(requireActivity().findViewById(R.id.profile_iv_avt))
+            }
+
             it.setOnClickListener {
                 val intent = Intent()
                 intent.type = "image/*"
@@ -68,7 +75,7 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
         }
 
         // view information activity
-        activity.findViewById<View>(R.id.profile_cardView_use_information)
+        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_use_information)
             .setOnClickListener {
                 startActivity(
                     Intent(
@@ -79,7 +86,7 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
             }
 
         // chat activity
-        activity.findViewById<View>(R.id.profile_cardView_chat)
+        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_order_chat)
             .setOnClickListener {
                 startActivity(
                     Intent(
@@ -90,7 +97,7 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
             }
 
         // order history activity
-        activity.findViewById<View>(R.id.profile_cardView_order_history)
+        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_order_history)
             .setOnClickListener {
                 startActivity(
                     Intent(
@@ -101,7 +108,7 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
             }
 
         // favorite products activity
-        activity.findViewById<View>(R.id.profile_cardView_favourite)
+        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_favourite)
             .setOnClickListener {
                 startActivity(
                     Intent(
@@ -112,12 +119,12 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
             }
 
         // session logout
-        activity.findViewById<View>(R.id.profile_cardView_logOut)
+        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_logOut)
             .setOnClickListener {
                 FirebaseAuth.getInstance().signOut()
                 LoginManager.getInstance().logOut()
-                activity.finishActivity(RequestCode.LOGOUT)
-                activity.finish()
+                requireActivity().finishActivity(RequestCode.LOGOUT)
+                requireActivity().finish()
             }
     }
 }

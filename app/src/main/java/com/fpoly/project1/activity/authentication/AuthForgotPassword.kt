@@ -1,5 +1,6 @@
 package com.fpoly.project1.activity.authentication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import kotlin.math.floor
+import kotlin.math.roundToInt
 
 class AuthForgotPassword : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
@@ -36,15 +38,22 @@ class AuthForgotPassword : AppCompatActivity() {
 
         controllerCustomer.getAllAsync(
             successListener = object : ControllerBase.SuccessListener() {
+                @SuppressLint("SetTextI18n")
                 override fun run(dataSnapshot: DataSnapshot?) {
-                    val customers = ArrayList<Customer>()
-                    if (dataSnapshot != null)
-                        for (entry in dataSnapshot.children)
-                            customers.add(entry.getValue(Customer::class.java)!!)
+                    var matchingAccount: Customer? = null
+                    dataSnapshot?.children?.forEach {
+                        if (it.getValue(Customer::class.java)!!.emailAddress!! == requestEmail.trim()) {
+                            matchingAccount = it.getValue(Customer::class.java)!!
+                        }
+                    }
 
-                    // get account with matching email
-                    val matchingAccount = customers
-                        .filter { acc: Customer -> acc.emailAddress == requestEmail }[0]
+                    if (matchingAccount == null) {
+                        Toast.makeText(
+                            this@AuthForgotPassword, "Unable to find matching " +
+                                    "account", Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
 
                     // bindings
                     val cardViewSms = findViewById<CardView>(R.id.forgot_cardView_sms)
@@ -53,20 +62,16 @@ class AuthForgotPassword : AppCompatActivity() {
                     val txtEmail = findViewById<TextView>(R.id.forgot_txt_email)
 
                     // if phone number is available
-                    if (matchingAccount.phoneNumber != null) {
-                        val phoneNumber = matchingAccount.phoneNumber!!
-                        txtSms.text = phoneNumber.replace(
-                            phoneNumber.substring(
-                                floor(phoneNumber.length.times(0.7)).toInt(),
-                                phoneNumber.length - 1
-                            ),
-                            "*"
-                        )
+                    if (matchingAccount!!.phoneNumber?.isEmpty() != true) {
+                        val phoneNumber = matchingAccount!!.phoneNumber!!
+                        txtSms.text = phoneNumber.substring(0, floor(phoneNumber.length * 0.5).toInt())
+                            .padEnd(phoneNumber.length, '*')
+
 
                         // start the verify OTP activity
                         cardViewSms.setOnClickListener {
                             val requestBundle = Bundle()
-                            requestBundle.putString("phoneNumber", matchingAccount.phoneNumber)
+                            requestBundle.putString("phoneNumber", matchingAccount!!.phoneNumber)
 
                             val requestIntent =
                                 Intent(this@AuthForgotPassword, AuthForgotVerifyOTP::class.java)
@@ -81,23 +86,22 @@ class AuthForgotPassword : AppCompatActivity() {
 
                     // if email is available, which in most case is
                     // this check may be removed later
-                    if (matchingAccount.emailAddress != null) {
+                    if (matchingAccount!!.emailAddress != null) {
                         val emailUsername =
-                            matchingAccount.emailAddress!!.split("@".toRegex()).toTypedArray()[0]
+                            matchingAccount!!.emailAddress!!.split("@".toRegex()).toTypedArray()[0]
+                        val emailWorkplace =
+                            matchingAccount!!.emailAddress!!.split("@".toRegex()).toTypedArray()[1]
 
-                        txtEmail.text = emailUsername.replace(
-                            emailUsername.substring(
-                                floor(emailUsername.length * 0.7).toInt(),
-                                emailUsername.length - 1
-                            ),
-                            "*"
-                        )
+                        txtEmail.text = "${
+                            emailUsername.substring(0, floor(emailUsername.length * 0.5).toInt())
+                                .padEnd(emailUsername.length, '*')
+                        }@${emailWorkplace}"
 
                         // send reset password email
                         // TODO unknown how Firebase handle the reset password process, need to clarify
                         cardViewEmail.setOnClickListener {
                             FirebaseAuth.getInstance()
-                                .sendPasswordResetEmail(matchingAccount.emailAddress!!)
+                                .sendPasswordResetEmail(matchingAccount!!.emailAddress!!)
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
                                         Toast.makeText(

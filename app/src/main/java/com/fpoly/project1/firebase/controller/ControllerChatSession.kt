@@ -59,14 +59,6 @@ class ControllerChatSession : ControllerBase<ChatSession>("table_chat_sessions")
         }
     }
 
-    override fun removeAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        TODO("Not yet implemented")
-    }
-
     override fun getSync(referenceId: String?): ChatSession? {
         return try {
             Tasks.await(
@@ -80,14 +72,6 @@ class ControllerChatSession : ControllerBase<ChatSession>("table_chat_sessions")
 
             null
         }
-    }
-
-    override fun getAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        TODO("Not yet implemented")
     }
 
     override fun getAllSync(): ArrayList<ChatSession>? {
@@ -109,15 +93,6 @@ class ControllerChatSession : ControllerBase<ChatSession>("table_chat_sessions")
             Log.e(this.javaClass.simpleName, "Error while getting all entries", e)
 
             null
-        }
-    }
-
-    override fun getAllAsync(successListener: SuccessListener?, failureListener: FailureListener?) {
-        Firebase.database.child(table).get().addOnCompleteListener { task ->
-            if (task.isSuccessful)
-                successListener?.run(task.result)
-            else
-                failureListener?.run(task.exception)
         }
     }
 

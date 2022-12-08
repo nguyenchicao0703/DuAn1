@@ -1,6 +1,7 @@
 package com.fpoly.project1.firebase
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 
 object SessionUser {
@@ -11,14 +12,9 @@ object SessionUser {
         sessionId = id
     }
 
-    val avatar: Uri?
-        get() = try {
-            Tasks.await(
-                Firebase.storage
-                    .child("/avatars/$sessionId.jpg")
-                    .downloadUrl
-            )
-        } catch (_: Throwable) {
-            null
-        }
+    val avatar: Task<Uri>
+        get() =
+            Firebase.storage
+                .child("/avatars/$sessionId.jpg")
+                .downloadUrl
 }

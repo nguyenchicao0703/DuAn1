@@ -7,7 +7,6 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.FirebaseException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.newFixedThreadPoolContext
 
 class ControllerCustomer : ControllerBase<Customer>("table_customers") {
     /**
@@ -30,7 +29,11 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
             if (!update) {
                 val listUsers = this.getAllSync() ?: return false
                 if (listUsers.stream()
-                        .anyMatch { account: Customer? -> account!!.emailAddress == value.emailAddress || account.gid == value.gid || account.fid == value.fid }
+                        .anyMatch { account: Customer? ->
+                            account!!.emailAddress == value.emailAddress ||
+                                    account.gid == value.gid ||
+                                    account.fid == value.fid
+                        }
                 ) return false
 
                 rowReference = tableReference.push()
@@ -84,39 +87,12 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         }
     }
 
-    fun addAsync(value: Customer, successListener: SuccessListener?, failureListener: FailureListener?) {
-        getAllAsync(
-            successListener = object: SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    val customers = ArrayList<Customer>()
-                    if (dataSnapshot != null)
-                        for (entry in dataSnapshot.children)
-                            customers.add(entry.getValue(Customer::class.java)!!)
-
-                    if (customers.stream().anyMatch {
-                            it!!.emailAddress == value.emailAddress ||
-                                    it.gid == value.gid ||
-                                    it.fid == value.fid
-                        }) {
-                        failureListener?.run(Exception("Entry already exists"))
-                    } else {
-                        val rowReference = Firebase.database.child(table).push()
-
-                        // override ID
-                        value.id = rowReference.key
-                        Firebase.database.child(table).child(value.id!!)
-                            .setValue(value)
-                            .addOnCompleteListener {
-                                if (it.isSuccessful)
-                                    successListener?.run(value.id)
-                                else
-                                    failureListener?.run(it.exception)
-                            }
-                    }
-                }
-            },
-            failureListener
-        )
+    fun addAsync(
+        value: Customer,
+        successListener: SuccessListener?,
+        failureListener: FailureListener?
+    ) {
+        setAsync(value, false, successListener, failureListener)
     }
 
     override fun setAsync(
@@ -125,7 +101,48 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        getAllAsync(
+            successListener = object : SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    val customers = ArrayList<Customer>()
+                    if (dataSnapshot != null)
+                        for (entry in dataSnapshot.children)
+                            customers.add(entry.getValue(Customer::class.java)!!)
+
+                    if (!update) {
+                        if (customers.stream().anyMatch {
+                                it!!.emailAddress == value.emailAddress ||
+                                        it.gid == value.gid ||
+                                        it.fid == value.fid
+                            }) {
+                            failureListener?.run(Exception("Entry already exists"))
+                        } else {
+                            val rowReference = Firebase.database.child(table).push()
+
+                            // override ID
+                            value.id = rowReference.key
+                            Firebase.database.child(table).child(value.id!!)
+                                .setValue(value)
+                                .addOnCompleteListener {
+                                    if (it.isSuccessful)
+                                        successListener?.run(value.id)
+                                    else
+                                        failureListener?.run(it.exception)
+                                }
+                        }
+                    } else {
+                        Firebase.database.child(table).child(value.id!!).setValue(value)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful)
+                                    successListener?.run()
+                                else
+                                    failureListener?.run(it.exception)
+                            }
+                    }
+                }
+            },
+            failureListener
+        )
     }
 
     override fun removeSync(referenceId: String?): Boolean {
@@ -144,14 +161,6 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         }
     }
 
-    override fun removeAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
-    }
-
     override fun getSync(referenceId: String?): Customer? {
         return try {
             Tasks.await(
@@ -167,14 +176,6 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
         }
     }
 
-    override fun getAsync(
-        referenceId: String?,
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        return
-    }
-
     override fun getAllSync(): ArrayList<Customer>? {
         return try {
             val list = ArrayList<Customer>()
@@ -187,18 +188,6 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
             Log.e(this.javaClass.simpleName, "Error while getting all entries", e)
 
             null
-        }
-    }
-
-    override fun getAllAsync(
-        successListener: SuccessListener?,
-        failureListener: FailureListener?
-    ) {
-        Firebase.database.child(table).get().addOnCompleteListener {
-            if (it.isSuccessful)
-                successListener?.run(it.result)
-            else
-                failureListener?.run(it.exception)
         }
     }
 }

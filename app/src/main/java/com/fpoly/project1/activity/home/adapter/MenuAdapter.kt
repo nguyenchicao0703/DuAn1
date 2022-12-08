@@ -12,19 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
-import com.fpoly.project1.firebase.controller.ControllerProductCategory
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 
-class MenuAdapter(private val context: Context, private val products: List<Product>) :
-    RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-    private val categories = ControllerProductCategory().getAllSync()!!
+class MenuAdapter(
+    private val context: Context, private val products: List<Product>, private val
+    categories: List<ProductCategory>
+) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
+    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     override fun getItemCount(): Int = products.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent))
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
@@ -32,7 +32,7 @@ class MenuAdapter(private val context: Context, private val products: List<Produ
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price
+        holder.productPrice.text = product.price.toString()
         holder.productType.text = categories.filter { productCategory: ProductCategory ->
             productCategory.id.equals(product.categoryId)
         }[0].name
