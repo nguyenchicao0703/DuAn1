@@ -6,6 +6,14 @@ Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị gi
 - Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
 activity in ``AuthRegister``
 
+*Ưu tiên:
+- Đăng nhập được
+- Hiển thị sản phẩm
+- Tìm kiếm sản phẩm
+- Thêm vào giỏ hàng
+- Thanh toán
+- Người bán xác nhận trạng thái đơn hàng
+
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 
 **Layout**: Chí Cao
