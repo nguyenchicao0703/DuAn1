@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import com.fpoly.project1.R
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -17,15 +18,27 @@ import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class AuthForgotPassword : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
+    private lateinit var backButton: ImageView
+    private lateinit var cardViewSms: CardView
+    private lateinit var cardViewEmail: CardView
+    private lateinit var txtSms: TextView
+    private lateinit var txtEmail: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_forgot_pwd)
 
-        findViewById<ImageView>(R.id.forgot_iv_back).setOnClickListener { finish() }
+        backButton = findViewById<ImageView>(R.id.forgot_iv_back)
+        backButton.setOnClickListener { finish() }
+
+        // bindings
+        cardViewSms = findViewById(R.id.forgot_cardView_sms)
+        txtSms = findViewById(R.id.forgot_txt_sms)
+        cardViewEmail = findViewById(R.id.forgot_cardView_email)
+        txtEmail = findViewById(R.id.forgot_txt_email)
 
         // get email data
         val requestEmail = intent.extras!!.getString("email", null)
@@ -55,27 +68,20 @@ class AuthForgotPassword : AppCompatActivity() {
                         return
                     }
 
-                    // bindings
-                    val cardViewSms = findViewById<CardView>(R.id.forgot_cardView_sms)
-                    val txtSms = findViewById<TextView>(R.id.forgot_txt_sms)
-                    val cardViewEmail = findViewById<CardView>(R.id.forgot_cardView_email)
-                    val txtEmail = findViewById<TextView>(R.id.forgot_txt_email)
-
                     // if phone number is available
                     if (matchingAccount!!.phoneNumber?.isEmpty() != true) {
                         val phoneNumber = matchingAccount!!.phoneNumber!!
-                        txtSms.text = phoneNumber.substring(0, floor(phoneNumber.length * 0.5).toInt())
-                            .padEnd(phoneNumber.length, '*')
-
+                        txtSms.text =
+                            phoneNumber.substring(0, floor(phoneNumber.length * 0.5).toInt())
+                                .padEnd(phoneNumber.length, '*')
 
                         // start the verify OTP activity
                         cardViewSms.setOnClickListener {
-                            val requestBundle = Bundle()
-                            requestBundle.putString("phoneNumber", matchingAccount!!.phoneNumber)
-
                             val requestIntent =
                                 Intent(this@AuthForgotPassword, AuthForgotVerifyOTP::class.java)
-                            requestIntent.putExtras(requestBundle)
+                            requestIntent.putExtras(
+                                bundleOf(Pair("phoneNumber", matchingAccount!!.phoneNumber))
+                            )
 
                             startActivity(requestIntent)
                         }

@@ -48,6 +48,7 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
     // timer tasks for resend verification code
     private var timerSeconds = 0
     private var timerObject: Timer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_forgot_pwd_otp)
@@ -65,7 +66,7 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
         val displayPhoneNumber = findViewById<TextView>(R.id.fotgotPassword_OTP_txt_sdt)
         displayPhoneNumber.text = requestPhoneNumber.replace(
             requestPhoneNumber.substring(
-                floor(requestPhoneNumber.length * 0.7).toInt(),
+                floor(requestPhoneNumber.length * 0.5).toInt(),
                 requestPhoneNumber.length - 1
             ),
             "*"
@@ -84,9 +85,8 @@ class AuthForgotVerifyOTP : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     // this will log the user in, then switch to reset password activity
                     if (task.isSuccessful) {
-                        startActivity(
-                            Intent(this@AuthForgotVerifyOTP, AuthResetPassword::class.java)
-                        )
+                        startActivity(Intent(this@AuthForgotVerifyOTP, AuthResetPassword::class.java))
+                        finish()
                     } else {
                         // otherwise code is invalid
                         Toast.makeText(

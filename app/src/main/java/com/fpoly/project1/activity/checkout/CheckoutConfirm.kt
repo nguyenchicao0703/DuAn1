@@ -1,11 +1,11 @@
 package com.fpoly.project1.activity.checkout
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import com.fpoly.project1.R
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
@@ -14,13 +14,16 @@ import com.fpoly.project1.firebase.controller.ControllerOrder
 import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Order
 import com.google.firebase.database.DataSnapshot
-import java.util.*
+import java.time.Instant
 
 class CheckoutConfirm : AppCompatActivity() {
     private lateinit var paymentHolder: TextView
     private lateinit var paymentSubtotal: TextView
     private lateinit var paymentTax: TextView
     private lateinit var paymentTotal: TextView
+    private lateinit var paymentConfirm: Button
+    private lateinit var backButton: ImageView
+
     private val controllerCustomer = ControllerCustomer()
     private val controllerOrder = ControllerOrder()
 
@@ -28,54 +31,65 @@ class CheckoutConfirm : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.checkout_confirm)
 
-        controllerCustomer.getAsync(SessionUser.sessionId,
-        successListener = object : ControllerBase.SuccessListener() {
-            override fun run(dataSnapshot: DataSnapshot?) {
-                val account = dataSnapshot?.getValue(Customer::class.java)!!
+        backButton = findViewById(R.id.payment_confirmation_iv_back)
+        backButton.setOnClickListener { finish() }
 
-                var subTotal = 0L
-                SessionUser.cart.forEach { subTotal += it.first.price!! * it.second }
-                val subFees = subTotal * 0.1
+        paymentHolder = findViewById(R.id.payment_confirmation_txt_name)
+        paymentSubtotal = findViewById(R.id.payment_confirmation_txt_subtotal)
+        paymentTax = findViewById(R.id.payment_confirmation_txt_tax)
+        paymentTotal = findViewById(R.id.payment_confirmation_txt_total)
+        paymentConfirm = findViewById(R.id.payment_confirmation_btn_confirm)
 
-                // bindings
-                paymentHolder = findViewById(R.id.payment_confirmation_txt_name)
-                paymentHolder.text = account.fullName
-                paymentSubtotal = findViewById(R.id.payment_confirmation_txt_subtotal)
-                paymentSubtotal.text = subTotal.toString()
-                paymentTax = findViewById(R.id.payment_confirmation_txt_tax)
-                paymentTax.text = subFees.toString()
-                paymentTotal = findViewById(R.id.payment_confirmation_txt_total)
-                paymentTotal.text = (subTotal + subFees).toString()
+        controllerCustomer.getAsync(
+            SessionUser.sessionId,
+            successListener = object : ControllerBase.SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    val account = dataSnapshot?.getValue(Customer::class.java)!!
 
-                findViewById<ImageView>(R.id.payment_confirmation_iv_back).setOnClickListener { finish() }
-                findViewById<AppCompatButton>(R.id.payment_confirmation_btn_confirm).setOnClickListener {
-                    val list = HashMap<String, Int>()
-                    SessionUser.cart.forEach { list[it.first.id!!] = it.second }
+                    var subTotal = 0L
+                    SessionUser.cart.forEach { subTotal += it.first.price!! * it.second }
+                    val subFees = subTotal * 0.1
 
-                    controllerOrder.setAsync(
-                        Order(
-                            "",
-                            account.id!!,
-                            Date().time.toString(),
-                            0,
-                            list
-                        ), false,
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run() {
-                                Toast.makeText(this@CheckoutConfirm, "Mock payment succeeded", Toast
-                                    .LENGTH_SHORT).show()
+                    // bindings
+                    paymentHolder.text = account.fullName
+                    paymentSubtotal.text = subTotal.toString()
+                    paymentTax.text = subFees.toString()
+                    paymentTotal.text = (subTotal + subFees).toString()
+
+                    paymentConfirm.setOnClickListener {
+                        val list = HashMap<String, Int>()
+                        SessionUser.cart.forEach { list[it.first.id!!] = it.second }
+
+                        controllerOrder.setAsync(
+                            Order(
+                                "",
+                                account.id!!,
+                                Instant.now().toEpochMilli().toString(),
+                                0,
+                                list
+                            ),
+                            false,
+                            successListener = object : ControllerBase.SuccessListener() {
+                                override fun run() {
+                                    Toast.makeText(
+                                        this@CheckoutConfirm, "Mock payment succeeded", Toast
+                                            .LENGTH_SHORT
+                                    ).show()
+                                }
+                            },
+                            failureListener = object : ControllerBase.FailureListener() {
+                                override fun run(error: Exception?) {
+                                    Toast.makeText(
+                                        this@CheckoutConfirm, "Failed to place order", Toast
+                                            .LENGTH_SHORT
+                                    ).show()
+                                }
                             }
-                        },
-                        failureListener = object : ControllerBase.FailureListener() {
-                            override fun run(error: Exception?) {
-                                Toast.makeText(this@CheckoutConfirm, "Failed to place order", Toast
-                                    .LENGTH_SHORT).show()
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
-            }
-        },
-        failureListener = null)
+            },
+            failureListener = null
+        )
     }
 }

@@ -9,19 +9,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.checkout.CheckoutOverview
 import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.SessionUser
-import com.fpoly.project1.firebase.controller.ControllerBase
-import com.fpoly.project1.firebase.controller.ControllerProduct
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
-import com.google.firebase.database.DataSnapshot
 
 class CheckoutAdapter(
     private val context: Context,
@@ -30,14 +25,7 @@ class CheckoutAdapter(
     private var categories: List<ProductCategory>
 ) : RecyclerView.Adapter<CheckoutAdapter.ViewHolder>() {
 
-    private var recyclerView: RecyclerView? = null
     private val layoutInflater = LayoutInflater.from(context)
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-
-        this.recyclerView = recyclerView
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(layoutInflater.inflate(R.layout.item_recycler_cart, parent, false))
@@ -49,15 +37,19 @@ class CheckoutAdapter(
             .into(holder.productThumbnail)
 
         holder.productName.text = product.name
+
         holder.productPrice.text = product.price.toString()
+
         holder.productType.text =
             categories.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(
                     product.categoryId
                 )
             }[0].name
+
         holder.productCount.text =
             list[holder.absoluteAdapterPosition].second.toString()
+
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
             bundleData.putString("id", product.id)
@@ -82,16 +74,19 @@ class CheckoutAdapter(
                 fragment.renderTotalCost()
             }
         }
+
         holder.productCountRemove.setOnClickListener {
             SessionUser.cart.find { item ->
                 item.first.id == list[position].first.id
             }?.let { entry ->
                 val index = SessionUser.cart.indexOf(entry)
 
-                SessionUser.cart.add(index, Pair(
-                    entry.first,
-                    if (entry.second - 1 < 0) 1 else entry.second - 1
-                ))
+                SessionUser.cart.add(
+                    index, Pair(
+                        entry.first,
+                        if (entry.second - 1 < 0) 1 else entry.second - 1
+                    )
+                )
                 SessionUser.cart.remove(entry)
 
                 notifyItemChanged(index)
@@ -101,19 +96,6 @@ class CheckoutAdapter(
     }
 
     override fun getItemCount(): Int = list.size
-
-    fun updateList(
-        newProductList: List<Pair<Product, Int>>, newCategoryList:
-        List<ProductCategory>?
-    ) {
-        println("Trying to update recycler")
-        if (newCategoryList != null)
-            this.categories = newCategoryList
-
-        notifyItemRangeRemoved(0, list.size)
-        this.list = newProductList
-        notifyItemRangeInserted(0, newProductList.size)
-    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var productThumbnail: ImageView

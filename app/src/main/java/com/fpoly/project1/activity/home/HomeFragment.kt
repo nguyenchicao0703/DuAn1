@@ -22,25 +22,23 @@ import com.google.firebase.database.DataSnapshot
 class HomeFragment : Fragment(R.layout.home_main) {
     private val controllerCustomer = ControllerCustomer()
     private val controllerProduct = ControllerProduct()
-    private lateinit var statusBarWelcomeView: TextView
+
+    private lateinit var statusBar: TextView
+    private lateinit var searchBox: EditText
+    private lateinit var seeAllMenu: TextView
+    private lateinit var seeAllFeatured: TextView
+    private lateinit var recyclerMenu: RecyclerView
+    private lateinit var recyclerFeatured: RecyclerView
 
     override fun onResume() {
         super.onResume()
-        statusBarWelcomeView = requireActivity().findViewById(R.id.home_txt_statusBar_title)
 
-        // greeting
-        controllerCustomer.getAllAsync(
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    dataSnapshot?.children?.forEach {
-                        val account = it.getValue(Customer::class.java)!!
-                        if (account.id == SessionUser.sessionId)
-                            statusBarWelcomeView.text = "Hello, ${account.fullName}"
-                    }
-                }
-            },
-            null
-        )
+        statusBar = requireActivity().findViewById(R.id.home_txt_statusBar_title)
+        searchBox = requireActivity().findViewById(R.id.home_edt_search)
+        seeAllMenu = requireActivity().findViewById(R.id.home_txt_seeAll_product_menu)
+        seeAllFeatured = requireActivity().findViewById(R.id.home_txt_seeAll_product_featured)
+        recyclerMenu = requireActivity().findViewById(R.id.home_recyclerView_product_menu)
+        recyclerFeatured = requireActivity().findViewById(R.id.home_recyclerView_product_featured)
 
         // search box
         fun switchToSearchFragment() {
@@ -51,38 +49,42 @@ class HomeFragment : Fragment(R.layout.home_main) {
                     .selectedItemId = R.id.mSearch
             }
         }
-        requireActivity().findViewById<EditText>(R.id.home_edt_search).setOnClickListener {
-            switchToSearchFragment()
-        }
-        requireActivity().findViewById<TextView>(R.id.home_txt_seeAll_product_menu)
-            .setOnClickListener {
-                switchToSearchFragment()
-            }
-        requireActivity().findViewById<TextView>(R.id.home_txt_seeAll_product_featured)
-            .setOnClickListener { switchToSearchFragment() }
+        searchBox.setOnClickListener { switchToSearchFragment() }
+        seeAllMenu.setOnClickListener { switchToSearchFragment() }
+        seeAllFeatured.setOnClickListener { switchToSearchFragment() }
+
+        // greeting
+        controllerCustomer.getAllAsync(
+            successListener = object : ControllerBase.SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    dataSnapshot?.children?.forEach {
+                        val account = it.getValue(Customer::class.java)!!
+                        if (account.id == SessionUser.sessionId)
+                            statusBar.text = "Hello, ${account.fullName}"
+                    }
+                }
+            },
+            failureListener = null
+        )
 
         // menu list - limit 10
-        val menuView =
-            requireActivity().findViewById<RecyclerView>(R.id.home_recyclerView_product_menu)
         controllerProduct.getAllAsync(
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     val products = ArrayList<Product>()
-                    if (dataSnapshot != null)
-                        for (child in dataSnapshot.children) {
-                            products.add(child.getValue(Product::class.java)!!)
-                        }
+                    dataSnapshot?.children?.forEach { entry ->
+                        products.add(entry.getValue(Product::class.java)!!)
+                    }
 
                     ControllerProductCategory().getAllAsync(
                         successListener = object : ControllerBase.SuccessListener() {
                             override fun run(dataSnapshot: DataSnapshot?) {
                                 val categories = ArrayList<ProductCategory>()
-                                if (dataSnapshot != null)
-                                    for (child in dataSnapshot.children) {
-                                        categories.add(child.getValue(ProductCategory::class.java)!!)
-                                    }
+                                dataSnapshot?.children?.forEach { entry ->
+                                    categories.add(entry.getValue(ProductCategory::class.java)!!)
+                                }
 
-                                menuView.adapter =
+                                recyclerMenu.adapter =
                                     MenuAdapter(requireContext(), products, categories)
                             }
                         },
@@ -95,18 +97,15 @@ class HomeFragment : Fragment(R.layout.home_main) {
 
         // TODO implement featured products by purchase amounts for past week (or a period of time)
         // featured list - limit 10
-        val featuredView =
-            requireActivity().findViewById<RecyclerView>(R.id.home_recyclerView_product_featured)
         controllerProduct.getAllAsync(
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     val list = ArrayList<Product>()
-                    if (dataSnapshot != null)
-                        for (child in dataSnapshot.children) {
-                            list.add(child.getValue(Product::class.java)!!)
-                        }
+                    dataSnapshot?.children?.forEach { entry ->
+                        list.add(entry.getValue(Product::class.java)!!)
+                    }
 
-                    featuredView.adapter = FeaturedAdapter(requireContext(), list)
+                    recyclerFeatured.adapter = FeaturedAdapter(requireContext(), list)
                 }
             },
             null

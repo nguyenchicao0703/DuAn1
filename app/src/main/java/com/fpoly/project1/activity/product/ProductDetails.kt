@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
+import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
@@ -24,7 +24,6 @@ import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Product
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
-import de.hdodenhof.circleimageview.CircleImageView
 
 class ProductDetails : BottomSheetDialogFragment() {
     private val controllerCustomer = ControllerCustomer()
@@ -32,12 +31,31 @@ class ProductDetails : BottomSheetDialogFragment() {
     private lateinit var owner: Customer
     private lateinit var customer: Customer
 
+    private lateinit var backButton: ImageView
+    private lateinit var ownerAvatar: ImageView
+    private lateinit var ownerFullName: TextView
+    private lateinit var ownerEmail: TextView
+    private lateinit var ownerChat: Button
+
+    private lateinit var productThumbnail: ImageView
+    private lateinit var productName: TextView
+    private lateinit var productDescription: TextView
+    private lateinit var productPrice: TextView
+    private lateinit var productFavoriteStatus: ImageView
+
+    private lateinit var cartAmount: TextView
+    private lateinit var cartRemove: Button
+    private lateinit var cartAdd: Button
+    private lateinit var cartButton: Button
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.product_product_detailed, container, false)
+
+        bindViews(view)
 
         ControllerCustomer().getAsync(
             SessionUser.sessionId,
@@ -71,12 +89,29 @@ class ProductDetails : BottomSheetDialogFragment() {
         return view
     }
 
+    private fun bindViews(view: View) {
+        backButton = view.findViewById(R.id.userPage_iv_back)
+        ownerAvatar = view.findViewById(R.id.userPage_iv_avatar)
+        ownerFullName = view.findViewById(R.id.userPage_txt_user_name)
+        ownerEmail = view.findViewById(R.id.userPage_txt_user_email)
+        ownerChat = view.findViewById(R.id.userPage_users_btn_chat)
+
+        productThumbnail = view.findViewById(R.id.userPage_iv_product)
+        productName = view.findViewById(R.id.userPage_txt_name_product)
+        productDescription = view.findViewById(R.id.userPage_txt_description)
+        productPrice = view.findViewById(R.id.userPage_txt_price)
+        productFavoriteStatus = view.findViewById(R.id.userPage_iv_favourite)
+
+        cartAmount = view.findViewById(R.id.userPage_txt_amount)
+        cartAdd = view.findViewById(R.id.userPage_btn_add)
+        cartRemove = view.findViewById(R.id.userPage_btn_minimize)
+        cartButton = view.findViewById(R.id.userPage_users_btn_cart)
+    }
+
     private fun runLater(view: View) {
         // bindings
-        view.findViewById<ImageView>(R.id.userPage_iv_back).setOnClickListener {
-            this.dismiss()
-        }
-        view.findViewById<CircleImageView>(R.id.userPage_iv_avatar).let {
+        backButton.setOnClickListener { dismiss() }
+        ownerAvatar.let {
             it.setOnClickListener { showProfile() }
             Firebase.storage.child("/avatars/${owner.id}.jpg").downloadUrl
                 .addOnCompleteListener { task ->
@@ -86,53 +121,51 @@ class ProductDetails : BottomSheetDialogFragment() {
                         Glide.with(this).load(owner.avatarUrl).into(it)
                 }
         }
-        view.findViewById<TextView>(R.id.userPage_txt_user_name).let {
+        ownerFullName.let {
             it.text = owner.fullName
             it.setOnClickListener { showProfile() }
         }
         // no we don't display user's email without their consent
-        view.findViewById<TextView>(R.id.userPage_txt_user_email).let {
-            it.text = "email hidden for privacy"
+        ownerEmail.text = "email hidden for privacy"
+
+        // chat button
+        ownerChat.setOnClickListener {
+            val intentData = Intent(requireContext(), ChatView::class.java)
+            intentData.putExtras(bundleOf(Pair("id", owner.id)))
+
+            startActivity(intentData)
         }
 
-        view.findViewById<ImageView>(R.id.userPage_iv_product).let {
-            Glide.with(this).load(product.thumbnails?.get(0)).into(it)
-        }
-        view.findViewById<TextView>(R.id.userPage_txt_name_product).text = product.name
-        view.findViewById<TextView>(R.id.userPage_txt_price).text =
-            product.price.toString()
-        view.findViewById<TextView>(R.id.userPage_txt_description).text =
-            product.description
+        // favorite status listener
+        favoriteViewListener(productFavoriteStatus)
 
-        favoriteViewListener(view.findViewById<ImageView>(R.id.userPage_iv_favourite))
+        Glide.with(this).load(product.thumbnails?.get(0)).into(productThumbnail)
+        productName.text = product.name
+        productPrice.text = product.price.toString()
+        productDescription.text = product.description
 
-        val cartAmountView = view.findViewById<TextView>(R.id.userPage_txt_amount)
-        view.findViewById<AppCompatButton>(R.id.userPage_btn_add).setOnClickListener {
-            cartAmountView.text = (cartAmountView.text.toString().toInt() + 1).toString()
-        }
-        view.findViewById<AppCompatButton>(R.id.userPage_btn_minimize)
-            .setOnClickListener {
-                val cartAmountNumber = cartAmountView.text.toString().toInt()
-
-                cartAmountView.text =
-                    if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
-            }
-        view.findViewById<Button>(R.id.userPage_users_btn_cart).setOnClickListener {
-            SessionUser.cart.add(Pair(product, cartAmountView.text.toString().toInt()))
-
-            Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
+        // add amount to current view
+        cartAdd.setOnClickListener {
+            cartAmount.text = (cartAmount.text.toString().toInt() + 1).toString()
         }
 
-        view.findViewById<AppCompatButton>(R.id.userPage_users_btn_chat)
-            .setOnClickListener {
-                val bundleData = Bundle()
-                bundleData.putString("id", owner.id)
+        // remove amount from current view
+        cartRemove.setOnClickListener {
+            val cartAmountNumber = cartAmount.text.toString().toInt()
 
-                val intentData = Intent(requireContext(), ChatView::class.java)
-                intentData.putExtras(bundleData)
+            cartAmount.text =
+                if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
+        }
 
-                startActivity(intentData)
-            }
+        // add to card
+        cartButton.setOnClickListener {
+            SessionUser.cart.add(Pair(product, cartAmount.text.toString().toInt()))
+
+            Toast.makeText(
+                requireContext(), "Added ${cartAmount.text.toString().toInt()}x to " +
+                        "cart", Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun favoriteViewListener(favView: ImageView) {
@@ -168,8 +201,7 @@ class ProductDetails : BottomSheetDialogFragment() {
                             requireContext(),
                             "Updated favorite status",
                             Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        ).show()
 
                         // TODO untested color check
                         favView.backgroundTintList =
@@ -200,11 +232,8 @@ class ProductDetails : BottomSheetDialogFragment() {
     }
 
     private fun showProfile() {
-        val bundle = Bundle()
-        bundle.putString("id", owner.id!!)
-
         val fragment = ProductProfileView()
-        fragment.arguments = bundle
+        fragment.arguments = bundleOf(Pair("id", owner.id!!))
         fragment.show(parentFragmentManager, "product_profile_view")
     }
 }

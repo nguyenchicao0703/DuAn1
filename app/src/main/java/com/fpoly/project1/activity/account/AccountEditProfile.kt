@@ -3,13 +3,13 @@ package com.fpoly.project1.activity.account
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.widget.AppCompatButton
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.enums.RequestCode
@@ -25,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class AccountEditProfile : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
+
     private lateinit var profileAvatar: CircleImageView
     private lateinit var profileName: EditText
     private lateinit var profileEmail: EditText
@@ -32,65 +33,14 @@ class AccountEditProfile : AppCompatActivity() {
     private lateinit var profileAddress: EditText
     private lateinit var profileBirthDate: EditText
 
+    private lateinit var buttonUpdateProfile: AppCompatButton
+    private lateinit var buttonUpdatePassword: AppCompatButton
+
     private lateinit var profileNameToggle: ImageView
     private lateinit var profileEmailToggle: ImageView
     private lateinit var profilePhoneToggle: ImageView
     private lateinit var profileAddressToggle: ImageView
     private lateinit var profileBirthDateToggle: ImageView
-
-    private fun updateFields(account: Customer?) {
-        controllerCustomer.getAsync(
-            SessionUser.sessionId,
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    val acc = account ?: dataSnapshot?.getValue(Customer::class.java)!!
-
-                    profileAvatar.let {
-                        Firebase.storage.child("/avatars/${acc.id}.jpg").downloadUrl
-                            .addOnCompleteListener { uri ->
-                                if (uri.isSuccessful)
-                                    Glide.with(this@AccountEditProfile).load(uri.result)
-                                        .into(profileAvatar)
-                                else
-                                    Glide.with(this@AccountEditProfile).load(acc.avatarUrl)
-                                        .into(profileAvatar)
-                            }
-
-                        it.setOnClickListener {
-                            val intent = Intent()
-                            intent.type = "image/*"
-                            intent.action = Intent.ACTION_GET_CONTENT
-                            startActivityForResult(
-                                Intent.createChooser(intent, "Select Picture"),
-                                RequestCode.PROFILE_IMAGE_UPLOAD
-                            )
-                        }
-                    }
-                    profileName.let {
-                        it.setText(acc.fullName)
-                        it.isEnabled = false
-                    }
-                    profileEmail.let {
-                        it.setText(acc.emailAddress)
-                        it.isEnabled = false
-                    }
-                    profilePhone.let {
-                        it.setText(acc.phoneNumber)
-                        it.isEnabled = false
-                    }
-                    profileBirthDate.let {
-                        it.setText(acc.birthDate)
-                        it.isEnabled = false
-                    }
-                    profileAddress.let {
-                        it.setText(acc.postalAddress)
-                        it.isEnabled = false
-                    }
-                }
-            },
-            failureListener = null
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,146 +53,27 @@ class AccountEditProfile : AppCompatActivity() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     val account = dataSnapshot!!.getValue(Customer::class.java)!!
 
-                    // bindings
-                    val buttonUpdateProfile =
-                        findViewById<Button>(R.id.edit_profile_btn_save_changes)
-                    val buttonUpdatePassword =
-                        findViewById<Button>(R.id.edit_profile_btn_change_password)
-
-                    // edit text bindings
-                    profileAvatar = findViewById(R.id.edit_profile_iv_avt)
-                    profileName = findViewById(R.id.edit_profile_txt_name)
-                    profileEmail = findViewById(R.id.edit_profile_txt_email)
-                    profileAddress = findViewById(R.id.edit_profile_txt_address)
-                    profilePhone = findViewById(R.id.edit_profile_txt_phoneNumber)
-                    profileBirthDate = findViewById(R.id.edit_profile_txt_birthDate)
-
-                    // image view bindings
-                    profileNameToggle = findViewById(R.id.edit_profile_iv_edit_name)
-                    profileEmailToggle = findViewById(R.id.edit_profile_iv_edit_email)
-                    profileAddressToggle = findViewById(R.id.edit_profile_iv_edit_address)
-                    profilePhoneToggle = findViewById(R.id.edit_profile_iv_edit_phoneNumber)
-                    profileBirthDateToggle = findViewById(R.id.edit_profile_iv_edit_birthDate)
-
-                    findViewById<ImageView>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
-
-                    // toggle update button
-                    for (
-                    element in arrayOf(
-                        profileName,
-                        profileEmail,
-                        profilePhone,
-                        profileAddress,
-                        profileBirthDate
-                    )
-                    ) {
-                        element.setOnFocusChangeListener { _: View, _: Boolean ->
-                            when (element) {
-                                profileName ->
-                                    if (profileName.text.toString() == account.fullName) View.GONE else View.VISIBLE
-                                profileEmail ->
-                                    if (profileEmail.text.toString() == account.emailAddress) View.GONE else View.VISIBLE
-                                profilePhone ->
-                                    if (profilePhone.text.toString() == account.phoneNumber) View.GONE else View.VISIBLE
-                                profileAddress ->
-                                    if (profileAddress.text.toString() == account.postalAddress) View.GONE else View.VISIBLE
-                                profileBirthDate ->
-                                    if (profileBirthDate.text.toString() == account.birthDate) View.GONE else View.VISIBLE
-                            }
-                        }
-                    }
-
-                    // toggle edit text
-                    for (
-                    element in arrayOf(
-                        profileNameToggle,
-                        profileEmailToggle,
-                        profilePhoneToggle,
-                        profileAddressToggle,
-                        profileBirthDateToggle
-                    )
-                    ) {
-                        element.setOnClickListener {
-                            when (element) {
-                                profileNameToggle -> profileName.isEnabled = !profileName.isEnabled
-                                profileEmailToggle -> profileEmail.isEnabled =
-                                    !profileEmail.isEnabled
-                                profilePhoneToggle -> profilePhone.isEnabled =
-                                    !profilePhone.isEnabled
-                                profileAddressToggle -> profileAddress.isEnabled =
-                                    !profileAddress.isEnabled
-                                profileBirthDateToggle -> profileBirthDate.isEnabled =
-                                    !profileBirthDate.isEnabled
-                            }
-                        }
-                    }
+                    // bind views
+                    bindViews(account)
 
                     // update edit text fields
-                    updateFields(account)
+                    updateViews(account)
 
                     // update profile
-                    buttonUpdateProfile.setOnClickListener {
-                        controllerCustomer.setAsync(
-                            Customer(
-                                account.id, // keep, reference ID
-                                account.gid, // keep
-                                account.fid, // keep
-                                account.avatarUrl, // keep
-                                profileName.text.toString(), // override
-                                profileBirthDate.text.toString(), // override
-                                profileEmail.text.toString(), // override
-                                profilePhone.text.toString(), // override
-                                profileAddress.text.toString(), // override
-                                account.favoriteIds // keep
-                            ),
-                            true,
-                            successListener = object : ControllerBase.SuccessListener() {
-                                override fun run() {
-                                    Toast.makeText(
-                                        this@AccountEditProfile, "Successfully updated profile",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    // update edit text fields
-                                    updateFields(null)
-                                }
-                            },
-                            failureListener = object : ControllerBase.FailureListener() {
-                                override fun run(error: Exception?) {
-                                    Toast.makeText(
-                                        this@AccountEditProfile,
-                                        "Failed to update profile",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
-                                }
-                            }
-                        )
-                    }
+                    buttonUpdateProfile.setOnClickListener(updateProfile(account))
 
                     // Change password button callback
-                    buttonUpdatePassword.setOnClickListener {
-                        FirebaseAuth.getInstance()
-                            .sendPasswordResetEmail(FirebaseAuth.getInstance().currentUser!!.email!!)
-                            .addOnCompleteListener { task: Task<Void?> ->
-                                if (task.isSuccessful) {
-                                    Toast.makeText(
-                                        this@AccountEditProfile,
-                                        "Reset password email has been sent, please check your inbox",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
-                                    Toast.makeText(
-                                        this@AccountEditProfile, "Failed to send email", Toast
-                                            .LENGTH_SHORT
-                                    ).show()
-                                    task.exception!!.printStackTrace()
-                                }
-                            }
-                    }
+                    buttonUpdatePassword.setOnClickListener(updatePasswordRequest())
                 }
             },
-            null
+            failureListener = object : ControllerBase.FailureListener() {
+                override fun run(error: Exception?) {
+                    Toast.makeText(
+                        this@AccountEditProfile, "Failed to retrieve data from " +
+                                "server", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         )
     }
 
@@ -276,4 +107,207 @@ class AccountEditProfile : AppCompatActivity() {
         }
     }
 
+    private fun updateViews(account: Customer?) {
+        // get the current use object
+        controllerCustomer.getAsync(
+            SessionUser.sessionId,
+            successListener = object : ControllerBase.SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    // customer object
+                    val acc = account ?: dataSnapshot?.getValue(Customer::class.java)!!
+
+                    // try to load the user's avatar from storage
+                    profileAvatar.let {
+                        Firebase.storage.child("/avatars/${acc.id}.jpg").downloadUrl
+                            .addOnCompleteListener { uri ->
+                                if (uri.isSuccessful)
+                                    Glide.with(this@AccountEditProfile).load(uri.result)
+                                        .into(profileAvatar)
+                                else
+                                    Glide.with(this@AccountEditProfile).load(acc.avatarUrl)
+                                        .into(profileAvatar)
+                            }
+
+                        // set on click to open up any image picker
+                        it.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(
+                                Intent.createChooser(intent, "Select Picture"),
+                                RequestCode.PROFILE_IMAGE_UPLOAD
+                            )
+                        }
+                    }
+                    profileName.let {
+                        it.setText(acc.fullName)
+                        it.isEnabled = false
+                    }
+                    profileEmail.let {
+                        it.setText(acc.emailAddress)
+                        it.isEnabled = false
+                    }
+                    profilePhone.let {
+                        it.setText(acc.phoneNumber)
+                        it.isEnabled = false
+                    }
+                    profileBirthDate.let {
+                        it.setText(acc.birthDate)
+                        it.isEnabled = false
+                    }
+                    profileAddress.let {
+                        it.setText(acc.postalAddress)
+                        it.isEnabled = false
+                    }
+                }
+            },
+            failureListener = object : ControllerBase.FailureListener() {
+                override fun run(error: Exception?) {
+                    Toast.makeText(
+                        this@AccountEditProfile, "Failed to retrieve data", Toast
+                            .LENGTH_SHORT
+                    ).show()
+
+                    Log.e(this@AccountEditProfile::class.simpleName, "Error", error)
+                }
+            }
+        )
+    }
+
+    private fun bindViews(account: Customer) {
+        // bindings
+        buttonUpdateProfile = findViewById(R.id.edit_profile_btn_save_changes)
+        buttonUpdatePassword = findViewById(R.id.edit_profile_btn_change_password)
+
+        // edit text bindings
+        profileAvatar = findViewById(R.id.edit_profile_iv_avt)
+        profileName = findViewById(R.id.edit_profile_txt_name)
+        profileEmail = findViewById(R.id.edit_profile_txt_email)
+        profileAddress = findViewById(R.id.edit_profile_txt_address)
+        profilePhone = findViewById(R.id.edit_profile_txt_phoneNumber)
+        profileBirthDate = findViewById(R.id.edit_profile_txt_birthDate)
+
+        // image view bindings
+        profileNameToggle = findViewById(R.id.edit_profile_iv_edit_name)
+        profileEmailToggle = findViewById(R.id.edit_profile_iv_edit_email)
+        profileAddressToggle = findViewById(R.id.edit_profile_iv_edit_address)
+        profilePhoneToggle = findViewById(R.id.edit_profile_iv_edit_phoneNumber)
+        profileBirthDateToggle = findViewById(R.id.edit_profile_iv_edit_birthDate)
+
+        findViewById<ImageView>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
+
+        // toggle update button
+        for (element in arrayOf(
+            profileName,
+            profileEmail,
+            profilePhone,
+            profileAddress,
+            profileBirthDate
+        )) {
+            element.setOnFocusChangeListener { _: View, _: Boolean ->
+                when (element) {
+                    profileName ->
+                        if (profileName.text.toString() == account.fullName)
+                            View.GONE else View.VISIBLE
+                    profileEmail ->
+                        if (profileEmail.text.toString() == account.emailAddress)
+                            View.GONE else View.VISIBLE
+                    profilePhone ->
+                        if (profilePhone.text.toString() == account.phoneNumber)
+                            View.GONE else View.VISIBLE
+                    profileAddress ->
+                        if (profileAddress.text.toString() == account.postalAddress)
+                            View.GONE else View.VISIBLE
+                    profileBirthDate ->
+                        if (profileBirthDate.text.toString() == account.birthDate)
+                            View.GONE else View.VISIBLE
+                }
+            }
+        }
+
+        // toggle edit text
+        for (element in arrayOf(
+            profileNameToggle,
+            profileEmailToggle,
+            profilePhoneToggle,
+            profileAddressToggle,
+            profileBirthDateToggle
+        )) {
+            element.setOnClickListener {
+                when (element) {
+                    profileNameToggle -> profileName.isEnabled =
+                        !profileName.isEnabled
+                    profileEmailToggle -> profileEmail.isEnabled =
+                        !profileEmail.isEnabled
+                    profilePhoneToggle -> profilePhone.isEnabled =
+                        !profilePhone.isEnabled
+                    profileAddressToggle -> profileAddress.isEnabled =
+                        !profileAddress.isEnabled
+                    profileBirthDateToggle -> profileBirthDate.isEnabled =
+                        !profileBirthDate.isEnabled
+                }
+            }
+        }
+    }
+
+    private fun updateProfile(account: Customer): View.OnClickListener =
+        View.OnClickListener {
+            controllerCustomer.setAsync(
+                Customer(
+                    account.id, // keep, reference ID
+                    account.gid, // keep
+                    account.fid, // keep
+                    account.avatarUrl, // keep
+                    profileName.text.toString(), // override
+                    profileBirthDate.text.toString(), // override
+                    profileEmail.text.toString(), // override
+                    profilePhone.text.toString(), // override
+                    profileAddress.text.toString(), // override
+                    account.favoriteIds // keep
+                ),
+                true,
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run() {
+                        Toast.makeText(
+                            this@AccountEditProfile, "Successfully updated profile",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // update edit text fields
+                        updateViews(null)
+                    }
+                },
+                failureListener = object : ControllerBase.FailureListener() {
+                    override fun run(error: Exception?) {
+                        Toast.makeText(
+                            this@AccountEditProfile,
+                            "Failed to update profile",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+            )
+        }
+
+    private fun updatePasswordRequest(): View.OnClickListener =
+        View.OnClickListener {
+            FirebaseAuth.getInstance()
+                .sendPasswordResetEmail(FirebaseAuth.getInstance().currentUser!!.email!!)
+                .addOnCompleteListener { task: Task<Void?> ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(
+                            this@AccountEditProfile,
+                            "Reset password email has been sent, please check your inbox",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@AccountEditProfile, "Failed to send email", Toast
+                                .LENGTH_SHORT
+                        ).show()
+                        task.exception!!.printStackTrace()
+                    }
+                }
+        }
 }

@@ -26,9 +26,12 @@ import com.google.firebase.database.ValueEventListener
 import java.time.Instant
 
 class ChatView : AppCompatActivity() {
+    private lateinit var backBtn: ImageView
     private lateinit var messageBox: EditText
+    private lateinit var messageSend: ImageView
     private lateinit var messageRecycler: RecyclerView
     private lateinit var messageRecyclerAdapter: ChatViewAdapter
+
     private var chatSession: ChatSession? = null
     private val controllerCustomer = ControllerCustomer()
     private val controllerChatSession = ControllerChatSession()
@@ -38,12 +41,21 @@ class ChatView : AppCompatActivity() {
         setContentView(R.layout.chat_session)
 
         // bindings
-        findViewById<ImageView>(R.id.chat_iv_back).setOnClickListener { finish() }
+        backBtn = findViewById(R.id.chat_iv_back)
         messageBox = findViewById(R.id.chat_edt_messenger)
+        messageSend = findViewById(R.id.chat_iv_send)
         messageRecycler = findViewById(R.id.chat_recycler_content)
 
-        // message box handler
-        findViewById<ImageView>(R.id.chat_iv_send).setOnClickListener(messageSendListener)
+        // handlers
+        backBtn.setOnClickListener { finish() }
+        messageSend.setOnClickListener(messageSendListener)
+        messageRecycler.let {
+            messageRecyclerAdapter = ChatViewAdapter(
+                this@ChatView,
+                ArrayList()
+            )
+            it.adapter = messageRecyclerAdapter
+        }
 
         // get target user
         if (intent.extras?.getString("id", null) == SessionUser.sessionId) {
@@ -88,36 +100,33 @@ class ChatView : AppCompatActivity() {
                         sessions.add(session.getValue(ChatSession::class.java)!!)
                     }
 
-                    val matchingSession = sessions.filter {
+                    val matchingSessions = sessions.filter {
                         it.id!!.contains(SessionUser.sessionId!!) &&
                                 it.id!!.contains(targetUser.id!!)
                     }
-                    chatSession = if (matchingSession.isNotEmpty()) matchingSession[0] else null
+                    chatSession = if (matchingSessions.isNotEmpty()) matchingSessions[0] else null
 
                     if (chatSession == null) {
-                        newChatSession(targetUser)
+                        // create new chat session
+                        createChatSession(targetUser)
                     } else {
                         // register listener
                         registerChatListener()
 
-                        messageRecycler.let {
-                            messageRecyclerAdapter = ChatViewAdapter(
-                                this@ChatView,
-                                chatSession!!.messages ?: ArrayList()
-                            )
-                            it.adapter = messageRecyclerAdapter
-                        }
+                        // update list
+                        messageRecyclerAdapter.updateList(chatSession!!.messages ?: ArrayList())
                     }
                 }
             },
             failureListener = object : ControllerBase.FailureListener() {
                 override fun run(error: Exception?) {
-                    newChatSession(targetUser)
+                    createChatSession(targetUser)
                 }
             })
     }
 
-    private fun newChatSession(targetUser: Customer) {
+    private fun createChatSession(targetUser: Customer) {
+        // register session
         chatSession =
             ChatSession(
                 "${SessionUser.sessionId}_${targetUser.id}",
@@ -126,6 +135,7 @@ class ChatView : AppCompatActivity() {
                 messages = ArrayList()
             )
 
+        // create session in Firebase
         controllerChatSession.setAsync(chatSession!!,
             false,
             successListener = object : ControllerBase.SuccessListener() {
@@ -133,13 +143,8 @@ class ChatView : AppCompatActivity() {
                     // register listener
                     registerChatListener()
 
-                    messageRecycler.let {
-                        messageRecyclerAdapter = ChatViewAdapter(
-                            this@ChatView,
-                            chatSession!!.messages!!
-                        )
-                        it.adapter = messageRecyclerAdapter
-                    }
+                    // update list
+                    messageRecyclerAdapter.updateList(chatSession!!.messages!!)
                 }
             },
             failureListener = object : ControllerBase.FailureListener() {
@@ -164,24 +169,29 @@ class ChatView : AppCompatActivity() {
                     chatSession = snapshot.getValue(ChatSession::class.java)
 
                     // update recycler list
-                    messageRecyclerAdapter.updateList(
-                        chatSession!!.messages ?: ArrayList()
-                    )
+                    messageRecyclerAdapter.updateList(chatSession!!.messages ?: ArrayList())
 
                     // scroll to bottom
                     messageRecycler.scrollToPosition(messageRecyclerAdapter.itemCount - 1)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e(this@ChatView::class.simpleName, "Failed to fetch chat messages")
-                    println(error)
+                    Log.e(
+                        this@ChatView::class.simpleName,
+                        "Failed to fetch chat messages",
+                        error.toException()
+                    )
+                    Toast.makeText(
+                        this@ChatView, "Failed to retrieve messages", Toast
+                            .LENGTH_SHORT
+                    ).show()
                 }
             }
         )
     }
 
     private val messageSendListener =
-        View.OnClickListener { // create new message object and add it to session
+        View.OnClickListener {
             if (chatSession!!.messages == null)
                 chatSession!!.messages = ArrayList()
 
@@ -202,9 +212,7 @@ class ChatView : AppCompatActivity() {
                         messageBox.setText("")
 
                         // update recycler list
-                        messageRecyclerAdapter.updateList(
-                            chatSession!!.messages ?: ArrayList()
-                        )
+                        messageRecyclerAdapter.updateList(chatSession!!.messages ?: ArrayList())
 
                         // scroll to bottom
                         messageRecycler.scrollToPosition(messageRecyclerAdapter.itemCount - 1)

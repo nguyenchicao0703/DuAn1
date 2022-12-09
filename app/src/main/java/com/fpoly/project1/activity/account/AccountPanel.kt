@@ -1,18 +1,14 @@
 package com.fpoly.project1.activity.account
 
-import android.app.Activity
 import android.content.Intent
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.fpoly.project1.R
-import com.fpoly.project1.activity.chat.ChatSelector
 import com.fpoly.project1.activity.enums.RequestCode
-import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -22,88 +18,94 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
 class AccountPanel : Fragment(R.layout.profile_overview) {
+    private lateinit var backButton: ImageView
+    private lateinit var profileAvatar: ImageView
+    private lateinit var profileInfoButton: AppCompatButton
+    private lateinit var profileChatButton: AppCompatButton
+    private lateinit var profileOrdersButton: AppCompatButton
+    private lateinit var profileFavoriteButton: AppCompatButton
+    private lateinit var profileLogoutButton: AppCompatButton
+
     override fun onResume() {
         super.onResume()
 
         // back button?
-        requireActivity().findViewById<ImageView>(R.id.profile_iv_back)
-            .setOnClickListener {
-                if (parentFragmentManager.backStackEntryCount > 0)
-                    parentFragmentManager.popBackStack()
-            }
+        backButton = requireActivity().findViewById(R.id.profile_iv_back)
+        backButton.setOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0)
+                parentFragmentManager.popBackStack()
+        }
 
         // set avatar
-        requireActivity().findViewById<ImageView>(R.id.profile_iv_avt).let {
+        profileAvatar = requireActivity().findViewById<ImageView>(R.id.profile_iv_avt)
+        profileAvatar.let {
             SessionUser.avatar.addOnCompleteListener { uri ->
                 if (uri.isSuccessful)
                     Glide.with(requireContext()).load(uri.result)
                         .into(requireActivity().findViewById(R.id.profile_iv_avt))
                 else
-                    ControllerCustomer().getAsync(SessionUser.sessionId,
-                    successListener = object : ControllerBase.SuccessListener() {
-                        override fun run(dataSnapshot: DataSnapshot?) {
-                            val customer = dataSnapshot?.getValue(Customer::class.java)!!
+                    ControllerCustomer().getAsync(
+                        SessionUser.sessionId,
+                        successListener = object : ControllerBase.SuccessListener() {
+                            override fun run(dataSnapshot: DataSnapshot?) {
+                                val customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-                            Glide.with(requireContext()).load(customer.avatarUrl)
-                                .into(requireActivity().findViewById(R.id.profile_iv_avt))
-                        }
-                    },
-                    failureListener = null)
+                                Glide.with(requireContext()).load(customer.avatarUrl)
+                                    .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                            }
+                        },
+                        failureListener = null
+                    )
             }
         }
 
         // view information activity
-        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_use_information)
-            .setOnClickListener {
-                startActivity(
-                    Intent(
-                        context,
-                        AccountEditProfile::class.java
-                    )
+        profileInfoButton = requireActivity().findViewById(R.id.profile_btn_use_information)
+        profileInfoButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    AccountEditProfile::class.java
                 )
-            }
+            )
+        }
 
         // chat activity
-        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_order_chat)
-            .setOnClickListener {
-                requireActivity().let {
-                    it.findViewById<ViewPager>(R.id.viewPager)
-                        .currentItem = 3
-                    it.findViewById<BottomNavigationView>(R.id.home_bottom_navigation)
-                        .selectedItemId = R.id.mChat
-                }
+        profileChatButton = requireActivity().findViewById(R.id.profile_btn_order_chat)
+        profileChatButton.setOnClickListener {
+            requireActivity().let {
+                it.findViewById<ViewPager>(R.id.viewPager)
+                    .currentItem = 3
+                it.findViewById<BottomNavigationView>(R.id.home_bottom_navigation)
+                    .selectedItemId = R.id.mChat
             }
+        }
 
         // order history activity
-        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_order_history)
-            .text = "(Missing layout)"
-            /**.setOnClickListener {
-                startActivity(
-                    Intent(
-                        context,
-                        AccountOrderHistory::class.java
-                    )
-                )
-            }*/
+        profileOrdersButton = requireActivity().findViewById(R.id.profile_btn_order_history)
+        profileOrdersButton.text = "(Missing layout)"
+        /**.setOnClickListener {
+        startActivity(
+        Intent(
+        context,
+        AccountOrderHistory::class.java
+        )
+        )
+        }*/
 
         // favorite products activity
-        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_favourite)
-            .setOnClickListener {
-                startActivity(
-                    Intent(
-                        context,
-                        AccountFavorites::class.java
-                    )
-                )
-            }
+        profileFavoriteButton = requireActivity().findViewById(R.id.profile_btn_favourite)
+        profileFavoriteButton.setOnClickListener {
+            startActivity(Intent(context, AccountFavorites::class.java))
+        }
 
         // session logout
-        requireActivity().findViewById<AppCompatButton>(R.id.profile_btn_logOut)
-            .setOnClickListener {
-                FirebaseAuth.getInstance().signOut()
-                LoginManager.getInstance().logOut()
-                requireActivity().finishActivity(RequestCode.LOGOUT)
-                requireActivity().finish()
-            }
+        profileLogoutButton = requireActivity().findViewById(R.id.profile_btn_logOut)
+        profileLogoutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            LoginManager.getInstance().logOut()
+            requireActivity().finishActivity(RequestCode.LOGOUT)
+            requireActivity().finish()
+        }
     }
 }

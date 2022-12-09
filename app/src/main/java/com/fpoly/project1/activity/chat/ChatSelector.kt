@@ -1,5 +1,6 @@
 package com.fpoly.project1.activity.chat
 
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +13,14 @@ import com.fpoly.project1.firebase.model.ChatSession
 import com.google.firebase.database.DataSnapshot
 
 class ChatSelector : Fragment(R.layout.chat_overview) {
+    private lateinit var chatRecyclerView: RecyclerView
+
     override fun onResume() {
         super.onResume()
 
-        requireActivity().findViewById<RecyclerView>(R.id.home_chat_recyclerView).let {
+        chatRecyclerView = requireActivity().findViewById(R.id.home_chat_recyclerView)
+
+        chatRecyclerView.let {
             ControllerChatSession().getAllAsync(
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
@@ -39,6 +44,8 @@ class ChatSelector : Fragment(R.layout.chat_overview) {
                             requireContext(), "Failed to retrieve data from server",
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        Log.e(this@ChatSelector::class.simpleName, "Error", error)
                     }
                 }
             )

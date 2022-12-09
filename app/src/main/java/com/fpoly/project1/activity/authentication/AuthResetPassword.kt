@@ -10,33 +10,36 @@ import com.fpoly.project1.R
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthResetPassword : AppCompatActivity() {
+    private lateinit var etPassword: EditText
+    private lateinit var etPasswordConfirm: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.account_change_pwd)
 
-        val inputPassword = findViewById<EditText>(R.id.changePassword_edt_newPass)
-        val inputPasswordConfirm = findViewById<EditText>(R.id.changePassword_edt_confirmNewPass)
+        etPassword = findViewById(R.id.changePassword_edt_newPass)
+        etPasswordConfirm = findViewById(R.id.changePassword_edt_confirmNewPass)
 
         findViewById<Button>(R.id.changePassword_btn_save).setOnClickListener {
             var hasError = false
-            if (inputPassword.text.toString().isEmpty()) {
-                inputPassword.error = "Field must not be empty"
+            if (etPassword.text.toString().isEmpty()) {
+                etPassword.error = "Field must not be empty"
                 hasError = true
             }
             if (
-                inputPasswordConfirm.text.toString().isEmpty()
+                etPasswordConfirm.text.toString().isEmpty()
             ) {
-                inputPasswordConfirm.error = "Field must not be empty"
+                etPasswordConfirm.error = "Field must not be empty"
                 hasError = true
             }
-            if (inputPassword.text.toString() != inputPasswordConfirm.text.toString()) {
-                inputPassword.error = "Password mismatch"
-                inputPasswordConfirm.error = "Password mismatch"
+            if (etPassword.text.toString() != etPasswordConfirm.text.toString()) {
+                etPassword.error = "Password mismatch"
+                etPasswordConfirm.error = "Password mismatch"
                 hasError = true
             }
             if (!hasError) {
                 val user = FirebaseAuth.getInstance().currentUser
-                user?.updatePassword(inputPassword.text.toString())
+                user?.updatePassword(etPassword.text.toString())
                     ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(

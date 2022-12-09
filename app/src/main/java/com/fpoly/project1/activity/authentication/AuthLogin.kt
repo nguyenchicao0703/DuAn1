@@ -232,70 +232,92 @@ class AuthLogin : AppCompatActivity() {
         val authCredential = FacebookAuthProvider.getCredential(loginResult.accessToken.token)
         firebaseAuth.signInWithCredential(authCredential)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val customers = controllerCustomer.getAllSync()
-
-                    if (customers == null) {
-                        Toast.makeText(
-                            this,
-                            "Failed to get users from database",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@addOnCompleteListener
-                    }
-
-                    // TODO test and see if Facebook's Firebase user has the necessary
-                    //  credentials or not and remove GraphRequest code below
-                    // Get facebook related information
-                    val request = GraphRequest.newMeRequest(
-                        loginResult.accessToken
-                    ) { jsonObject: JSONObject?, graphResponse: GraphResponse? ->
-                        Log.i("LoginActivity::Facebook", graphResponse.toString())
-                        try {
-                            val profile: Profile = Profile.getCurrentProfile()!!
-                            val email = jsonObject!!.getString("email")
-                            val matchingCustomer = customers.stream()
-                                .filter { c: Customer -> c.emailAddress == email || c.fid == profile.id }
-                                .toArray()
-
-                            if (matchingCustomer.isEmpty()) {
-                                startActivity(Intent(this, AuthFillBio::class.java))
-                            } else {
-                                // if user is already exist
-                                Log.i("LoginActivity::Facebook", "Got account from Firebase")
-                                SessionUser.setId((matchingCustomer[0] as Customer).id)
-                                startActivity(
-                                    Intent(
-                                        this@AuthLogin,
-                                        MainActivity::class.java
-                                    )
-                                )
-                            }
-                        } catch (e: JSONException) {
-                            Toast.makeText(
-                                this@AuthLogin,
-                                "Something went wrong",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            e.printStackTrace()
-                        }
-                    }
-
-                    val bundle = Bundle()
-                    bundle.putString("fields", "id,name,email")
-                    request.parameters = bundle
-                    request.executeAsync()
-                } else {
+                if (!task.isSuccessful) {
                     Toast.makeText(
                         this@AuthLogin,
                         "Something went wrong",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e(this@AuthLogin::class.simpleName,
+
+                    Log.e(
+                        this@AuthLogin::class.simpleName,
                         "Error while requesting data from Facebook",
                         task.exception
                     )
+                    return@addOnCompleteListener
                 }
+
+                // proceed if good
+                controllerCustomer.getAllAsync(
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            val customers = ArrayList<Customer>()
+                            dataSnapshot?.children?.forEach { entry ->
+                                customers.add(entry.getValue(Customer::class.java)!!)
+                            }
+
+                            // TODO test and see if Facebook's Firebase user has the necessary
+                            //  credentials or not and remove GraphRequest code below
+                            // Get facebook related information
+                            val request = GraphRequest.newMeRequest(
+                                loginResult.accessToken
+                            ) { jsonObject: JSONObject?, graphResponse: GraphResponse? ->
+                                Log.i("LoginActivity::Facebook", graphResponse.toString())
+                                try {
+                                    val profile: Profile = Profile.getCurrentProfile()!!
+                                    val email = jsonObject!!.getString("email")
+                                    val matchingCustomer = customers.stream()
+                                        .filter { c: Customer -> c.emailAddress == email || c.fid == profile.id }
+                                        .toArray()
+
+                                    if (matchingCustomer.isEmpty()) {
+                                        startActivity(
+                                            Intent(
+                                                this@AuthLogin,
+                                                AuthFillBio::class.java
+                                            )
+                                        )
+                                    } else {
+                                        // if user is already exist
+                                        Log.i(
+                                            "LoginActivity::Facebook",
+                                            "Got account from Firebase"
+                                        )
+
+                                        SessionUser.setId((matchingCustomer[0] as Customer).id)
+                                        startActivity(
+                                            Intent(
+                                                this@AuthLogin,
+                                                MainActivity::class.java
+                                            )
+                                        )
+                                    }
+                                } catch (e: JSONException) {
+                                    Toast.makeText(
+                                        this@AuthLogin,
+                                        "Something went wrong",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    Log.e(this@AuthLogin::class.simpleName, "Error", e)
+                                }
+                            }
+
+                            val bundle = Bundle()
+                            bundle.putString("fields", "id,name,email")
+                            request.parameters = bundle
+                            request.executeAsync()
+                        }
+                    },
+                    failureListener = object : ControllerBase.FailureListener() {
+                        override fun run(error: Exception?) {
+                            Log.e(
+                                this@AuthLogin::class.simpleName,
+                                "Error while getting all users", task.exception
+                            )
+                        }
+                    }
+                )
             }
     }
 }

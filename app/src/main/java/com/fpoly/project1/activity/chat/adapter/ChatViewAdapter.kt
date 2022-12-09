@@ -40,6 +40,7 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
     override fun getItemViewType(position: Int): Int {
         val message = list[position]
 
+        // switch layout between the target user and current user
         return if (message.senderId == SessionUser.sessionId) 1 else 0
     }
 
@@ -53,9 +54,13 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
         // get view holder for corresponding message sender
         val message = list[position]
 
-        // bind data
+        // chat message
         holder.chatMessage.text = message.messageContent
+
+        // chat date
         holder.chatDate.text = SimpleDateFormat.getDateInstance().format(message.sentDate)
+
+        // try to load the user's avatar
         Firebase.storage.child("/avatars/${message.senderId}.jpg")
             .downloadUrl
             .addOnCompleteListener { uriTask ->
@@ -83,6 +88,8 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
     fun updateList(newList: List<ChatMessage>) {
         val oldList = list
         list = newList
+
+        // notify that new entries were added to the end of list
         notifyItemRangeInserted(oldList.size, newList.size)
     }
 }

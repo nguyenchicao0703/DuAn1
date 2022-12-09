@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 class AccountVerifyEmail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Not implemented due to missing layout
 
         val user = FirebaseAuth.getInstance().currentUser!!
 

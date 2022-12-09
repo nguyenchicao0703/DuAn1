@@ -11,13 +11,17 @@ import com.fpoly.project1.R
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthRegister : AppCompatActivity() {
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var etPasswordConfirm: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_register)
 
-        val inputEmail = findViewById<EditText>(R.id.register_edt_email)
-        val inputPassword = findViewById<EditText>(R.id.register_edt_password)
-        val inputPasswordConfirm = findViewById<EditText>(R.id.register_edt_confirm_password)
+        etEmail = findViewById(R.id.register_edt_email)
+        etPassword = findViewById(R.id.register_edt_password)
+        etPasswordConfirm = findViewById(R.id.register_edt_confirm_password)
 
         findViewById<TextView>(R.id.register_txt_signIn).setOnClickListener {
             startActivity(Intent(this@AuthRegister, AuthLogin::class.java))
@@ -27,35 +31,34 @@ class AuthRegister : AppCompatActivity() {
         findViewById<Button>(R.id.register_btn_signUp)
             .setOnClickListener {
                 var hasError = false
-                if (inputEmail.text.isEmpty()) {
+                if (etEmail.text.isEmpty()) {
                     hasError = true
-                    inputEmail.error = "Field cannot be empty"
+                    etEmail.error = "Field cannot be empty"
                 }
-                if (inputPassword.text.isEmpty()) {
+                if (etPassword.text.isEmpty()) {
                     hasError = true
-                    inputPassword.error = "Field cannot be empty"
+                    etPassword.error = "Field cannot be empty"
                 }
-                if (inputPasswordConfirm.text.isEmpty()) {
+                if (etPasswordConfirm.text.isEmpty()) {
                     hasError = true
-                    inputPasswordConfirm.error = "Field cannot be empty"
+                    etPasswordConfirm.error = "Field cannot be empty"
                 }
-                if (inputPassword.text.toString() != inputPasswordConfirm.text.toString()) {
+                if (etPassword.text.toString() != etPasswordConfirm.text.toString()) {
                     hasError = true
-                    inputPassword.error = "Password mismatch"
-                    inputPasswordConfirm.error = "Password mismatch"
+                    etPassword.error = "Password mismatch"
+                    etPasswordConfirm.error = "Password mismatch"
                 }
                 if (!hasError) {
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                        inputEmail.text.toString(),
-                        inputPassword.text.toString()
+                        etEmail.text.toString(),
+                        etPassword.text.toString()
                     ).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             startActivity(
                                 Intent(
                                     this@AuthRegister,
                                     AuthFillBio::class.java
-                                ),
-                                null
+                                )
                             )
                         } else {
                             Toast.makeText(

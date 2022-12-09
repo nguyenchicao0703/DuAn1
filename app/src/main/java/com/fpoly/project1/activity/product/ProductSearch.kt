@@ -16,26 +16,37 @@ import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
 import java.util.*
-import java.util.logging.Handler
 
 class ProductSearch : Fragment(R.layout.product_search) {
-    private var products = ArrayList<Product>()
-    private var categories = ArrayList<ProductCategory>()
-    private var productRecycler: RecyclerView? = null
+    private var products: ArrayList<Product>? = null
+    private var categories: ArrayList<ProductCategory>? = null
+
+    private lateinit var productRecycler: RecyclerView
+    private lateinit var backButton: ImageView
+    private lateinit var searchBox: EditText
 
     override fun onResume() {
         super.onResume()
 
         // bindings
-        productRecycler =
-            productRecycler ?: requireActivity().findViewById(R.id.search_recyclerView)
-        productRecycler!!.adapter = ProductSearchAdapter(requireActivity(), products, categories)
+        productRecycler = requireActivity().findViewById(R.id.search_recyclerView)
+        productRecycler.adapter = ProductSearchAdapter(
+            requireActivity(),
+            products ?: ArrayList(),
+            categories ?: ArrayList()
+        )
 
-        requireActivity().findViewById<ImageView>(R.id.search_iv_back).setOnClickListener {
+        backButton = requireActivity().findViewById(R.id.search_iv_back)
+        backButton.setOnClickListener {
             if (parentFragmentManager.backStackEntryCount > 0)
                 parentFragmentManager.popBackStack()
         }
-        requireActivity().findViewById<EditText>(R.id.search_edt_search).let {
+
+        searchBox = requireActivity().findViewById(R.id.search_edt_search)
+        searchBox.let {
+            // disable until data is loaded
+            it.isEnabled = false
+
             var searchTimer: Timer? = null
 
             it.addTextChangedListener(
@@ -70,14 +81,16 @@ class ProductSearch : Fragment(R.layout.product_search) {
                                 override fun run() {
                                     // run in main thread
                                     android.os.Handler(Looper.getMainLooper()).post {
-                                        (productRecycler!!.adapter as ProductSearchAdapter).updateList(
-                                            if (it.text.toString().isNotEmpty())
-                                                products.filter { product ->
-                                                    product.name!!.contains(it.text.toString())
-                                                }
-                                            else products,
-                                            null
-                                        )
+                                        if (products != null) {
+                                            (productRecycler.adapter as ProductSearchAdapter).updateList(
+                                                if (it.text.toString().isNotEmpty())
+                                                    products!!.filter { product ->
+                                                        product.name!!.contains(it.text.toString())
+                                                    }
+                                                else products!!,
+                                                null
+                                            )
+                                        }
                                     }
                                 }
                             },
@@ -88,27 +101,29 @@ class ProductSearch : Fragment(R.layout.product_search) {
             )
         }
 
-        if (products.size < 1 && categories.size < 1) {
+        if (products == null || categories == null) {
+            products = ArrayList()
+            categories = ArrayList()
+
             ControllerProduct().getAllAsync(
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
                         dataSnapshot?.children?.forEach {
-                            products.add(it.getValue(Product::class.java)!!)
+                            products!!.add(it.getValue(Product::class.java)!!)
                         }
-
-                        println("Added ${products.size} p")
 
                         ControllerProductCategory().getAllAsync(
                             successListener = object : ControllerBase.SuccessListener() {
                                 override fun run(dataSnapshot: DataSnapshot?) {
                                     dataSnapshot?.children?.forEach {
-                                        categories.add(it.getValue(ProductCategory::class.java)!!)
+                                        categories!!.add(it.getValue(ProductCategory::class.java)!!)
                                     }
 
-                                    println("Added ${categories.size} c")
+                                    (productRecycler.adapter as ProductSearchAdapter)
+                                        .updateList(products!!, categories!!)
 
-                                    (productRecycler!!.adapter as ProductSearchAdapter)
-                                        .updateList(products, categories)
+                                    // enable once data is loaded
+                                    searchBox.isEnabled = true
                                 }
                             },
                             null

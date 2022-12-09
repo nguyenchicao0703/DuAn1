@@ -12,7 +12,6 @@ import com.facebook.Profile
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.firebase.SessionUser
-import com.fpoly.project1.firebase.SessionUser.sessionId
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
@@ -20,20 +19,25 @@ import com.google.firebase.auth.FirebaseAuth
 
 class AuthFillBio : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
+    private lateinit var etFullName: EditText
+    private lateinit var etBirthDate: EditText
+    private lateinit var etPhoneNumber: EditText
+    private lateinit var etAddress: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_register_fill_bio)
 
-        val inputFullName = findViewById<EditText>(R.id.registerProfile_edt_fullName)
-        val inputBirthDate = findViewById<EditText>(R.id.registerProfile_edt_date)
-        val inputPhoneNumber = findViewById<EditText>(R.id.registerProfile_edt_phoneNumber)
-        val inputAddress = findViewById<EditText>(R.id.registerProfile_edt_address)
+        etFullName = findViewById(R.id.registerProfile_edt_fullName)
+        etBirthDate = findViewById(R.id.registerProfile_edt_date)
+        etPhoneNumber = findViewById(R.id.registerProfile_edt_phoneNumber)
+        etAddress = findViewById(R.id.registerProfile_edt_address)
 
         val google = FirebaseAuth.getInstance().currentUser!! // via password or google login
         val facebook = Profile.getCurrentProfile() // via facebook login
 
-        inputFullName.setText(google.displayName)
-        inputPhoneNumber.setText(google.phoneNumber)
+        etFullName.setText(google.displayName)
+        etPhoneNumber.setText(google.phoneNumber)
 
         findViewById<ImageView>(R.id.registerProfile_iv_back).setOnClickListener { finish() }
         findViewById<Button>(R.id.registerProfile_btn_next).setOnClickListener {
@@ -42,11 +46,11 @@ class AuthFillBio : AppCompatActivity() {
                 google.uid,
                 facebook?.id,
                 google.photoUrl.toString(),
-                inputFullName.text.toString(),
-                inputBirthDate.text.toString(),
+                etFullName.text.toString(),
+                etBirthDate.text.toString(),
                 google.email,
-                inputPhoneNumber.text.toString(),
-                inputAddress.text.toString(),
+                etPhoneNumber.text.toString(),
+                etAddress.text.toString(),
                 null
             )
 
@@ -54,21 +58,32 @@ class AuthFillBio : AppCompatActivity() {
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(unused: Any?) {
                         val sessionId = unused as String?
+
                         if (sessionId != null) {
-                            Toast.makeText(this@AuthFillBio, "Successfully recorded user details", Toast
-                                .LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(
+                                this@AuthFillBio, "Successfully recorded user details", Toast
+                                    .LENGTH_SHORT
+                            ).show()
+
                             SessionUser.setId(sessionId)
+
                             startActivity(Intent(this@AuthFillBio, MainActivity::class.java))
+                            finish()
                         } else {
-                            Toast.makeText(this@AuthFillBio, "Something went wrong", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@AuthFillBio,
+                                "Something went wrong",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 },
                 failureListener = object : ControllerBase.FailureListener() {
                     override fun run(error: Exception?) {
-                        Toast.makeText(this@AuthFillBio, "Failed to save data",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@AuthFillBio, "Failed to save data",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         Log.e(this@AuthFillBio::class.simpleName, "Error", error)
                     }

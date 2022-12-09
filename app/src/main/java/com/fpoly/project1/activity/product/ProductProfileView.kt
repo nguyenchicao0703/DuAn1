@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -24,11 +25,17 @@ import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
-import de.hdodenhof.circleimageview.CircleImageView
 
 class ProductProfileView : BottomSheetDialogFragment() {
-    private lateinit var productAdapter: ProductProfileAdapter
     private var customer: Customer? = null
+
+    private lateinit var productAdapter: ProductProfileAdapter
+    private lateinit var backButton: ImageView
+    private lateinit var userAvatar: ImageView
+    private lateinit var userFullName: TextView
+    private lateinit var userEmail: TextView
+    private lateinit var userProducts: RecyclerView
+    private lateinit var userChat: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +44,15 @@ class ProductProfileView : BottomSheetDialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profile_overview_other, container, false)
 
-        ControllerCustomer().getAsync(arguments?.getString("id", null),
+        backButton = view.findViewById(R.id.other_users_iv_back)
+        userAvatar = view.findViewById(R.id.other_users_iv_avt)
+        userFullName = view.findViewById(R.id.other_users_txt_user_name)
+        userEmail = view.findViewById(R.id.other_users_txt_user_email)
+        userProducts = view.findViewById(R.id.other_users_recyclerView_product)
+        userChat = view.findViewById(R.id.other_users_btn_chat)
+
+        ControllerCustomer().getAsync(
+            arguments?.getString("id", null),
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     customer = dataSnapshot?.getValue(Customer::class.java)!!
@@ -56,8 +71,11 @@ class ProductProfileView : BottomSheetDialogFragment() {
             return
         }
 
-        view.findViewById<ImageView>(R.id.other_users_iv_back).setOnClickListener { dismiss() }
-        view.findViewById<CircleImageView>(R.id.other_users_iv_avt).let {
+        backButton.setOnClickListener { dismiss() }
+
+        userFullName.text = customer!!.fullName
+        userEmail.visibility = View.GONE
+        userAvatar.let {
             Firebase.storage.child("/avatars/${customer!!.id}.jpg").downloadUrl
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful)
@@ -66,9 +84,13 @@ class ProductProfileView : BottomSheetDialogFragment() {
                         Glide.with(this).load(customer!!.avatarUrl).into(it)
                 }
         }
-        view.findViewById<TextView>(R.id.other_users_txt_user_name).text = customer!!.fullName
-        view.findViewById<TextView>(R.id.other_users_txt_user_email).visibility = View.GONE
-        view.findViewById<RecyclerView>(R.id.other_users_recyclerView_product).let {
+        userChat.setOnClickListener {
+            val intentData = Intent(requireContext(), ChatView::class.java)
+            intentData.putExtras(bundleOf(Pair("id", customer!!.id)))
+
+            startActivity(intentData)
+        }
+        userProducts.let {
             ControllerProduct().getAllAsync(
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
@@ -98,16 +120,6 @@ class ProductProfileView : BottomSheetDialogFragment() {
                 },
                 null
             )
-        }
-
-        view.findViewById<AppCompatButton>(R.id.other_users_btn_chat).setOnClickListener {
-            val bundleData = Bundle()
-            bundleData.putString("id", customer!!.id)
-
-            val intentData = Intent(requireContext(), ChatView::class.java)
-            intentData.putExtras(bundleData)
-
-            startActivity(intentData)
         }
     }
 }

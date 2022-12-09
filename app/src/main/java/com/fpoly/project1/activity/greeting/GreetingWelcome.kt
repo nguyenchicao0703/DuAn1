@@ -46,9 +46,9 @@ class GreetingWelcome : AppCompatActivity() {
                         successListener = object : ControllerBase.SuccessListener() {
                             override fun run(dataSnapshot: DataSnapshot?) {
                                 val customers = ArrayList<Customer>()
-                                if (dataSnapshot != null)
-                                    for (entry in dataSnapshot.children)
-                                        customers.add(entry.getValue(Customer::class.java)!!)
+                                dataSnapshot?.children?.forEach { entry ->
+                                    customers.add(entry.getValue(Customer::class.java)!!)
+                                }
 
                                 SessionUser.setId(
                                     customers

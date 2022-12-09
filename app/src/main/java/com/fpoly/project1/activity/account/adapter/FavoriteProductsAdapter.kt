@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -27,45 +28,56 @@ class FavoriteProductsAdapter(
     private var products: MutableList<String>,
     private var categories: List<ProductCategory>
 ) : RecyclerView.Adapter<FavoriteProductsAdapter.ViewHolder>() {
+
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val controllerCustomer = ControllerCustomer()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(layoutInflater.inflate(R.layout.item_recycler_favorite, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_favorite, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // get the related product at position
         ControllerProduct().getAsync(
             products[holder.absoluteAdapterPosition],
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
+                    // product object
                     val product = dataSnapshot?.getValue(Product::class.java)!!
 
+                    // load thumbnail
                     Glide.with(context).load(product.thumbnails?.get(0))
                         .into(holder.productThumbnail)
 
+                    // name
                     holder.productName.text = product.name
+
+                    // price
                     holder.productPrice.text = product.price.toString()
+
+                    // product category
                     holder.productType.text =
                         categories.filter { productCategory: ProductCategory ->
                             productCategory.id.equals(
                                 product.categoryId
                             )
                         }[0].name
-                    holder.itemView.setOnClickListener {
-                        val bundleData = Bundle()
-                        bundleData.putString("id", product.id)
 
+                    // show product details fragment
+                    holder.itemView.setOnClickListener {
                         val fragment = ProductDetails()
-                        fragment.arguments = bundleData
+                        fragment.arguments = bundleOf(Pair("id", product.id))
                         fragment.show(
                             (context as AppCompatActivity).supportFragmentManager,
                             "product_details"
                         )
                     }
+
+                    // favorite status handling
                     holder.favoriteStatus.setOnClickListener {
                         products.removeAt(holder.absoluteAdapterPosition)
 
+                        // if the user has a favorite list, clone it, remove the
+                        // corresponding entry then override
                         customer.favoriteIds?.let {
                             val newFavoriteList = it.toMutableList()
                             newFavoriteList.removeAt(holder.absoluteAdapterPosition)
@@ -73,6 +85,7 @@ class FavoriteProductsAdapter(
                             customer.favoriteIds = newFavoriteList
                         }
 
+                        // update the user object in Firebase
                         controllerCustomer.setAsync(customer, true,
                             successListener = object : ControllerBase.SuccessListener() {
                                 override fun run() {
@@ -81,6 +94,8 @@ class FavoriteProductsAdapter(
                                         "Removed from favorites",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    // notify removed at index
                                     notifyItemRemoved(holder.absoluteAdapterPosition)
                                 }
                             },
@@ -90,8 +105,7 @@ class FavoriteProductsAdapter(
                                         context,
                                         "Unable to remove from favorites",
                                         Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    ).show()
                                 }
                             })
                     }
@@ -101,18 +115,7 @@ class FavoriteProductsAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return products.size
-    }
-
-    fun updateList(newProductList: List<String>, newCategoryList: List<ProductCategory>?) {
-        if (newCategoryList != null)
-            categories = newCategoryList
-
-        notifyItemRangeRemoved(0, products.size)
-        products = newProductList.toMutableList()
-        notifyItemRangeInserted(0, newProductList.size)
-    }
+    override fun getItemCount(): Int = products.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var productThumbnail: ImageView

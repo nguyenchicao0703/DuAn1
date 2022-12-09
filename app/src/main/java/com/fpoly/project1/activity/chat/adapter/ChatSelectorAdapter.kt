@@ -25,6 +25,7 @@ class ChatSelectorAdapter(
     private val context: Context,
     private var sessions: List<ChatSession>,
 ) : RecyclerView.Adapter<ChatSelectorAdapter.ViewHolder>() {
+
     private val controllerCustomer = ControllerCustomer()
     private val layoutInflater = LayoutInflater.from(context)
 
@@ -39,20 +40,28 @@ class ChatSelectorAdapter(
         ViewHolder(layoutInflater.inflate(R.layout.chat_item_selector, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // get session at position
         val session = sessions[position]
+
+        // get last message, if any
         val lastMessage = session.messages?.last()
+
+        // get the target user ID of this session
         val userId =
             if (SessionUser.sessionId == session.sendingUser)
                 session.targetUser
             else
                 session.sendingUser
 
+        // get the target user object then process
         controllerCustomer.getAsync(
             userId,
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
+                    // user object
                     val user = dataSnapshot?.getValue(Customer::class.java)!!
 
+                    // try to load the user avatar from storage, else fallback to avatarUrl
                     Firebase.storage.child("/avatars/${user.id}.jpg").downloadUrl
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful)
@@ -65,17 +74,24 @@ class ChatSelectorAdapter(
                                     .into(holder.chatAvatar)
                         }
 
+                    // user full name
                     holder.chatName.text = user.fullName
+
+                    // last chat message, if any
                     holder.chatMessage.text =
                         if (lastMessage?.senderId == SessionUser.sessionId)
                             "Me: ${lastMessage?.messageContent}"
                         else
                             lastMessage?.messageContent ?: "No recent messages"
+
+                    // sent date
                     if (lastMessage?.sentDate != null) {
                         holder.chatDate.text =
                             SimpleDateFormat.getDateInstance()
                                 .format(lastMessage.sentDate!!)
                     }
+
+                    // click to start chat session activity
                     holder.itemView.setOnClickListener {
                         val intentData = Intent(context, ChatView::class.java)
                         intentData.putExtras(bundleOf(Pair("id", userId)))
@@ -84,15 +100,14 @@ class ChatSelectorAdapter(
                     }
                 }
             },
-            failureListener = null
+            failureListener = object : ControllerBase.FailureListener() {
+                override fun run(error: Exception?) {
+                    holder.chatName.text = "Unable to retrieve data"
+                    holder.chatMessage.text = error?.localizedMessage ?: "Unknown error"
+                }
+            }
         )
     }
 
     override fun getItemCount(): Int = sessions.size
-
-    fun updateList(newList: List<ChatSession>) {
-        notifyItemRangeRemoved(0, sessions.size)
-        sessions = newList
-        notifyItemRangeInserted(0, newList.size)
-    }
 }

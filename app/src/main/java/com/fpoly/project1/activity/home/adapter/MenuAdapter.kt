@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -37,11 +38,8 @@ class MenuAdapter(
             productCategory.id.equals(product.categoryId)
         }[0].name
         holder.itemView.setOnClickListener {
-            val bundleData = Bundle()
-            bundleData.putString("id", product.id)
-
             val fragment = ProductDetails()
-            fragment.arguments = bundleData
+            fragment.arguments = bundleOf(Pair("id", product.id))
             fragment.show(
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
             )
