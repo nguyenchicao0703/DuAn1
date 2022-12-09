@@ -1,4 +1,4 @@
-# Cheetah (not fast) Food Delivery
+# Cheetah (not fast) Food Service
 Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị giới hạn rất nhiều so với dự tính ban đầu
 
 ### Note:
@@ -6,13 +6,12 @@ Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị gi
 - Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
 activity in ``AuthRegister``
 
-*Ưu tiên:
-- Đăng nhập được
-- Hiển thị sản phẩm
-- Tìm kiếm sản phẩm
-- Thêm vào giỏ hàng
-- Thanh toán
-- Người bán xác nhận trạng thái đơn hàng
+### Update
+- Giá tiền format VietNam
+- Thêm data test (50 sản phẩm test)
+- Thanh toán sản phẩm thành công -> sản phẩm trong giỏ hàng bị xóa đi
+- Lịch sử mua hàng
+- Người bán
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 
@@ -20,9 +19,9 @@ activity in ``AuthRegister``
 
 **Program**: acay
 
-**Presentation**: Hưng, Phi
+**Presentation**: Hưng
 
-~~Rút: Hùng, Hiệp, 2 thằng nữa không biết~~I
+~~Rút: Hùng, Hiệp, Phi 2 thằng nữa không biết~~I
 
 ## TODO List
 ### Mục khách hàng
