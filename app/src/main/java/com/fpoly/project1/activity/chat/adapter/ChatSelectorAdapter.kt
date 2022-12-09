@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
 import com.fpoly.project1.firebase.Firebase
+import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.ChatSession
@@ -35,40 +36,51 @@ class ChatSelectorAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.chat_item_selector, parent))
+        ViewHolder(layoutInflater.inflate(R.layout.chat_item_selector, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val session = sessions[position]
         val lastMessage = session.messages?.last()
-        controllerCustomer.getAsync(lastMessage?.senderId,
+        val userId =
+            if (SessionUser.sessionId == session.sendingUser)
+                session.targetUser
+            else
+                session.sendingUser
+
+        controllerCustomer.getAsync(
+            userId,
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
-                    val lastSender = dataSnapshot?.getValue(Customer::class.java)
+                    val user = dataSnapshot?.getValue(Customer::class.java)!!
 
-                    if (lastSender != null) {
-                        Firebase.storage.child("/avatars/${lastSender.id}.jpg").downloadUrl
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful)
-                                    Glide.with(context)
-                                        .load(task.result)
-                                        .into(holder.chatAvatar)
-                                else
-                                    Glide.with(context)
-                                        .load(lastSender.avatarUrl)
-                                        .into(holder.chatAvatar)
-                            }
-
-                        holder.chatName.text = lastSender.fullName
-                        holder.chatMessage.text = lastMessage?.messageContent
-                        holder.chatDate.text = SimpleDateFormat.getDateInstance().format(lastMessage?.sentDate)
-                        holder.itemView.setOnClickListener {
-                            val intentData = Intent(context, ChatView::class.java)
-                            intentData.putExtras(
-                                bundleOf(Pair("id", session.targetUser))
-                            )
-
-                            context.startActivity(intentData)
+                    Firebase.storage.child("/avatars/${user.id}.jpg").downloadUrl
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful)
+                                Glide.with(context)
+                                    .load(task.result)
+                                    .into(holder.chatAvatar)
+                            else
+                                Glide.with(context)
+                                    .load(user.avatarUrl)
+                                    .into(holder.chatAvatar)
                         }
+
+                    holder.chatName.text = user.fullName
+                    holder.chatMessage.text =
+                        if (lastMessage?.senderId == SessionUser.sessionId)
+                            "Me: ${lastMessage?.messageContent}"
+                        else
+                            lastMessage?.messageContent ?: "No recent messages"
+                    if (lastMessage?.sentDate != null) {
+                        holder.chatDate.text =
+                            SimpleDateFormat.getDateInstance()
+                                .format(lastMessage.sentDate!!)
+                    }
+                    holder.itemView.setOnClickListener {
+                        val intentData = Intent(context, ChatView::class.java)
+                        intentData.putExtras(bundleOf(Pair("id", userId)))
+
+                        context.startActivity(intentData)
                     }
                 }
             },

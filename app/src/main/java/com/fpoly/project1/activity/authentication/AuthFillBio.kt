@@ -35,21 +35,21 @@ class AuthFillBio : AppCompatActivity() {
         inputFullName.setText(google.displayName)
         inputPhoneNumber.setText(google.phoneNumber)
 
-        val account = Customer(
-            null,
-            google.uid,
-            facebook?.id,
-            google.photoUrl.toString(),
-            inputFullName.text.toString(),
-            inputBirthDate.text.toString(),
-            google.email,
-            inputPhoneNumber.text.toString(),
-            inputAddress.text.toString(),
-            null
-        )
-
         findViewById<ImageView>(R.id.registerProfile_iv_back).setOnClickListener { finish() }
         findViewById<Button>(R.id.registerProfile_btn_next).setOnClickListener {
+            val account = Customer(
+                null,
+                google.uid,
+                facebook?.id,
+                google.photoUrl.toString(),
+                inputFullName.text.toString(),
+                inputBirthDate.text.toString(),
+                google.email,
+                inputPhoneNumber.text.toString(),
+                inputAddress.text.toString(),
+                null
+            )
+
             controllerCustomer.addAsync(account,
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(unused: Any?) {

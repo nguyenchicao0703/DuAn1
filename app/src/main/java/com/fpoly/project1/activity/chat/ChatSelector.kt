@@ -8,9 +8,7 @@ import com.fpoly.project1.activity.chat.adapter.ChatSelectorAdapter
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerChatSession
-import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.ChatSession
-import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.database.DataSnapshot
 
 class ChatSelector : Fragment(R.layout.chat_overview) {

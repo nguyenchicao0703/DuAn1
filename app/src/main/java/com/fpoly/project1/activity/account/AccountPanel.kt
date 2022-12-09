@@ -14,8 +14,12 @@ import com.fpoly.project1.activity.chat.ChatSelector
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
+import com.fpoly.project1.firebase.controller.ControllerBase
+import com.fpoly.project1.firebase.controller.ControllerCustomer
+import com.fpoly.project1.firebase.model.Customer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 
 class AccountPanel : Fragment(R.layout.profile_overview) {
     override fun onResume() {
@@ -31,8 +35,20 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
         // set avatar
         requireActivity().findViewById<ImageView>(R.id.profile_iv_avt).let {
             SessionUser.avatar.addOnCompleteListener { uri ->
-                Glide.with(requireContext()).load(uri.result)
-                    .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                if (uri.isSuccessful)
+                    Glide.with(requireContext()).load(uri.result)
+                        .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                else
+                    ControllerCustomer().getAsync(SessionUser.sessionId,
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            val customer = dataSnapshot?.getValue(Customer::class.java)!!
+
+                            Glide.with(requireContext()).load(customer.avatarUrl)
+                                .into(requireActivity().findViewById(R.id.profile_iv_avt))
+                        }
+                    },
+                    failureListener = null)
             }
         }
 

@@ -10,5 +10,5 @@ data class ChatSession(
 data class ChatMessage(
     var senderId: String? = null,
     var messageContent: String? = null,
-    var sentDate: String? = null
+    var sentDate: Long? = null
 )

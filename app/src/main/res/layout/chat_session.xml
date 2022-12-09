@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ChatActivity">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/chat_linearLayout_statusBar"
@@ -35,10 +34,10 @@
             android:id="@+id/chat_txt_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Anime"
-            android:lines="1"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
+            android:lines="1"
+            android:text="Anime"
             android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold" />
@@ -47,9 +46,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0sp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chat_linearLayout_statusBar"
         tools:listitem="@layout/chat_item_user_other" />

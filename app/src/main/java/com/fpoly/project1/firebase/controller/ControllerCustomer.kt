@@ -111,9 +111,13 @@ class ControllerCustomer : ControllerBase<Customer>("table_customers") {
 
                     if (!update) {
                         if (customers.stream().anyMatch {
-                                it!!.emailAddress == value.emailAddress ||
-                                        it.gid == value.gid ||
-                                        it.fid == value.fid
+                                val matchEmail = it!!.emailAddress == value.emailAddress!!.trim()
+                                val matchGid =
+                                    (it.gid != null && value.gid != null && it.gid == value.gid)
+                                val matchFid = (it.fid != null && value.fid != null && it.fid ==
+                                        value.fid)
+
+                                matchEmail || matchGid || matchFid
                             }) {
                             failureListener?.run(Exception("Entry already exists"))
                         } else {
