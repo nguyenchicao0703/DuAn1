@@ -5,9 +5,13 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/mOrder"
+        android:id="@+id/mSearch"
+        android:icon="@drawable/ic_search"
+        android:title="Search" />
+    <item
+        android:id="@+id/mCheckout"
         android:icon="@drawable/ic_order"
-        android:title="Order" />
+        android:title="Checkout" />
     <item
         android:id="@+id/mChat"
         android:icon="@drawable/ic_chat"

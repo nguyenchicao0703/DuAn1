@@ -7,7 +7,7 @@
 
     <string name="facebook_app_id">510459427674407</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">8f8120d050f3a3d3a76e2b6ac194eb14</string>
+    <string name="facebook_client_token">6e6897a3ad0f0b900213ab0f05eaeb7c</string>
 
     <string name="auth_title_sign_in">Sign in to your account</string>
     <string name="auth_title_sign_up">Sign up for an account</string>

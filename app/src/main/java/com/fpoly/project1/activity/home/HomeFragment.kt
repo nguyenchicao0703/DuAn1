@@ -1,18 +1,13 @@
 package com.fpoly.project1.activity.home
 
-import android.content.Intent
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.fpoly.project1.R
-import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.home.adapter.FeaturedAdapter
 import com.fpoly.project1.activity.home.adapter.MenuAdapter
-import com.fpoly.project1.activity.product.ProductSearch
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -48,14 +43,23 @@ class HomeFragment : Fragment(R.layout.home_main) {
         )
 
         // search box
-        requireActivity().findViewById<EditText>(R.id.home_edt_search).setOnClickListener {
+        fun switchToSearchFragment() {
             requireActivity().let {
                 it.findViewById<ViewPager>(R.id.viewPager)
                     .currentItem = 1
                 it.findViewById<BottomNavigationView>(R.id.home_bottom_navigation)
-                    .selectedItemId = R.id.mOrder
+                    .selectedItemId = R.id.mSearch
             }
         }
+        requireActivity().findViewById<EditText>(R.id.home_edt_search).setOnClickListener {
+            switchToSearchFragment()
+        }
+        requireActivity().findViewById<TextView>(R.id.home_txt_seeAll_product_menu)
+            .setOnClickListener {
+                switchToSearchFragment()
+            }
+        requireActivity().findViewById<TextView>(R.id.home_txt_seeAll_product_featured)
+            .setOnClickListener { switchToSearchFragment() }
 
         // menu list - limit 10
         val menuView =
@@ -102,10 +106,10 @@ class HomeFragment : Fragment(R.layout.home_main) {
                             list.add(child.getValue(Product::class.java)!!)
                         }
 
-	                featuredView.adapter = FeaturedAdapter(requireContext(), list)
+                    featuredView.adapter = FeaturedAdapter(requireContext(), list)
                 }
             },
-	        null
+            null
         )
     }
 }

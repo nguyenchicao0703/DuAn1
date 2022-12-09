@@ -16,11 +16,11 @@ class ControllerOrder : ControllerBase<Order>("table_orders") {
                 rowReference = tableReference.push()
                 value.id = rowReference.key!!
                 Tasks.await(
-                    Firebase.database.child(table).child(value.id)
+                    Firebase.database.child(table).child(value.id!!)
                         .setValue(value)
                 )
             } else {
-                rowReference = tableReference.child(value.id)
+                rowReference = tableReference.child(value.id!!)
                 Tasks.await(rowReference.setValue(value))
             }
             true
@@ -36,7 +36,28 @@ class ControllerOrder : ControllerBase<Order>("table_orders") {
         successListener: SuccessListener?,
         failureListener: FailureListener?
     ) {
-        return
+        val tableReference = Firebase.database.child(table)
+        val rowReference: DatabaseReference
+
+        if (!update) {
+            rowReference = tableReference.push()
+            value.id = rowReference.key!!
+            Firebase.database.child(table).child(value.id!!).setValue(value)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful)
+                        successListener?.run()
+                    else
+                        failureListener?.run(task.exception)
+                }
+        } else {
+            rowReference = tableReference.child(value.id!!)
+            rowReference.setValue(value).addOnCompleteListener { task ->
+                if (task.isSuccessful)
+                    successListener?.run()
+                else
+                    failureListener?.run(task.exception)
+            }
+        }
     }
 
     override fun removeSync(referenceId: String?): Boolean {

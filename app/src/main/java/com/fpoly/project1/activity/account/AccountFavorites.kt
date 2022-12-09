@@ -3,83 +3,67 @@ package com.fpoly.project1.activity.account
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.account.adapter.FavoriteProductsAdapter
 import com.fpoly.project1.firebase.SessionUser
+import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.controller.ControllerProduct
+import com.fpoly.project1.firebase.controller.ControllerProductCategory
+import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Product
+import com.fpoly.project1.firebase.model.ProductCategory
+import com.google.firebase.database.DataSnapshot
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AccountFavorites : AppCompatActivity() {
-	private var searchTimer: Timer? = null
-	private val productList: MutableList<Product> = ArrayList()
 	private val controllerCustomer = ControllerCustomer()
-	private val controllerProduct = ControllerProduct()
-	private var favoriteSearchBox: EditText? = null
 	private var favoriteProductsAdapter: FavoriteProductsAdapter? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.account_favorite_prods)
 
-		val customer = controllerCustomer.getSync(SessionUser.sessionId)
-		customer?.favoriteIds?.forEach { productId: String? ->
-			productList.add(controllerProduct.getSync(productId)!!)
-		}
+		findViewById<ConstraintLayout>(R.id.favorite_constraint_search).visibility = View.GONE
+		findViewById<ImageView>(R.id.favorite_product_iv_back).setOnClickListener { finish() }
 
-		favoriteSearchBox = findViewById(R.id.favorite_edt_search)
-		favoriteSearchBox!!.let {
-			it.addTextChangedListener(
-				object : TextWatcher {
-					override fun beforeTextChanged(
-						s: CharSequence?,
-						start: Int,
-						count: Int,
-						after: Int
-					) {
-						if (searchTimer != null) searchTimer = null
-					}
+		controllerCustomer.getAsync(SessionUser.sessionId,
+		successListener = object : ControllerBase.SuccessListener() {
+			override fun run(dataSnapshot: DataSnapshot?) {
+				val customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-					override fun onTextChanged(
-						s: CharSequence?,
-						start: Int,
-						before: Int,
-						count: Int
-					) {
-						TODO("Ignored")
-					}
+				ControllerProductCategory().getAllAsync(
+					successListener = object : ControllerBase.SuccessListener() {
+						override fun run(dataSnapshot: DataSnapshot?) {
+							val categories = ArrayList<ProductCategory>()
+							dataSnapshot?.children?.forEach {
+								categories.add(it.getValue(ProductCategory::class.java)!!)
+							}
 
-					override fun afterTextChanged(s: Editable?) {
-						searchTimer = Timer()
-						searchTimer!!.schedule(
-							object : TimerTask() {
-								override fun run() {
-									favoriteProductsAdapter!!.updateList(
-										if (it.text.toString().isNotEmpty())
-											productList.filter { product ->
-												product.name!!.contains(it.text.toString())
-											}
-										else productList
-									)
-								}
-							},
-							1_500L
-						)
-					}
-				}
-			)
-		}
-
-        val favoriteRecycler = findViewById<RecyclerView>(R.id.favorite_recycler_favorite)
-        favoriteProductsAdapter = FavoriteProductsAdapter(
-            this,
-            productList,
-            controllerCustomer.getSync(SessionUser.sessionId)!!
-        )
-        favoriteRecycler.adapter = favoriteProductsAdapter
+							if (customer.favoriteIds != null) {
+								val favoriteRecycler =
+									findViewById<RecyclerView>(R.id.favorite_recycler_favorite)
+								favoriteProductsAdapter = FavoriteProductsAdapter(
+									this@AccountFavorites,
+									customer,
+									customer.favoriteIds!!.toMutableList(),
+									categories
+								)
+								favoriteRecycler.adapter = favoriteProductsAdapter
+							}
+						}
+					},
+					failureListener = null
+				)
+			}
+		},
+		failureListener = null)
     }
 }

@@ -59,6 +59,7 @@
             android:paddingRight="10dp"
             tools:listitem="@layout/chat_item_selector"
             android:paddingBottom="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

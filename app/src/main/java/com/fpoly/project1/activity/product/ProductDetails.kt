@@ -118,7 +118,7 @@ class ProductDetails : BottomSheetDialogFragment() {
                     if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
             }
         view.findViewById<Button>(R.id.userPage_users_btn_cart).setOnClickListener {
-            SessionUser.cart.add(Pair(product.id!!, cartAmountView.text.toString().toInt()))
+            SessionUser.cart.add(Pair(product, cartAmountView.text.toString().toInt()))
 
             Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
         }

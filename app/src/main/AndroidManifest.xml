@@ -91,20 +91,11 @@
             android:exported="false" />
 
         <activity
-            android:name="com.fpoly.project1.activity.chat.ChatSelector"
-            android:exported="false" />
-        <activity
             android:name="com.fpoly.project1.activity.chat.ChatView"
             android:exported="false" />
 
         <activity
-            android:name="com.fpoly.project1.activity.product.ProductSearch"
-            android:exported="false" />
-        <activity
-            android:name="com.fpoly.project1.activity.product.ProductProfileView"
-            android:exported="false" />
-        <activity
-            android:name="com.fpoly.project1.activity.product.ProductDetails"
+            android:name=".activity.checkout.CheckoutConfirm"
             android:exported="false" />
     </application>
 

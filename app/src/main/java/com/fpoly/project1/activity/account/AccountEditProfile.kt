@@ -1,5 +1,7 @@
 package com.fpoly.project1.activity.account
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -7,7 +9,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.bumptech.glide.Glide
 import com.fpoly.project1.R
+import com.fpoly.project1.activity.enums.RequestCode
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -15,9 +21,11 @@ import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
+import de.hdodenhof.circleimageview.CircleImageView
 
 class AccountEditProfile : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
+    private lateinit var profileAvatar: CircleImageView
     private lateinit var profileName: EditText
     private lateinit var profileEmail: EditText
     private lateinit var profilePhone: EditText
@@ -31,29 +39,57 @@ class AccountEditProfile : AppCompatActivity() {
     private lateinit var profileBirthDateToggle: ImageView
 
     private fun updateFields(account: Customer?) {
-        var acc = account
-        if (acc == null) acc = controllerCustomer.getSync(SessionUser.sessionId)!!
+        controllerCustomer.getAsync(
+            SessionUser.sessionId,
+            successListener = object : ControllerBase.SuccessListener() {
+                override fun run(dataSnapshot: DataSnapshot?) {
+                    val acc = account ?: dataSnapshot?.getValue(Customer::class.java)!!
 
-        profileName.let {
-            it.setText(acc.fullName)
-            it.isEnabled = false
-        }
-        profileEmail.let {
-            it.setText(acc.emailAddress)
-            it.isEnabled = false
-        }
-        profilePhone.let {
-            it.setText(acc.phoneNumber)
-            it.isEnabled = false
-        }
-        profileBirthDate.let {
-            it.setText(acc.birthDate)
-            it.isEnabled = false
-        }
-        profileAddress.let {
-            it.setText(acc.postalAddress)
-            it.isEnabled = false
-        }
+                    profileAvatar.let {
+                        Firebase.storage.child("/avatars/${acc.id}.jpg").downloadUrl
+                            .addOnCompleteListener { uri ->
+                                if (uri.isSuccessful)
+                                    Glide.with(this@AccountEditProfile).load(uri.result)
+                                        .into(profileAvatar)
+                                else
+                                    Glide.with(this@AccountEditProfile).load(acc.avatarUrl)
+                                        .into(profileAvatar)
+                            }
+
+                        it.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(
+                                Intent.createChooser(intent, "Select Picture"),
+                                RequestCode.PROFILE_IMAGE_UPLOAD
+                            )
+                        }
+                    }
+                    profileName.let {
+                        it.setText(acc.fullName)
+                        it.isEnabled = false
+                    }
+                    profileEmail.let {
+                        it.setText(acc.emailAddress)
+                        it.isEnabled = false
+                    }
+                    profilePhone.let {
+                        it.setText(acc.phoneNumber)
+                        it.isEnabled = false
+                    }
+                    profileBirthDate.let {
+                        it.setText(acc.birthDate)
+                        it.isEnabled = false
+                    }
+                    profileAddress.let {
+                        it.setText(acc.postalAddress)
+                        it.isEnabled = false
+                    }
+                }
+            },
+            failureListener = null
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +110,7 @@ class AccountEditProfile : AppCompatActivity() {
                         findViewById<Button>(R.id.edit_profile_btn_change_password)
 
                     // edit text bindings
+                    profileAvatar = findViewById(R.id.edit_profile_iv_avt)
                     profileName = findViewById(R.id.edit_profile_txt_name)
                     profileEmail = findViewById(R.id.edit_profile_txt_email)
                     profileAddress = findViewById(R.id.edit_profile_txt_address)
@@ -208,4 +245,35 @@ class AccountEditProfile : AppCompatActivity() {
             null
         )
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode != RequestCode.PROFILE_IMAGE_UPLOAD || resultCode != Activity.RESULT_OK) {
+            Toast.makeText(this, "User cancelled action", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        data?.data?.let { this.contentResolver.openInputStream(it) }?.let {
+            Firebase.storage.child("/avatars/${SessionUser.sessionId}.jpg").putStream(it)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Updated avatar", Toast.LENGTH_SHORT)
+                            .show()
+
+                        SessionUser.avatar.addOnCompleteListener { uri ->
+                            Glide.with(this).load(uri.result)
+                                .into(findViewById(R.id.edit_profile_iv_avt))
+                        }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Failed to upload avatar",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        }
+    }
+
 }

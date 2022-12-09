@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatView : AppCompatActivity() {
     private lateinit var messageBox: EditText
@@ -35,48 +36,64 @@ class ChatView : AppCompatActivity() {
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.chat_session)
 
-        // get target user
-        val targetUser = controllerCustomer.getSync(intent.extras?.getString("id", null))
-        if (targetUser == null) {
-            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // load session
-        loadChatSession(targetUser)
-
-        // register listener
-        registerChatListener()
-
         // bindings
         findViewById<ImageView>(R.id.chat_iv_back).setOnClickListener { finish() }
         messageBox = findViewById(R.id.chat_edt_messenger)
         messageRecycler = findViewById(R.id.chat_recycler_content)
-        messageRecycler.let {
-            messageRecyclerAdapter = ChatViewAdapter(this, chatSession!!.messages!!)
-            it.adapter = messageRecyclerAdapter
-        }
 
         // message box handler
         findViewById<ImageView>(R.id.chat_iv_send).setOnClickListener(messageSendListener)
+
+        // get target user
+        controllerCustomer.getAsync(intent?.extras?.getString("id", null),
+        successListener = object : ControllerBase.SuccessListener() {
+            override fun run(dataSnapshot: DataSnapshot?) {
+                val targetUser = dataSnapshot?.getValue(Customer::class.java)!!
+
+                // load session
+                loadChatSession(targetUser)
+
+                // register listener
+                registerChatListener()
+            }
+        },
+        failureListener = object : ControllerBase.FailureListener() {
+            override fun run(error: Exception?) {
+                Toast.makeText(this@ChatView, "User not found", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun loadChatSession(targetUser: Customer) {
-        // get session
-        chatSession =
-            controllerChatSession.getSync("${SessionUser.sessionId}_${targetUser.id}")
-                ?: controllerChatSession.getSync("${targetUser.id}_${SessionUser.sessionId}")
+        controllerChatSession.getAsync("${SessionUser.sessionId}_${targetUser.id}",
+        successListener = object : ControllerBase.SuccessListener() {
+            override fun run(dataSnapshot: DataSnapshot?) {
+                chatSession = dataSnapshot?.getValue(ChatSession::class.java)
 
-        // if session is null, create one
-        if (chatSession == null) {
-            chatSession = ChatSession(
-                null,
-                SessionUser.sessionId,
-                targetUser.id,
-                mutableListOf()
-            )
-            controllerChatSession.setSync(chatSession!!, false)
-        }
+                // if session is null, create one
+                if (chatSession == null) {
+                    chatSession = ChatSession(
+                        null,
+                        SessionUser.sessionId,
+                        targetUser.id,
+                        mutableListOf()
+                    )
+                    controllerChatSession.setSync(chatSession!!, false)
+                }
+
+                messageRecycler.let {
+                    messageRecyclerAdapter = ChatViewAdapter(this@ChatView,
+                        chatSession!!.messages ?: ArrayList())
+                    it.adapter = messageRecyclerAdapter
+                }
+            }
+        },
+        failureListener = object : ControllerBase.FailureListener() {
+            override fun run(error: Exception?) {
+                Toast.makeText(this@ChatView, "Failed to load chat session", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
     private fun registerChatListener() {
@@ -117,14 +134,6 @@ class ChatView : AppCompatActivity() {
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run() {
                         Log.i(this@ChatView::class.simpleName, "Updated chat session")
-                    }
-
-                    override fun run(unused: Any?) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun run(dataSnapshot: DataSnapshot?) {
-                        TODO("Not yet implemented")
                     }
                 },
                 failureListener = object : ControllerBase.FailureListener() {

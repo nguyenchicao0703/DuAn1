@@ -2,7 +2,7 @@
 Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị giới hạn rất nhiều so với dự tính ban đầu
 
 ### Note:
-- Google doesn't like hanging UI thread (main thread) so everything has to be asynchronous
+- ~~Google doesn't like hanging UI thread (main thread) so everything has to be asynchronous~~
 - Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
 activity in ``AuthRegister``
 
@@ -19,21 +19,21 @@ activity in ``AuthRegister``
 ## TODO List
 ### Mục khách hàng
 #### Auth Activity - Đăng nhập / Đăng ký
-| Task                                                      | Trạng thái          |
-|-----------------------------------------------------------|---------------------|
-| Layout đăng nhập / đăng ký                                | Hoàn thành          |
-| Layout điền thông tin chi tiết sau đăng ký                | Hoàn thành          |
-| Layout splash loading screen                              | Hoàn thành          |
-| Layout chạy app lần đầu                                   | Sửa lại             |
-| Màn hình khởi chạy lần đầu                                | Working             |
-| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Working (in theory) |
-| Đăng nhập bằng Google                                     | Working             |
-| Đăng nhập bằng Facebook                                   | Not working         |
-| Đăng nhập bằng tài khoản thường                           | Chưa test           |
-| Đăng ký bằng tài khoản thường                             | Chưa test           |
-| Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Working (in theory) |
-| Xác thực địa chỉ email                                    | Working (in theory) |
-| Quên mật khẩu (email hoặc sđt)                            | Working             |
+| Task                                                      | Trạng thái                          |
+|-----------------------------------------------------------|-------------------------------------|
+| Layout đăng nhập / đăng ký                                | Complete                            |
+| Layout điền thông tin chi tiết sau đăng ký                | Complete                            |
+| Layout splash loading screen                              | Complete                            |
+| Layout chạy app lần đầu                                   | Sửa lại                             |
+| Màn hình khởi chạy lần đầu                                | Working                             |
+| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Working (assumption)                |
+| Đăng nhập bằng Google                                     | Working                             |
+| Đăng nhập bằng Facebook                                   | Not working (Firebase setup issues) |
+| Đăng nhập bằng tài khoản thường                           | Working (assumption)                |
+| Đăng ký bằng tài khoản thường                             | Working (assumption)                |
+| Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Working (assumption)                |
+| Xác thực địa chỉ email                                    | Working (assumption)                |
+| Quên mật khẩu (email hoặc sđt)                            | Working                             |
 Còn thêm?
 
 **Note**: Firebase không có tạo tài khoản được bằng số điện thoại nên số điện thoại chỉ được dùng làm đăng nhập hoặc quên mật khẩu
@@ -41,67 +41,67 @@ Còn thêm?
 #### Màn hình chính
 | Task                                                       | Trạng thái       |
 |------------------------------------------------------------|------------------|
-| Layout homepage                                            | Hoàn thành       |
+| Layout homepage                                            | Complete         |
 | Liệt kê danh sách loại sản phẩm?                           | Working, limited |
 | Liệt kê danh sách sản phẩm nổi bật                         | Working, limited |
 | Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Working          |
-| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Not working      |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Working          |
 Còn thêm?
 
 #### Màn hình tìm kiếm sản phẩm
 
 | Task                                                       | Trạng thái       |
 |------------------------------------------------------------|------------------|
-| Layout tìm kiếm                                            | Hoàn thành       |
-| Layout ưa thích                                            | Hoàn thành       |
+| Layout tìm kiếm                                            | Complete         |
+| Layout ưa thích                                            | Complete         |
 | Liệt kê danh sách các sản phẩm                             | Working          |
 | Khung tìm kiếm theo tên / loại sản phẩm                    | Working, limited |
-| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Not working      |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Working          |
 Còn thêm?
 
 #### Màn hình thông tin sản phẩm
 | Task                           | Trạng thái |
 |--------------------------------|------------|
-| Layout thông tin sản phẩm      | Hoàn thành |
-| Layout thông tin loại sản phẩm | Hoàn thành |
-| Hiển thị thông tin sản phẩm    | Chưa test  |
-| Nút chọn thêm vào mục ưa thích | Chưa test  |
-| Nút đặt mua sản phẩm           | Chưa test  |
+| Layout thông tin sản phẩm      | Complete   |
+| Layout thông tin loại sản phẩm | Complete   |
+| Hiển thị thông tin sản phẩm    | Working    |
+| Nút chọn thêm vào mục ưa thích | Working    |
+| Nút đặt mua sản phẩm           | Working    |
 Còn thêm?
 
 #### Màn hình giỏ hàng
 
 | Task                                               | Trạng thái |
 |----------------------------------------------------|------------|
-| Layout giỏ hàng                                    | Hoàn thành |
-| Layout cổng thanh toán                             | Bỏ qua     |
-| Layout xác nhận thanh toán                         | Hoàn thành |
-| Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Chưa test  |
-| Đặt mua và thanh toán (giả)                        | Chưa test  |
+| Layout giỏ hàng                                    | Complete   |
+| Layout cổng thanh toán                             | Skipped    |
+| Layout xác nhận thanh toán                         | Complete   |
+| Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Working    |
+| Đặt mua và thanh toán (giả)                        | Working    |
 Còn thêm?
 
 #### Màn hình quản lý tài khoản
-| Task                                                                    | Trạng thái          |
-|-------------------------------------------------------------------------|---------------------|
-| Layout thông tin người dùng                                             | Hoàn thành          |
-| Layout chỉnh sửa thông tin                                              | Hoàn thành          |
-| Layout quên mật khẩu / OTP                                              | Hoàn thành          |
-| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Chưa test           |
-| Xem và thay đổi thông tin cá nhân                                       | Working (in theory) |
-| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Working             |
-| Xem những hoá đơn đã hoàn thành trước đó                                | Chưa xong           |
-| Liên kết tài khoản Google / Facebook (nếu không có)                     | Working (in theory) |
-| Đăng xuất                                                               | Working             |
+| Task                                                                    | Trạng thái           |
+|-------------------------------------------------------------------------|----------------------|
+| Layout thông tin người dùng                                             | Complete             |
+| Layout chỉnh sửa thông tin                                              | Complete             |
+| Layout quên mật khẩu / OTP                                              | Complete             |
+| Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Working              |
+| Xem và thay đổi thông tin cá nhân                                       | Working              |
+| Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Working              |
+| Xem những hoá đơn đã hoàn thành trước đó                                | Không có layout      |
+| Liên kết tài khoản Google / Facebook (nếu không có)                     | Working (assumption) |
+| Đăng xuất                                                               | Working              |
 
 Còn thêm?
 
 #### Màn hình chat người dùng
 
-| Task                          | Trạng thái |
-|-------------------------------|------------|
-| Layout lịch sử chat           | Hoàn thành |
-| Layout chat với người dùng    | Hoàn thành |
-| Chức năng chat với người dùng | Chưa test  |
+| Task                          | Trạng thái           |
+|-------------------------------|----------------------|
+| Layout lịch sử chat           | Complete             |
+| Layout chat với người dùng    | Complete             |
+| Chức năng chat với người dùng | Working (assumption) |
 
 Còn thêm?
 
@@ -109,8 +109,8 @@ Còn thêm?
 
 | Task                                | Trạng thái |
 |-------------------------------------|------------|
-| Layout thông tin người dùng         | Hoàn thành |
-| Nút chuyển sang chat với người dùng | Chưa test  |
+| Layout thông tin người dùng         | Complete   |
+| Nút chuyển sang chat với người dùng | Working    |
 
 Còn thêm?
 
