@@ -39,23 +39,23 @@ class ControllerProduct : ControllerBase<Product>("table_products") {
         val tableReference = Firebase.database.child(table)
         val rowReference: DatabaseReference
         if (update) {
+            tableReference.child(value.id!!).setValue(value)
+                .addOnCompleteListener {
+                    if (it.isSuccessful)
+                        successListener?.run(value.id)
+                    else
+                        failureListener?.run(it.exception)
+                }
+        } else {
             rowReference = tableReference.push()
             value.id = rowReference.key
 
             rowReference.setValue(value).addOnCompleteListener {
                 if (it.isSuccessful)
-                    successListener?.run(it.result)
+                    successListener?.run(value.id)
                 else
                     failureListener?.run(it.exception)
             }
-        } else {
-            tableReference.child(value.id!!).setValue(value)
-                .addOnCompleteListener {
-                    if (it.isSuccessful)
-                        successListener?.run(it.result)
-                    else
-                        failureListener?.run(it.exception)
-                }
         }
     }
 

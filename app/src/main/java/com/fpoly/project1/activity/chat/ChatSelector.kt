@@ -1,6 +1,10 @@
 package com.fpoly.project1.activity.chat
 
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +19,20 @@ import com.google.firebase.database.DataSnapshot
 class ChatSelector : Fragment(R.layout.chat_overview) {
     private lateinit var chatRecyclerView: RecyclerView
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.chat_overview, container, false)
+
+        chatRecyclerView = view.findViewById(R.id.home_chat_recyclerView)
+
+        return view
+    }
+
     override fun onResume() {
         super.onResume()
-
-        chatRecyclerView = requireActivity().findViewById(R.id.home_chat_recyclerView)
 
         chatRecyclerView.let {
             ControllerChatSession().getAllAsync(

@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
 import com.fpoly.project1.activity.product.adapter.ProductProfileAdapter
-import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.controller.ControllerProduct
@@ -57,7 +56,7 @@ class ProductProfileView : BottomSheetDialogFragment() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-                    runLater(view)
+                    runLater()
                 }
             }, null
         )
@@ -65,7 +64,7 @@ class ProductProfileView : BottomSheetDialogFragment() {
         return view
     }
 
-    private fun runLater(view: View) {
+    private fun runLater() {
         if (customer == null) {
             Toast.makeText(requireContext(), "Unable to find user", Toast.LENGTH_SHORT).show()
             return
@@ -75,15 +74,11 @@ class ProductProfileView : BottomSheetDialogFragment() {
 
         userFullName.text = customer!!.fullName
         userEmail.visibility = View.GONE
-        userAvatar.let {
-            Firebase.storage.child("/avatars/${customer!!.id}.jpg").downloadUrl
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful)
-                        Glide.with(this).load(task.result).into(it)
-                    else
-                        Glide.with(this).load(customer!!.avatarUrl).into(it)
-                }
-        }
+        customer!!.getAvatarUrl(object : ControllerBase.SuccessListener() {
+            override fun run(unused: Any?) {
+                Glide.with(this@ProductProfileView).load(unused as String).into(userAvatar)
+            }
+        })
         userChat.setOnClickListener {
             val intentData = Intent(requireContext(), ChatView::class.java)
             intentData.putExtras(bundleOf(Pair("id", customer!!.id)))

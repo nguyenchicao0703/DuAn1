@@ -14,7 +14,10 @@ import com.fpoly.project1.firebase.controller.ControllerOrder
 import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Order
 import com.google.firebase.database.DataSnapshot
+import java.text.NumberFormat
 import java.time.Instant
+import java.util.*
+import kotlin.collections.HashMap
 
 class CheckoutConfirm : AppCompatActivity() {
     private lateinit var paymentHolder: TextView
@@ -52,21 +55,25 @@ class CheckoutConfirm : AppCompatActivity() {
 
                     // bindings
                     paymentHolder.text = account.fullName
-                    paymentSubtotal.text = subTotal.toString()
-                    paymentTax.text = subFees.toString()
-                    paymentTotal.text = (subTotal + subFees).toString()
+                    paymentSubtotal.text = NumberFormat.getIntegerInstance().format(subTotal)
+                    paymentTax.text = NumberFormat.getIntegerInstance().format(subFees)
+                    paymentTotal.text = NumberFormat.getIntegerInstance().format(subTotal + subFees)
 
                     paymentConfirm.setOnClickListener {
-                        val list = HashMap<String, Int>()
-                        SessionUser.cart.forEach { list[it.first.id!!] = it.second }
+                        val list = mutableMapOf<String, Int>()
+                        SessionUser.cart.forEach {
+                            list[it.first.id!!] = it.second
+                        }
 
                         controllerOrder.setAsync(
                             Order(
                                 "",
                                 account.id!!,
-                                Instant.now().toEpochMilli().toString(),
+                                Instant.now().toEpochMilli(),
                                 0,
-                                list
+                                list,
+                                subTotal,
+                                subFees.toLong()
                             ),
                             false,
                             successListener = object : ControllerBase.SuccessListener() {
@@ -75,6 +82,9 @@ class CheckoutConfirm : AppCompatActivity() {
                                         this@CheckoutConfirm, "Mock payment succeeded", Toast
                                             .LENGTH_SHORT
                                     ).show()
+
+                                    SessionUser.cart.clear()
+                                    finish()
                                 }
                             },
                             failureListener = object : ControllerBase.FailureListener() {

@@ -9,47 +9,62 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="refactor: Actually working&#10;&#10;Changed and tested&#10;- Auth fill bio handling&#10;- Chat functionality, holy shit&#10;- Minor changes to account panel">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/app/Project_1.app.androidTest.iml" afterDir="false" />
+    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="refactor: Minor code cleanup">
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountEditProfile.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountEditProfile.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountFavorites.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountFavorites.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountVerifyEmail.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountVerifyEmail.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthFillBio.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthFillBio.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotVerifyOTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotVerifyOTP.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthRegister.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthRegister.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthResetPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthResetPassword.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatSelectorAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatSelectorAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatViewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatViewAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutConfirm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutConfirm.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutOverview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutOverview.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerProduct.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerProduct.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Customer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Customer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Order.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Order.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/ProductCategory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/ProductCategory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_edt_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_edt_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_food.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_food.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/__main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/__main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_overview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_overview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/checkout_cart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_cart.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_category_detailed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_category_detailed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_product_detailed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_product_detailed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview_other.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_bottom_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_bottom_navigation.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[1805133810JA03YY]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -76,6 +91,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -107,9 +123,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="android-custom-viewC:/AndroidSDK/sources/android-33/android/widget/EditText.java_SELECTED" value="EditText" />
+    <property name="android-custom-viewC:/Users/Admin/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.7.0/289bbb3a7fea52532f1163487f9469217ee608a9/material-1.7.0-sources.jar!/com/google/android/material/bottomnavigation/BottomNavigationView.java_SELECTED" value="BottomNavigationView" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
+    <property name="ignore.preview.features.used" value="true" />
     <property name="project.structure.last.edited" value="Build Variants" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -179,6 +198,21 @@
     <MESSAGE value="refactor: Converted to async&#10;&#10;Changed and tested&#10;- Product details&#10;- Product profile details&#10;- Product favorite handling&#10;- Product search handling" />
     <MESSAGE value="refactor: Changed to working state&#10;&#10;Changed and tested&#10;- Checkout handling&#10;- Chat handling&#10;- Profile edit handling&#10;- Favorite product handling" />
     <MESSAGE value="refactor: Actually working&#10;&#10;Changed and tested&#10;- Auth fill bio handling&#10;- Chat functionality, holy shit&#10;- Minor changes to account panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: Actually working&#10;&#10;Changed and tested&#10;- Auth fill bio handling&#10;- Chat functionality, holy shit&#10;- Minor changes to account panel" />
+    <MESSAGE value="refactor: Minor code cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: Minor code cleanup" />
+  </component>
+  <component name="com.github.lppedd.cc.CommitBuilderDialog">
+    <type>update</type>
+    <subject>Final update? Maybe?</subject>
+    <body>Changes and tested:
+- Added Product publishing (add/remove)
+- Checkout clears current cart
+- Added Order history (limited)
+- Changed number formatting
+- Some layout adjustments
+- Optimized* fragments handling</body>
+    <footers>
+      <entry type="" value="" />
+    </footers>
   </component>
 </project>

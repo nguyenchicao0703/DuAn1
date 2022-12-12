@@ -256,7 +256,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_recyclerView"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="vertical"

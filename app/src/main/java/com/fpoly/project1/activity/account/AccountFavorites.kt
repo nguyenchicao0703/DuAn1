@@ -43,30 +43,30 @@ class AccountFavorites : AppCompatActivity() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     val customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-                    ControllerProductCategory().getAllAsync(
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run(dataSnapshot: DataSnapshot?) {
-                                val categories = ArrayList<ProductCategory>()
-                                dataSnapshot?.children?.forEach {
-                                    categories.add(it.getValue(ProductCategory::class.java)!!)
-                                }
+                    if (customer.favoriteIds != null) {
+                        ControllerProductCategory().getAllAsync(
+                            successListener = object : ControllerBase.SuccessListener() {
+                                override fun run(dataSnapshot: DataSnapshot?) {
+                                    val categories = ArrayList<ProductCategory>()
+                                    dataSnapshot?.children?.forEach {
+                                        categories.add(it.getValue(ProductCategory::class.java)!!)
+                                    }
 
-                                if (customer.favoriteIds != null) {
                                     favoriteProductsAdapter = FavoriteProductsAdapter(
                                         this@AccountFavorites,
                                         customer,
-                                        customer.favoriteIds!!.toMutableList(),
+                                        customer.favoriteIds!!,
                                         categories
                                     )
                                     favoriteRecyclerView.adapter = favoriteProductsAdapter
                                 }
-                            }
-                        },
-	                    failureListener
-                    )
+                            },
+                            failureListener
+                        )
+                    }
                 }
             },
-	        failureListener
+            failureListener
         )
     }
 

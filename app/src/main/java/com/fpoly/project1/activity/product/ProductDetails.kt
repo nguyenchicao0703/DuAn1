@@ -15,7 +15,6 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
-import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -24,6 +23,8 @@ import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Product
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
+import java.text.NumberFormat
+import java.util.Locale
 
 class ProductDetails : BottomSheetDialogFragment() {
     private val controllerCustomer = ControllerCustomer()
@@ -57,34 +58,50 @@ class ProductDetails : BottomSheetDialogFragment() {
 
         bindViews(view)
 
-        ControllerCustomer().getAsync(
-            SessionUser.sessionId,
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    customer = dataSnapshot?.getValue(Customer::class.java)!!
+        // run last
+        fun getOwner() {
+            ControllerCustomer().getAsync(
+                product.sellerId,
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run(dataSnapshot: DataSnapshot?) {
+                        owner = dataSnapshot?.getValue(Customer::class.java)!!
 
-                    ControllerProduct().getAsync(
-                        arguments?.getString("id", null),
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run(dataSnapshot: DataSnapshot?) {
-                                product = dataSnapshot?.getValue(Product::class.java)!!
+                        runLater()
+                    }
+                }, null
+            )
+        }
 
-                                ControllerCustomer().getAsync(
-                                    product.sellerId,
-                                    successListener = object : ControllerBase.SuccessListener() {
-                                        override fun run(dataSnapshot: DataSnapshot?) {
-                                            owner = dataSnapshot?.getValue(Customer::class.java)!!
+        // run second
+        fun getProduct() {
+            ControllerProduct().getAsync(
+                arguments?.getString("id", null),
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run(dataSnapshot: DataSnapshot?) {
+                        product = dataSnapshot?.getValue(Product::class.java)!!
 
-                                            runLater(view)
-                                        }
-                                    }, null
-                                )
-                            }
-                        }, null
-                    )
-                }
-            }, null
-        )
+                        getOwner()
+                    }
+                }, null
+            )
+        }
+
+        // run first
+        fun getCustomer() {
+            ControllerCustomer().getAsync(
+                SessionUser.sessionId,
+                successListener = object : ControllerBase.SuccessListener() {
+                    override fun run(dataSnapshot: DataSnapshot?) {
+                        customer = dataSnapshot?.getValue(Customer::class.java)!!
+
+                        getProduct()
+                    }
+                }, null
+            )
+        }
+
+        // run async tasks
+        getCustomer()
 
         return view
     }
@@ -108,18 +125,16 @@ class ProductDetails : BottomSheetDialogFragment() {
         cartButton = view.findViewById(R.id.userPage_users_btn_cart)
     }
 
-    private fun runLater(view: View) {
+    private fun runLater() {
         // bindings
         backButton.setOnClickListener { dismiss() }
         ownerAvatar.let {
             it.setOnClickListener { showProfile() }
-            Firebase.storage.child("/avatars/${owner.id}.jpg").downloadUrl
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful)
-                        Glide.with(this).load(task.result).into(it)
-                    else
-                        Glide.with(this).load(owner.avatarUrl).into(it)
+            owner.getAvatarUrl(object : ControllerBase.SuccessListener() {
+                override fun run(unused: Any?) {
+                    Glide.with(this@ProductDetails).load(unused as String).into(ownerAvatar)
                 }
+            })
         }
         ownerFullName.let {
             it.text = owner.fullName
@@ -141,7 +156,7 @@ class ProductDetails : BottomSheetDialogFragment() {
 
         Glide.with(this).load(product.thumbnails?.get(0)).into(productThumbnail)
         productName.text = product.name
-        productPrice.text = product.price.toString()
+        productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         productDescription.text = product.description
 
         // add amount to current view
@@ -159,7 +174,14 @@ class ProductDetails : BottomSheetDialogFragment() {
 
         // add to card
         cartButton.setOnClickListener {
-            SessionUser.cart.add(Pair(product, cartAmount.text.toString().toInt()))
+            val existingCartItem = SessionUser.cart.find { pair -> pair.first.id == product.id }
+
+            if (existingCartItem != null) {
+                SessionUser.cart[SessionUser.cart.indexOf(existingCartItem)] =
+                    Pair(product, existingCartItem.second + cartAmount.text.toString().toInt())
+            } else {
+                SessionUser.cart.add(Pair(product, cartAmount.text.toString().toInt()))
+            }
 
             Toast.makeText(
                 requireContext(), "Added ${cartAmount.text.toString().toInt()}x to " +
@@ -171,13 +193,9 @@ class ProductDetails : BottomSheetDialogFragment() {
     private fun favoriteViewListener(favView: ImageView) {
         if (customer.favoriteIds?.any { id -> id == product.id } == true) {
             favView.backgroundTintList =
-                ColorStateList.valueOf(
-                    resources.getColor(R.color.accent)
-                )
+                ColorStateList.valueOf(resources.getColor(R.color.accent))
             favView.foregroundTintList =
-                ColorStateList.valueOf(
-                    resources.getColor(R.color.button_background)
-                )
+                ColorStateList.valueOf(resources.getColor(R.color.button_background))
         }
 
         favView.setOnClickListener {

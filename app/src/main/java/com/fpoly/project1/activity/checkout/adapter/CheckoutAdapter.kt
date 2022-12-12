@@ -1,14 +1,16 @@
 package com.fpoly.project1.activity.checkout.adapter
 
+import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -17,6 +19,7 @@ import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
+import java.text.NumberFormat
 
 class CheckoutAdapter(
     private val context: Context,
@@ -37,25 +40,19 @@ class CheckoutAdapter(
             .into(holder.productThumbnail)
 
         holder.productName.text = product.name
-
-        holder.productPrice.text = product.price.toString()
-
+        holder.productPrice.text = product.price.toString().format("%,d")
         holder.productType.text =
             categories.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(
                     product.categoryId
                 )
             }[0].name
-
         holder.productCount.text =
             list[holder.absoluteAdapterPosition].second.toString()
-
         holder.itemView.setOnClickListener {
-            val bundleData = Bundle()
-            bundleData.putString("id", product.id)
-
             val fragment = ProductDetails()
-            fragment.arguments = bundleData
+
+            fragment.arguments = bundleOf(Pair("id", product.id))
             fragment.show(
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
             )
@@ -67,8 +64,7 @@ class CheckoutAdapter(
             }?.let { entry ->
                 val index = SessionUser.cart.indexOf(entry)
 
-                SessionUser.cart.add(index, Pair(entry.first, entry.second + 1))
-                SessionUser.cart.remove(entry)
+                SessionUser.cart[index] = Pair(entry.first, entry.second + 1)
 
                 notifyItemChanged(index)
                 fragment.renderTotalCost()
@@ -81,17 +77,45 @@ class CheckoutAdapter(
             }?.let { entry ->
                 val index = SessionUser.cart.indexOf(entry)
 
-                SessionUser.cart.add(
-                    index, Pair(
-                        entry.first,
-                        if (entry.second - 1 < 0) 1 else entry.second - 1
-                    )
-                )
+                SessionUser.cart[index] =
+                    Pair(entry.first, if (entry.second - 1 < 0) 1 else entry.second - 1)
                 SessionUser.cart.remove(entry)
 
                 notifyItemChanged(index)
                 fragment.renderTotalCost()
             }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            val dialog = Dialog(context)
+            dialog.setContentView(R.layout.checkout_dialog_remove)
+            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_name).text = product.name
+            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_amout).text =
+                list[holder.absoluteAdapterPosition].second.toString()
+            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_price).text =
+                NumberFormat.getIntegerInstance()
+                    .format(product.price!! * list[holder.absoluteAdapterPosition].second)
+            dialog.findViewById<Button>(R.id.dialog_remove_cart_btn_cancle).setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.findViewById<Button>(R.id.dialog_remove_cart_btn_sure).setOnClickListener {
+                SessionUser.cart.find { item ->
+                    item.first.id == list[position].first.id
+                }?.let { entry ->
+                    val index = SessionUser.cart.indexOf(entry)
+
+                    SessionUser.cart.removeAt(index)
+
+                    notifyItemRemoved(index)
+                    fragment.renderTotalCost()
+
+                    dialog.dismiss()
+                    Toast.makeText(context, "Removed from cart", Toast.LENGTH_SHORT).show()
+                }
+            }
+            dialog.show()
+
+            true
         }
     }
 

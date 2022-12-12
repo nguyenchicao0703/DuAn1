@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSDK/icons/material/materialicons/search/baseline_search_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSDK/icons/material/materialicons/publish/baseline_publish_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_search" />
+                            <entry key="outputName" value="ic_publish" />
                             <entry key="sourceFile" value="C:\Users\Admin\AndroidStudioProjects\Project1" />
                           </map>
                         </option>

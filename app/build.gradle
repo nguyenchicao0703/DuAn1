@@ -13,19 +13,13 @@ android {
         minSdk 28
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "1.0-Alpha"
         signingConfig signingConfigs.debug
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildTypes {
-        release {
-            minifyEnabled true
-            signingConfig signingConfigs.debug
-        }
     }
 }
 

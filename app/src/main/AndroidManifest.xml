@@ -84,9 +84,6 @@
             android:name="com.fpoly.project1.activity.account.AccountFavorites"
             android:exported="false" />
         <activity
-            android:name="com.fpoly.project1.activity.account.AccountOrderHistory"
-            android:exported="false" />
-        <activity
             android:name="com.fpoly.project1.activity.account.AccountVerifyEmail"
             android:exported="false" />
 

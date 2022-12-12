@@ -13,10 +13,13 @@
         android:icon="@drawable/ic_order"
         android:title="Checkout" />
     <item
+        android:id="@+id/mPublish"
+        android:icon="@drawable/ic_publish"
+        android:title="Publish" />
+    <item
         android:id="@+id/mChat"
         android:icon="@drawable/ic_chat"
         android:title="Chat" />
-
     <item
         android:id="@+id/mProfile"
         android:icon="@drawable/ic_person"

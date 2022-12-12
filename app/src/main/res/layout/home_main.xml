@@ -50,10 +50,11 @@
 
                 <TextView
                     android:id="@+id/home_txt_statusBar_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="25dp"
+                    android:layout_weight="1"
                     android:text="Hello, Daniel !"
                     android:textColor="@color/black"
                     android:textSize="25dp"
@@ -76,16 +77,17 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_constraint_search"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toStartOf="@id/home_iv_filter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/forgot_linearLayout_statusBar">
 
                 <EditText
                     android:id="@+id/home_edt_search"
-                    android:layout_width="300dp"
+                    android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:background="@drawable/custom_home_edt_search"
                     android:hint="Search"
@@ -116,6 +118,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/custom_forgotpassword_txt"
                 android:padding="10dp"
@@ -184,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="32dp"
-                android:text="Product Menu"
+                android:text="Recently Added"
                 android:textColor="@color/black"
                 android:textSize="26dp"
                 android:textStyle="bold"
@@ -207,7 +210,7 @@
             <!--        Show product types (pizza, hamburger, drink, noodles, dessert, fried)-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView_product_menu"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:paddingLeft="20dp"
@@ -248,7 +251,7 @@
             <!--        Show featured products-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView_product_featured"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:paddingLeft="20dp"

@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
+import java.text.NumberFormat
+import java.util.*
 
 class FeaturedAdapter(private val context: Context, private val products: List<Product>) :
     RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
@@ -31,7 +33,7 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price.toString()
+        holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         holder.itemView.setOnClickListener {
             val fragment = ProductDetails()
             fragment.arguments = bundleOf(Pair("id", product.id))

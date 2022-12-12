@@ -3,16 +3,15 @@ Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị gi
 
 ### Note:
 - ~~Google doesn't like hanging UI thread (main thread) so everything has to be asynchronous~~
-- Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
-activity in ``AuthRegister``
+~~- Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
+activity in ``AuthRegister``~~
 
-*Ưu tiên:
-- Đăng nhập được
-- Hiển thị sản phẩm
-- Tìm kiếm sản phẩm
-- Thêm vào giỏ hàng
-- Thanh toán
-- Người bán xác nhận trạng thái đơn hàng
+### Update
+~~- Giá tiền format VietNam~~
+- Thêm data test (50 sản phẩm test) (spam di)
+~~- Thanh toán sản phẩm thành công -> sản phẩm trong giỏ hàng bị xóa đi~~
+~~- Lịch sử mua hàng~~
+~~- Người bán~~
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 
@@ -97,7 +96,7 @@ Còn thêm?
 | Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Working              |
 | Xem và thay đổi thông tin cá nhân                                       | Working              |
 | Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Working              |
-| Xem những hoá đơn đã hoàn thành trước đó                                | Không có layout      |
+| Xem những hoá đơn đã hoàn thành trước đó                                | Working (limited)    |
 | Liên kết tài khoản Google / Facebook (nếu không có)                     | Working (assumption) |
 | Đăng xuất                                                               | Working              |
 
@@ -122,17 +121,12 @@ Còn thêm?
 
 Còn thêm?
 
-#### Cần thêm
-
-- ... không kịp
-
 ### Các chức năng khác sẽ có hoặc không
 
-- Giao diện người bán
 - Giao diện người giao hàng
-- Live chat với người bán / người giao (phải có app người bán / người giao)
-  Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể bán và
-  mua cùng lúc
+~~- Live chat với người bán / người giao (phải có app người bán / người giao)~~
+> Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể 
+> bán và mua cùng lúc
 
 ## Chú ý
 - Sử dụng Tiếng Anh (sớm sau gì tất cả code đều làm bằng tiếng Anh cả thôi)

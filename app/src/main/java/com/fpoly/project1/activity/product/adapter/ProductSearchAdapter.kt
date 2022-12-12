@@ -14,6 +14,8 @@ import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
+import java.text.NumberFormat
+import java.util.*
 
 class ProductSearchAdapter(
     private val context: Context,
@@ -32,7 +34,7 @@ class ProductSearchAdapter(
         Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price.toString()
+        holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         holder.productType.text =
             categories.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(

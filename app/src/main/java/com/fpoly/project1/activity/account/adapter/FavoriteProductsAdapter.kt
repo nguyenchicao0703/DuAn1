@@ -1,7 +1,6 @@
 package com.fpoly.project1.activity.account.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +20,13 @@ import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
+import java.text.NumberFormat
+import java.util.*
 
 class FavoriteProductsAdapter(
     private val context: Context,
     private val customer: Customer,
-    private var products: MutableList<String>,
+    private var products: List<String>,
     private var categories: List<ProductCategory>
 ) : RecyclerView.Adapter<FavoriteProductsAdapter.ViewHolder>() {
 
@@ -36,78 +37,83 @@ class FavoriteProductsAdapter(
         ViewHolder(layoutInflater.inflate(R.layout.item_recycler_favorite, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        println(products)
+
         // get the related product at position
         ControllerProduct().getAsync(
             products[holder.absoluteAdapterPosition],
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     // product object
-                    val product = dataSnapshot?.getValue(Product::class.java)!!
+                    dataSnapshot?.getValue(Product::class.java)?.let { product ->
+                        // load thumbnail
+                        Glide.with(context).load(product.thumbnails?.get(0))
+                            .into(holder.productThumbnail)
 
-                    // load thumbnail
-                    Glide.with(context).load(product.thumbnails?.get(0))
-                        .into(holder.productThumbnail)
+                        // name
+                        holder.productName.text = product.name
 
-                    // name
-                    holder.productName.text = product.name
+                        // price
+                        holder.productPrice.text =
+                            NumberFormat.getIntegerInstance().format(product.price!!)
 
-                    // price
-                    holder.productPrice.text = product.price.toString()
+                        // product category
+                        holder.productType.text =
+                            categories.filter { productCategory: ProductCategory ->
+                                productCategory.id.equals(
+                                    product.categoryId
+                                )
+                            }[0].name
 
-                    // product category
-                    holder.productType.text =
-                        categories.filter { productCategory: ProductCategory ->
-                            productCategory.id.equals(
-                                product.categoryId
+                        // show product details fragment
+                        holder.itemView.setOnClickListener {
+                            val fragment = ProductDetails()
+                            fragment.arguments = bundleOf(Pair("id", product.id))
+                            fragment.show(
+                                (context as AppCompatActivity).supportFragmentManager,
+                                "product_details"
                             )
-                        }[0].name
-
-                    // show product details fragment
-                    holder.itemView.setOnClickListener {
-                        val fragment = ProductDetails()
-                        fragment.arguments = bundleOf(Pair("id", product.id))
-                        fragment.show(
-                            (context as AppCompatActivity).supportFragmentManager,
-                            "product_details"
-                        )
-                    }
-
-                    // favorite status handling
-                    holder.favoriteStatus.setOnClickListener {
-                        products.removeAt(holder.absoluteAdapterPosition)
-
-                        // if the user has a favorite list, clone it, remove the
-                        // corresponding entry then override
-                        customer.favoriteIds?.let {
-                            val newFavoriteList = it.toMutableList()
-                            newFavoriteList.removeAt(holder.absoluteAdapterPosition)
-
-                            customer.favoriteIds = newFavoriteList
                         }
 
-                        // update the user object in Firebase
-                        controllerCustomer.setAsync(customer, true,
-                            successListener = object : ControllerBase.SuccessListener() {
-                                override fun run() {
-                                    Toast.makeText(
-                                        context,
-                                        "Removed from favorites",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                        // favorite status handling
+                        holder.favoriteStatus.setOnClickListener {
+                            val mutableProducts = products.toMutableList()
+                            mutableProducts.removeAt(holder.absoluteAdapterPosition)
+                            products = mutableProducts
 
-                                    // notify removed at index
-                                    notifyItemRemoved(holder.absoluteAdapterPosition)
-                                }
-                            },
-                            failureListener = object : ControllerBase.FailureListener() {
-                                override fun run(error: Exception?) {
-                                    Toast.makeText(
-                                        context,
-                                        "Unable to remove from favorites",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            })
+                            // if the user has a favorite list, clone it, remove the
+                            // corresponding entry then override
+                            customer.favoriteIds?.let {
+                                val newFavoriteList = it.toMutableList()
+                                newFavoriteList.removeAt(holder.absoluteAdapterPosition)
+
+                                customer.favoriteIds = newFavoriteList
+                            }
+
+                            // update the user object in Firebase
+                            controllerCustomer.setAsync(customer, true,
+                                successListener = object : ControllerBase.SuccessListener() {
+                                    override fun run() {
+                                        Toast.makeText(
+                                            context,
+                                            "Removed from favorites",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+                                        // notify removed at index
+                                        notifyItemRemoved(holder.absoluteAdapterPosition)
+                                    }
+                                },
+                                failureListener = object : ControllerBase.FailureListener() {
+                                    override fun run(error: Exception?) {
+                                        Toast.makeText(
+                                            context,
+                                            "Unable to remove from favorites",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                })
+                        }
                     }
                 }
             },
