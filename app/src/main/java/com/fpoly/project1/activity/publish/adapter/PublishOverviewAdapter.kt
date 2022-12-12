@@ -36,7 +36,8 @@ class PublishOverviewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[holder.absoluteAdapterPosition]
 
-        Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
+        if (product.thumbnails != null && product.thumbnails.isNotEmpty())
+            Glide.with(context).load(product.thumbnails[0]).into(holder.productThumbnail)
 
         holder.productName.text = product.name
         holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
@@ -106,7 +107,7 @@ class PublishOverviewAdapter(
 
     fun addItem(product: Product) {
         this.list.add(product)
-        
+
         notifyItemInserted(list.size - 1)
     }
 

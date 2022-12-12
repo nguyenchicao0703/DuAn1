@@ -1,44 +1,40 @@
 # Cheetah (not fast) Food Delivery
 Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị giới hạn rất nhiều so với dự tính ban đầu
 
-### Note:
-- ~~Google doesn't like hanging UI thread (main thread) so everything has to be asynchronous~~
-~~- Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
-activity in ``AuthRegister``~~
-
-### Update
-~~- Giá tiền format VietNam~~
-- Thêm data test (50 sản phẩm test) (spam di)
-~~- Thanh toán sản phẩm thành công -> sản phẩm trong giỏ hàng bị xóa đi~~
-~~- Lịch sử mua hàng~~
-~~- Người bán~~
+### Todo before Friday:
+- Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
+activity in ``AuthRegister``
+- **Wrap Glide image loading into a try catch** to prevent crashing from trying to load image 
+  without a context when the user quickly dismiss the parent dialog fragment
+- **Add a total purchase counter to product** upon confirming purchases for use with the 
+  Featured menu section in home fragment
+- **Move the buttons from recycler views from bottom to top** because having it all the way 
+  bottom doesn't make any sense
+- **More testing**
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 4
 
-**Layout**: Chí Cao
-
-**Program**: acay
-
-**Presentation**: Hưng, Phi
-
-~~Rút: Hùng, Hiệp, 2 thằng nữa không biết~~I
+- **Layout**: Chí Cao
+- **Program**: acay
+- **Presentation**: Hưng, Cao?
+- ~~Rút: Hùng, Hiệp, Phi, 2 thằng nữa không biết~~I
 
 ## TODO List
 ### Mục khách hàng
 #### Auth Activity - Đăng nhập / Đăng ký
 | Task                                                      | Trạng thái                          |
 |-----------------------------------------------------------|-------------------------------------|
-| Layout đăng nhập / đăng ký                                | Complete                            |
-| Layout điền thông tin chi tiết sau đăng ký                | Complete                            |
-| Layout splash loading screen                              | Complete                            |
+| Layout đăng nhập / đăng ký                                | Working                             |
+| Layout điền thông tin chi tiết sau đăng ký                | Working                             |
+| Layout splash loading screen                              | Working                             |
 | Layout chạy app lần đầu                                   | Sửa lại                             |
 | Màn hình khởi chạy lần đầu                                | Working                             |
-| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Working (assumption)                |
+| Màn hình yêu cầu thông tin người dùng khi đăng ký lần đầu | Working                             |
 | Đăng nhập bằng Google                                     | Working                             |
 | Đăng nhập bằng Facebook                                   | Not working (Firebase setup issues) |
-| Đăng nhập bằng tài khoản thường                           | Working (assumption)                |
-| Đăng ký bằng tài khoản thường                             | Working (assumption)                |
-| Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Working (assumption)                |
+| Đăng nhập bằng tài khoản thường                           | Working                             |
+| Đăng ký bằng tài khoản thường                             | Working                             |
+| Sử dụng tài khoản nền tảng để đăng nhập tài khoản sẵn có  | Working                             |
 | Xác thực địa chỉ email                                    | Working (assumption)                |
 | Quên mật khẩu (email hoặc sđt)                            | Working                             |
 Còn thêm?
@@ -48,7 +44,7 @@ Còn thêm?
 #### Màn hình chính
 | Task                                                       | Trạng thái       |
 |------------------------------------------------------------|------------------|
-| Layout homepage                                            | Complete         |
+| Layout homepage                                            | Working          |
 | Liệt kê danh sách loại sản phẩm?                           | Working, limited |
 | Liệt kê danh sách sản phẩm nổi bật                         | Working, limited |
 | Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Working          |
@@ -59,8 +55,8 @@ Còn thêm?
 
 | Task                                                       | Trạng thái       |
 |------------------------------------------------------------|------------------|
-| Layout tìm kiếm                                            | Complete         |
-| Layout ưa thích                                            | Complete         |
+| Layout tìm kiếm                                            | Working          |
+| Layout ưa thích                                            | Working          |
 | Liệt kê danh sách các sản phẩm                             | Working          |
 | Khung tìm kiếm theo tên / loại sản phẩm                    | Working, limited |
 | Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Working          |
@@ -69,8 +65,8 @@ Còn thêm?
 #### Màn hình thông tin sản phẩm
 | Task                           | Trạng thái |
 |--------------------------------|------------|
-| Layout thông tin sản phẩm      | Complete   |
-| Layout thông tin loại sản phẩm | Complete   |
+| Layout thông tin sản phẩm      | Working    |
+| Layout thông tin loại sản phẩm | Working    |
 | Hiển thị thông tin sản phẩm    | Working    |
 | Nút chọn thêm vào mục ưa thích | Working    |
 | Nút đặt mua sản phẩm           | Working    |
@@ -80,9 +76,9 @@ Còn thêm?
 
 | Task                                               | Trạng thái |
 |----------------------------------------------------|------------|
-| Layout giỏ hàng                                    | Complete   |
+| Layout giỏ hàng                                    | Working    |
 | Layout cổng thanh toán                             | Skipped    |
-| Layout xác nhận thanh toán                         | Complete   |
+| Layout xác nhận thanh toán                         | Working    |
 | Liệt kê danh sách sản phẩm trong giỏ hàng hiện tại | Working    |
 | Đặt mua và thanh toán (giả)                        | Working    |
 Còn thêm?
@@ -90,9 +86,9 @@ Còn thêm?
 #### Màn hình quản lý tài khoản
 | Task                                                                    | Trạng thái           |
 |-------------------------------------------------------------------------|----------------------|
-| Layout thông tin người dùng                                             | Complete             |
-| Layout chỉnh sửa thông tin                                              | Complete             |
-| Layout quên mật khẩu / OTP                                              | Complete             |
+| Layout thông tin người dùng                                             | Working              |
+| Layout chỉnh sửa thông tin                                              | Working              |
+| Layout quên mật khẩu / OTP                                              | Working              |
 | Liệt kê danh sách các sản phẩm ưa thích trong 1 tab khác                | Working              |
 | Xem và thay đổi thông tin cá nhân                                       | Working              |
 | Thay đổi ảnh đại diện (vì bth ko app nào đặt ảnh đại diện ngay lúc reg) | Working              |
@@ -104,11 +100,11 @@ Còn thêm?
 
 #### Màn hình chat người dùng
 
-| Task                          | Trạng thái           |
-|-------------------------------|----------------------|
-| Layout lịch sử chat           | Complete             |
-| Layout chat với người dùng    | Complete             |
-| Chức năng chat với người dùng | Working (assumption) |
+| Task                          | Trạng thái |
+|-------------------------------|------------|
+| Layout lịch sử chat           | Working    |
+| Layout chat với người dùng    | Working    |
+| Chức năng chat với người dùng | Working    |
 
 Còn thêm?
 
@@ -116,7 +112,7 @@ Còn thêm?
 
 | Task                                | Trạng thái |
 |-------------------------------------|------------|
-| Layout thông tin người dùng         | Complete   |
+| Layout thông tin người dùng         | Working    |
 | Nút chuyển sang chat với người dùng | Working    |
 
 Còn thêm?
@@ -124,9 +120,6 @@ Còn thêm?
 ### Các chức năng khác sẽ có hoặc không
 
 - Giao diện người giao hàng
-~~- Live chat với người bán / người giao (phải có app người bán / người giao)~~
-> Nếu không thì nhét chung cả chức năng bán vào người dùng thông thường -> người dùng có thể 
-> bán và mua cùng lúc
 
 ## Chú ý
 - Sử dụng Tiếng Anh (sớm sau gì tất cả code đều làm bằng tiếng Anh cả thôi)

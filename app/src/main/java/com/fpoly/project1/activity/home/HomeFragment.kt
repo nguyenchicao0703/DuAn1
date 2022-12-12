@@ -96,7 +96,10 @@ class HomeFragment : Fragment(R.layout.home_main) {
                                 }
 
                                 recyclerMenu.adapter =
-                                    MenuAdapter(requireContext(), products.takeLast(5), categories)
+                                    MenuAdapter(
+                                        requireContext(), products.takeLast(5).reversed(),
+                                        categories
+                                    )
                             }
                         },
                         null
@@ -118,7 +121,10 @@ class HomeFragment : Fragment(R.layout.home_main) {
 
                     recyclerFeatured.layoutManager =
                         LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                    recyclerFeatured.adapter = FeaturedAdapter(requireContext(), list.takeLast(20))
+                    recyclerFeatured.adapter = FeaturedAdapter(
+                        requireContext(), list.takeLast
+                            (20).reversed()
+                    )
                 }
             },
             null

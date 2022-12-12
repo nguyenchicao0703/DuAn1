@@ -135,8 +135,8 @@ class ProductSearch : Fragment(R.layout.product_search) {
                                     }
                                 }
 
-                                productRecycler.adapter =
-                                    ProductSearchAdapter(requireContext(), products, categories)
+                                (productRecycler.adapter as ProductSearchAdapter)
+                                    .updateList(products, categories)
 
                                 // enable once data is loaded
                                 searchBox.isEnabled = true
