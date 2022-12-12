@@ -9,12 +9,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.enums.RequestCode
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -25,7 +27,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
@@ -179,43 +180,25 @@ class AuthLogin : AppCompatActivity() {
     // Google auth complete listener
     private fun googleCompleteListener(task: Task<AuthResult>) {
         if (task.isSuccessful) {
-            controllerCustomer.getAllAsync(
-                successListener = object : ControllerBase.SuccessListener() {
-                    override fun run(dataSnapshot: DataSnapshot?) {
-                        val customers = ArrayList<Customer>()
-                        if (dataSnapshot != null)
-                            for (entry in dataSnapshot.children) {
-                                customers.add(entry.getValue(Customer::class.java)!!)
-                            }
+            // get user
+            val user = FirebaseAuth.getInstance().currentUser!!
 
-                        // get user
-                        val user = FirebaseAuth.getInstance().currentUser!!
+            Firebase.database.child(controllerCustomer.table)
+                .orderByChild("emailAddress").equalTo(user.email)
+                .get().addOnCompleteListener { dataSnapshotTask ->
+                    val matchingCustomer = dataSnapshotTask.result?.children?.toList()
 
-                        // get matching account
-                        val matchingCustomer = customers.stream()
-                            .filter { c: Customer -> c.emailAddress == user.email || c.gid == user.uid }
-                            .toArray()
+                    if (!dataSnapshotTask.isSuccessful || matchingCustomer == null) {
+                        startActivity(Intent(this@AuthLogin, AuthFillBio::class.java))
 
-                        // if there isn't any matching user, switch to fill bio activity
-                        if (matchingCustomer.isEmpty()) {
-                            startActivity(Intent(this@AuthLogin, AuthFillBio::class.java))
-                        } else {
-                            // if user is already exist
-                            Log.i("LoginActivity::Google", "Got account from Firebase")
-                            SessionUser.setId((matchingCustomer[0] as Customer).id)
-                            startActivity(Intent(this@AuthLogin, MainActivity::class.java))
-                        }
+                        return@addOnCompleteListener
                     }
-                },
-                failureListener = object : ControllerBase.FailureListener() {
-                    override fun run(error: Exception?) {
-                        Log.e(
-                            this@AuthLogin::class.simpleName,
-                            "Error while getting all users", task.exception
-                        )
+
+                    matchingCustomer[0].let {
+                        SessionUser.setId((it.getValue(Customer::class.java))!!.id)
+                        startActivity(Intent(this@AuthLogin, MainActivity::class.java))
                     }
                 }
-            )
         } else {
             Log.e(this@AuthLogin::class.simpleName, "Error while authenticating", task.exception)
             Toast.makeText(
@@ -228,96 +211,41 @@ class AuthLogin : AppCompatActivity() {
 
     // Facebook auth complete listener
     private fun facebookCompleteListener(loginResult: LoginResult) {
-        // Authenticate with firebase
-        val authCredential = FacebookAuthProvider.getCredential(loginResult.accessToken.token)
-        firebaseAuth.signInWithCredential(authCredential)
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Toast.makeText(
-                        this@AuthLogin,
-                        "Something went wrong",
-                        Toast.LENGTH_SHORT
-                    ).show()
+        // Get facebook related information
+        val request = GraphRequest.newMeRequest(
+            loginResult.accessToken
+        ) { jsonObject: JSONObject?, _: GraphResponse? ->
+            try {
+                val email = jsonObject!!.getString("email")
 
-                    Log.e(
-                        this@AuthLogin::class.simpleName,
-                        "Error while requesting data from Facebook",
-                        task.exception
-                    )
-                    return@addOnCompleteListener
-                }
+                Firebase.database.child(controllerCustomer.table)
+                    .orderByChild("emailAddress").equalTo(email)
+                    .get().addOnCompleteListener { dataSnapshotTask ->
+                        val matchingCustomer = dataSnapshotTask.result?.children?.toList()
 
-                // proceed if good
-                controllerCustomer.getAllAsync(
-                    successListener = object : ControllerBase.SuccessListener() {
-                        override fun run(dataSnapshot: DataSnapshot?) {
-                            val customers = ArrayList<Customer>()
-                            dataSnapshot?.children?.forEach { entry ->
-                                customers.add(entry.getValue(Customer::class.java)!!)
-                            }
+                        if (!dataSnapshotTask.isSuccessful || matchingCustomer == null) {
+                            startActivity(Intent(this@AuthLogin, AuthFillBio::class.java))
 
-                            // TODO test and see if Facebook's Firebase user has the necessary
-                            //  credentials or not and remove GraphRequest code below
-                            // Get facebook related information
-                            val request = GraphRequest.newMeRequest(
-                                loginResult.accessToken
-                            ) { jsonObject: JSONObject?, graphResponse: GraphResponse? ->
-                                Log.i("LoginActivity::Facebook", graphResponse.toString())
-                                try {
-                                    val profile: Profile = Profile.getCurrentProfile()!!
-                                    val email = jsonObject!!.getString("email")
-                                    val matchingCustomer = customers.stream()
-                                        .filter { c: Customer -> c.emailAddress == email || c.fid == profile.id }
-                                        .toArray()
-
-                                    if (matchingCustomer.isEmpty()) {
-                                        startActivity(
-                                            Intent(
-                                                this@AuthLogin,
-                                                AuthFillBio::class.java
-                                            )
-                                        )
-                                    } else {
-                                        // if user is already exist
-                                        Log.i(
-                                            "LoginActivity::Facebook",
-                                            "Got account from Firebase"
-                                        )
-
-                                        SessionUser.setId((matchingCustomer[0] as Customer).id)
-                                        startActivity(
-                                            Intent(
-                                                this@AuthLogin,
-                                                MainActivity::class.java
-                                            )
-                                        )
-                                    }
-                                } catch (e: JSONException) {
-                                    Toast.makeText(
-                                        this@AuthLogin,
-                                        "Something went wrong",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    Log.e(this@AuthLogin::class.simpleName, "Error", e)
-                                }
-                            }
-
-                            val bundle = Bundle()
-                            bundle.putString("fields", "id,name,email")
-                            request.parameters = bundle
-                            request.executeAsync()
+                            return@addOnCompleteListener
                         }
-                    },
-                    failureListener = object : ControllerBase.FailureListener() {
-                        override fun run(error: Exception?) {
-                            Log.e(
-                                this@AuthLogin::class.simpleName,
-                                "Error while getting all users", task.exception
-                            )
+
+                        matchingCustomer[0].let {
+                            SessionUser.setId((it.getValue(Customer::class.java))!!.id)
+                            startActivity(Intent(this@AuthLogin, MainActivity::class.java))
                         }
                     }
-                )
+            } catch (e: JSONException) {
+                Toast.makeText(
+                    this@AuthLogin,
+                    "Something went wrong. ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                Log.e(this@AuthLogin::class.simpleName, "Error", e)
             }
+        }
+
+        request.parameters = bundleOf(Pair("fields", "id,name,email"))
+        request.executeAsync()
     }
 }

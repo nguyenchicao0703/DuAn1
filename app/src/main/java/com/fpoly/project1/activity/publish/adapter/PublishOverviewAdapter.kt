@@ -36,8 +36,11 @@ class PublishOverviewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[holder.absoluteAdapterPosition]
 
-        if (product.thumbnails != null && product.thumbnails.isNotEmpty())
-            Glide.with(context).load(product.thumbnails[0]).into(holder.productThumbnail)
+        product.thumbnails?.let {
+            Glide.with(context).load(
+                it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+            ).into(holder.productThumbnail)
+        }
 
         holder.productName.text = product.name
         holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
@@ -46,7 +49,7 @@ class PublishOverviewAdapter(
                 productCategory.id.equals(
                     product.categoryId
                 )
-            }[0].name
+            }.getOrNull(0)?.name ?: "Unknown"
         holder.itemView.setOnClickListener {
             val fragment = ProductDetails()
             fragment.arguments = bundleOf(Pair("id", product.id))

@@ -10,6 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.account.adapter.OrderHistoryAdapter
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerOrder
@@ -21,6 +22,7 @@ class AccountOrderHistory : BottomSheetDialogFragment() {
     private lateinit var searchBox: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: OrderHistoryAdapter
+
     private val controllerOrder = ControllerOrder()
     private val orders = ArrayList<Order>()
 
@@ -34,30 +36,19 @@ class AccountOrderHistory : BottomSheetDialogFragment() {
         searchBox = view.findViewById(R.id.orderhistory_edt_search)
         recyclerView = view.findViewById(R.id.orderhistory_recyclerview)
 
-        controllerOrder.getAllAsync(
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    dataSnapshot?.children?.forEach { entry ->
-                        entry.getValue(Order::class.java)?.let { order ->
-                            if (order.customerId == SessionUser.sessionId)
-                                orders.add(order)
-                        }
+        Firebase.database.child(controllerOrder.table)
+            .orderByChild("customerId").equalTo(SessionUser.sessionId)
+            .get().addOnCompleteListener { task ->
+                task.result?.children?.forEach { entry ->
+                    entry.getValue(Order::class.java)?.let { order ->
+                        if (order.customerId == SessionUser.sessionId)
+                            orders.add(order)
                     }
+                }
 
-                    recyclerAdapter = OrderHistoryAdapter(requireContext(), orders)
-                    recyclerView.adapter = recyclerAdapter
-                }
-            },
-            failureListener = object : ControllerBase.FailureListener() {
-                override fun run(error: Exception?) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to retrieve data from server",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                recyclerAdapter = OrderHistoryAdapter(requireContext(), orders)
+                recyclerView.adapter = recyclerAdapter
             }
-        )
 
         searchBox.doOnTextChanged { text, _, _, _ ->
             text?.let {

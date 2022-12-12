@@ -18,7 +18,6 @@ import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
-import java.util.stream.Collectors
 
 class GreetingWelcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +54,7 @@ class GreetingWelcome : AppCompatActivity() {
                                         .filter { customer: Customer ->
                                             (customer.gid.equals(FirebaseAuth.getInstance().currentUser?.uid)
                                                     || customer.fid.equals(Profile.getCurrentProfile()?.id))
-                                        }[0].id
+                                        }.getOrNull(0)?.id
                                 )
 
                                 // send to main screen
@@ -74,6 +73,7 @@ class GreetingWelcome : AppCompatActivity() {
                                     "Unable to find matching account",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                
                                 Log.e(this@GreetingWelcome::class.simpleName, "Error", error)
                             }
                         }

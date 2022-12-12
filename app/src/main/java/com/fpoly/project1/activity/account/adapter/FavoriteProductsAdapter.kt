@@ -21,7 +21,6 @@ import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
 import java.text.NumberFormat
-import java.util.*
 
 class FavoriteProductsAdapter(
     private val context: Context,
@@ -47,8 +46,12 @@ class FavoriteProductsAdapter(
                     // product object
                     dataSnapshot?.getValue(Product::class.java)?.let { product ->
                         // load thumbnail
-                        Glide.with(context).load(product.thumbnails?.get(0))
-                            .into(holder.productThumbnail)
+                        product.thumbnails?.let {
+                            Glide.with(context).load(
+                                it.getOrNull(0)
+                                    ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+                            ).into(holder.productThumbnail)
+                        }
 
                         // name
                         holder.productName.text = product.name
@@ -63,7 +66,7 @@ class FavoriteProductsAdapter(
                                 productCategory.id.equals(
                                     product.categoryId
                                 )
-                            }[0].name
+                            }.getOrNull(0)?.name ?: "Unknown"
 
                         // show product details fragment
                         holder.itemView.setOnClickListener {

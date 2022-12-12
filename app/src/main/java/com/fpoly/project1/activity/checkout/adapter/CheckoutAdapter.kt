@@ -36,8 +36,11 @@ class CheckoutAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position].first
 
-        Glide.with(context).load(product.thumbnails?.get(0))
-            .into(holder.productThumbnail)
+        product.thumbnails?.let {
+            Glide.with(context).load(
+                it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+            ).into(holder.productThumbnail)
+        }
 
         holder.productName.text = product.name
         holder.productPrice.text = product.price.toString().format("%,d")
@@ -46,7 +49,7 @@ class CheckoutAdapter(
                 productCategory.id.equals(
                     product.categoryId
                 )
-            }[0].name
+            }.getOrNull(0)?.name ?: "Unknown"
         holder.productCount.text =
             list[holder.absoluteAdapterPosition].second.toString()
         holder.itemView.setOnClickListener {

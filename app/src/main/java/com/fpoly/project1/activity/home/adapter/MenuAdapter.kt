@@ -32,13 +32,17 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
 
-        Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
+        product.thumbnails?.let {
+            Glide.with(context).load(
+                it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+            ).into(holder.productThumbnail)
+        }
 
         holder.productName.text = product.name
         holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         holder.productType.text = categories.filter { productCategory: ProductCategory ->
             productCategory.id.equals(product.categoryId)
-        }[0].name
+        }.getOrNull(0)?.name ?: "Unknown"
         holder.itemView.setOnClickListener {
             val fragment = ProductDetails()
             fragment.arguments = bundleOf(Pair("id", product.id))

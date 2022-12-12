@@ -24,7 +24,6 @@ import com.fpoly.project1.firebase.model.Product
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
 import java.text.NumberFormat
-import java.util.Locale
 
 class ProductDetails : BottomSheetDialogFragment() {
     private val controllerCustomer = ControllerCustomer()
@@ -56,6 +55,7 @@ class ProductDetails : BottomSheetDialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.product_product_detailed, container, false)
 
+        // one time bind
         bindViews(view)
 
         // run last
@@ -132,7 +132,11 @@ class ProductDetails : BottomSheetDialogFragment() {
             it.setOnClickListener { showProfile() }
             owner.getAvatarUrl(object : ControllerBase.SuccessListener() {
                 override fun run(unused: Any?) {
-                    Glide.with(this@ProductDetails).load(unused as String).into(ownerAvatar)
+                    try {
+                        Glide.with(this@ProductDetails).load(unused as String).into(ownerAvatar)
+                    } catch (e: java.lang.NullPointerException) {
+                        // ignored fragment detached
+                    }
                 }
             })
         }
@@ -154,10 +158,16 @@ class ProductDetails : BottomSheetDialogFragment() {
         // favorite status listener
         favoriteViewListener(productFavoriteStatus)
 
-        Glide.with(this).load(product.thumbnails?.get(0)).into(productThumbnail)
         productName.text = product.name
         productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         productDescription.text = product.description
+        product.thumbnails?.let { thumbnails ->
+            context?.let { ctx ->
+                Glide.with(ctx).load(
+                    thumbnails.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+                ).into(productThumbnail)
+            }
+        }
 
         // add amount to current view
         cartAdd.setOnClickListener {
@@ -193,12 +203,17 @@ class ProductDetails : BottomSheetDialogFragment() {
     private fun favoriteViewListener(favView: ImageView) {
         if (customer.favoriteIds?.any { id -> id == product.id } == true) {
             favView.backgroundTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.accent))
+                activity?.resources?.getColor(R.color.accent)
+                    ?.let { ColorStateList.valueOf(it) }
             favView.foregroundTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.button_background))
+                activity?.resources?.getColor(R.color.button_background)
+                    ?.let { ColorStateList.valueOf(it) }
         }
 
         favView.setOnClickListener {
+            // cancel if dispatched from context
+            if (activity == null) return@setOnClickListener
+
             val isFavorite: Boolean
             val currentFavoriteList = customer.favoriteIds
             val replicaFavoriteList = customer.favoriteIds?.toMutableList() ?: ArrayList()

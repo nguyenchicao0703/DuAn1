@@ -9,19 +9,30 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="update: Final update? Maybe?&#10;&#10;Changes and tested:&#10;- Added Product publishing (add/remove)&#10;- Checkout clears current cart&#10;- Added Order history (limited)&#10;- Changed number formatting&#10;- Some layout adjustments&#10;- Optimized* fragments handling">
+    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="update: Updated README">
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Project_1.app.androidTest.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerBase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerBase.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,6 +175,7 @@
     <MESSAGE value="refactor: Actually working&#10;&#10;Changed and tested&#10;- Auth fill bio handling&#10;- Chat functionality, holy shit&#10;- Minor changes to account panel" />
     <MESSAGE value="refactor: Minor code cleanup" />
     <MESSAGE value="update: Final update? Maybe?&#10;&#10;Changes and tested:&#10;- Added Product publishing (add/remove)&#10;- Checkout clears current cart&#10;- Added Order history (limited)&#10;- Changed number formatting&#10;- Some layout adjustments&#10;- Optimized* fragments handling" />
-    <option name="LAST_COMMIT_MESSAGE" value="update: Final update? Maybe?&#10;&#10;Changes and tested:&#10;- Added Product publishing (add/remove)&#10;- Checkout clears current cart&#10;- Added Order history (limited)&#10;- Changed number formatting&#10;- Some layout adjustments&#10;- Optimized* fragments handling" />
+    <MESSAGE value="update: Updated README" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: Updated README" />
   </component>
 </project>

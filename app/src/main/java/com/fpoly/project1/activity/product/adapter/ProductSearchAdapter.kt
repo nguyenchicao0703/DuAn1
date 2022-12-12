@@ -15,7 +15,6 @@ import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import java.text.NumberFormat
-import java.util.*
 
 class ProductSearchAdapter(
     private val context: Context,
@@ -31,7 +30,11 @@ class ProductSearchAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
 
-        Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
+        product.thumbnails?.let {
+            Glide.with(context).load(
+                it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+            ).into(holder.productThumbnail)
+        }
 
         holder.productName.text = product.name
         holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
@@ -40,7 +43,7 @@ class ProductSearchAdapter(
                 productCategory.id.equals(
                     product.categoryId
                 )
-            }[0].name
+            }.getOrNull(0)?.name ?: "Unknown"
         holder.itemView.setOnClickListener {
             val bundleData = Bundle()
             bundleData.putString("id", product.id)
@@ -56,8 +59,7 @@ class ProductSearchAdapter(
     override fun getItemCount(): Int = list.size
 
     fun updateList(newProductList: List<Product>, newCategoryList: List<ProductCategory>?) {
-        println("Trying to update recycler")
-        if (newCategoryList != null)
+        if (newCategoryList != null && newCategoryList.isNotEmpty())
             this.categories = newCategoryList
 
         notifyItemRangeRemoved(0, list.size)

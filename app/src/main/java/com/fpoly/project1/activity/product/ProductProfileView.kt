@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
 import com.fpoly.project1.activity.product.adapter.ProductProfileAdapter
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.controller.ControllerProduct
@@ -86,35 +87,32 @@ class ProductProfileView : BottomSheetDialogFragment() {
             startActivity(intentData)
         }
         userProducts.let {
-            ControllerProduct().getAllAsync(
-                successListener = object : ControllerBase.SuccessListener() {
-                    override fun run(dataSnapshot: DataSnapshot?) {
-                        val products = ArrayList<Product>()
-                        dataSnapshot?.children?.forEach { entry ->
-                            products.add(entry.getValue(Product::class.java)!!)
-                        }
-
-                        ControllerProductCategory().getAllAsync(
-                            successListener = object : ControllerBase.SuccessListener() {
-                                override fun run(dataSnapshot: DataSnapshot?) {
-                                    val categories = ArrayList<ProductCategory>()
-                                    dataSnapshot?.children?.forEach { entry ->
-                                        categories.add(entry.getValue(ProductCategory::class.java)!!)
-                                    }
-
-                                    productAdapter = ProductProfileAdapter(
-                                        requireContext(),
-                                        products, categories
-                                    )
-                                    it.adapter = productAdapter
-                                }
-                            },
-                            null
-                        )
+            Firebase.database.child(ControllerProduct().table)
+                .orderByChild("sellerId").equalTo(customer!!.id)
+                .get().addOnCompleteListener { task ->
+                    val products = ArrayList<Product>()
+                    task.result?.children?.forEach { entry ->
+                        products.add(entry.getValue(Product::class.java)!!)
                     }
-                },
-                null
-            )
+
+                    ControllerProductCategory().getAllAsync(
+                        successListener = object : ControllerBase.SuccessListener() {
+                            override fun run(dataSnapshot: DataSnapshot?) {
+                                val categories = ArrayList<ProductCategory>()
+                                dataSnapshot?.children?.forEach { entry ->
+                                    categories.add(entry.getValue(ProductCategory::class.java)!!)
+                                }
+
+                                productAdapter = ProductProfileAdapter(
+                                    requireContext(),
+                                    products, categories
+                                )
+                                it.adapter = productAdapter
+                            }
+                        },
+                        null
+                    )
+                }
         }
     }
 }

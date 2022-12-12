@@ -30,7 +30,11 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
 
-        Glide.with(context).load(product.thumbnails?.get(0)).into(holder.productThumbnail)
+        product.thumbnails?.let {
+            Glide.with(context).load(
+                it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+            ).into(holder.productThumbnail)
+        }
 
         holder.productName.text = product.name
         holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)

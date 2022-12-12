@@ -14,6 +14,7 @@ import com.fpoly.project1.R
 import com.fpoly.project1.activity.MenuID
 import com.fpoly.project1.activity.home.adapter.FeaturedAdapter
 import com.fpoly.project1.activity.home.adapter.MenuAdapter
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
@@ -25,6 +26,9 @@ import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
 
 class HomeFragment : Fragment(R.layout.home_main) {
+    private val LIMIT_MENU = 5
+    private val LIMIT_FEATURED = 20
+
     private val controllerCustomer = ControllerCustomer()
     private val controllerProduct = ControllerProduct()
 
@@ -78,56 +82,48 @@ class HomeFragment : Fragment(R.layout.home_main) {
             failureListener = null
         )
 
-        // menu list - limit 10
-        controllerProduct.getAllAsync(
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    val products = ArrayList<Product>()
-                    dataSnapshot?.children?.forEach { entry ->
-                        products.add(entry.getValue(Product::class.java)!!)
-                    }
+        // menu list - limit 5
+        Firebase.database.child(controllerProduct.table).limitToLast(LIMIT_MENU)
+            .get().addOnCompleteListener { task ->
+                if (!task.isSuccessful) return@addOnCompleteListener
 
-                    ControllerProductCategory().getAllAsync(
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run(dataSnapshot: DataSnapshot?) {
-                                val categories = ArrayList<ProductCategory>()
-                                dataSnapshot?.children?.forEach { entry ->
-                                    categories.add(entry.getValue(ProductCategory::class.java)!!)
-                                }
+                val products = ArrayList<Product>()
+                task.result?.children?.forEach { entry ->
+                    products.add(entry.getValue(Product::class.java)!!)
+                }
 
-                                recyclerMenu.adapter =
-                                    MenuAdapter(
-                                        requireContext(), products.takeLast(5).reversed(),
-                                        categories
-                                    )
+                ControllerProductCategory().getAllAsync(
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            val categories = ArrayList<ProductCategory>()
+                            dataSnapshot?.children?.forEach { entry ->
+                                categories.add(entry.getValue(ProductCategory::class.java)!!)
                             }
-                        },
-                        null
-                    )
-                }
-            },
-            null
-        )
 
-        // TODO implement featured products by purchase amounts for past week (or a period of time)
-        // featured list - limit 10
-        controllerProduct.getAllAsync(
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    val list = ArrayList<Product>()
-                    dataSnapshot?.children?.forEach { entry ->
-                        list.add(entry.getValue(Product::class.java)!!)
-                    }
+                            recyclerMenu.adapter =
+                                MenuAdapter(
+                                    requireContext(), products.reversed(),
+                                    categories
+                                )
+                        }
+                    },
+                    null
+                )
+            }
 
-                    recyclerFeatured.layoutManager =
-                        LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                    recyclerFeatured.adapter = FeaturedAdapter(
-                        requireContext(), list.takeLast
-                            (20).reversed()
-                    )
+        // featured list - limit 20
+        Firebase.database.child(controllerProduct.table).limitToLast(LIMIT_FEATURED)
+            .get().addOnCompleteListener { task ->
+                val list = ArrayList<Product>()
+                task.result?.children?.forEach { entry ->
+                    list.add(entry.getValue(Product::class.java)!!)
                 }
-            },
-            null
-        )
+
+                recyclerFeatured.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                recyclerFeatured.adapter = FeaturedAdapter(
+                    requireContext(), list.reversed()
+                )
+            }
     }
 }

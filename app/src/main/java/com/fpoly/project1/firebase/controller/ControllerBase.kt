@@ -4,7 +4,7 @@ import android.util.Log
 import com.fpoly.project1.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 
-abstract class ControllerBase<T>(protected val table: String) {
+abstract class ControllerBase<T>(val table: String) {
     init {
         Firebase.database
             .child(table)

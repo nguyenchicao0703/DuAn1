@@ -104,7 +104,7 @@ class ChatView : AppCompatActivity() {
                         it.id!!.contains(SessionUser.sessionId!!) &&
                                 it.id!!.contains(targetUser.id!!)
                     }
-                    chatSession = if (matchingSessions.isNotEmpty()) matchingSessions[0] else null
+                    chatSession = matchingSessions.getOrNull(0)
 
                     if (chatSession == null) {
                         // create new chat session
