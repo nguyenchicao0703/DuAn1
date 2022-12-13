@@ -9,60 +9,93 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"
-        android:background="@color/white" >
+        android:layout_margin="1sp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/home_chat_linearLayout_statusBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="20sp"
+            android:orientation="horizontal"
+            android:paddingEnd="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/home_chat_linearLayout_statusBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingRight="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@drawable/custom_home_iv_food"
+                android:gravity="center">
 
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/custom_home_iv_food"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/home_chat_iv_statusBar_food"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="15dp"
-                        android:src="@drawable/ic_food" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/home_chat_txt_statusBar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="25dp"
-                    android:text="Chat"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/home_chat_iv_statusBar_food"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_margin="15sp"
+                    android:src="@drawable/ic_chat_now"
+                    app:tint="@color/white" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/home_chat_txt_statusBar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="25sp"
+                android:text="Chat"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_chat_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            tools:listitem="@layout/chat_item_selector"
-            android:paddingBottom="20dp"
+            android:layout_marginTop="24sp"
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            android:paddingBottom="20sp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_chat_linearLayout_statusBar" />
+            app:layout_constraintTop_toBottomOf="@+id/home_chat_linearLayout_statusBar"
+            tools:listitem="@layout/chat_item_selector" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/home_chat_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.42"
+            android:paddingTop="80sp"
+            android:paddingBottom="80sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_chat_linearLayout_statusBar">
+
+            <ImageView
+                android:id="@+id/home_chat_empty_iv"
+                android:layout_width="250sp"
+                android:layout_height="250sp"
+                android:src="@drawable/ic_inbox"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@android:color/tab_indicator_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No recent contacts"
+                android:textSize="26sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_chat_empty_iv" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

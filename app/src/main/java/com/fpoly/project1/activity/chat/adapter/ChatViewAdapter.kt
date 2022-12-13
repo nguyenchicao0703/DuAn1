@@ -29,6 +29,9 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
         var chatDate: TextView
 
         init {
+            itemView.alpha = 0f
+            itemView.translationY = 20f
+
             chatAvatar = itemView.findViewById(R.id.item_iv_chat)
             chatMessage = itemView.findViewById(R.id.item_txt_chat_message)
             chatDate = itemView.findViewById(R.id.item_txt_chat_time)
@@ -67,6 +70,10 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
                 if (uriTask.isSuccessful) {
                     Glide.with(context).load(uriTask.result)
                         .into(holder.chatAvatar)
+
+                    holder.itemView.animate()
+                        .alpha(1f)
+                        .translationY(0f)
                 } else {
                     ControllerCustomer().getAsync(
                         message.senderId,
@@ -76,20 +83,29 @@ class ChatViewAdapter(private val context: Context, private var list: List<ChatM
                                     ?.let { user ->
                                         Glide.with(context).load(user.avatarUrl)
                                             .into(holder.chatAvatar)
+
+                                        holder.itemView.animate()
+                                            .alpha(1f)
+                                            .translationY(0f)
                                     }
                             }
                         },
-                        failureListener = null
+                        failureListener = object : ControllerBase.FailureListener() {
+                            override fun run(error: Exception?) {
+                                holder.itemView.animate()
+                                    .alpha(1f)
+                                    .translationY(0f)
+                            }
+                        }
                     )
                 }
             }
     }
 
     fun updateList(newList: List<ChatMessage>) {
-        val oldList = list
         list = newList
 
         // notify that new entries were added to the end of list
-        notifyItemRangeInserted(oldList.size, newList.size)
+        notifyDataSetChanged()
     }
 }

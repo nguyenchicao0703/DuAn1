@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,14 +27,17 @@ class FavoriteProductsAdapter(
     private val context: Context,
     private val customer: Customer,
     private var products: List<String>,
-    private var categories: List<ProductCategory>
+    private var categories: List<ProductCategory>,
+    private val view: View
 ) : RecyclerView.Adapter<FavoriteProductsAdapter.ViewHolder>() {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+    private val mainView = view.findViewById<ConstraintLayout>(R.id.favorite_normal_view)
+    private val emptyView = view.findViewById<ConstraintLayout>(R.id.favorite_empty_view)
     private val controllerCustomer = ControllerCustomer()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_favorite, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.account_item_recycler_favorite, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         println(products)
@@ -105,6 +109,12 @@ class FavoriteProductsAdapter(
 
                                         // notify removed at index
                                         notifyItemRemoved(holder.absoluteAdapterPosition)
+
+                                        // change view
+                                        if (customer.favoriteIds!!.isEmpty()) {
+                                            mainView.visibility = View.GONE
+                                            emptyView.visibility = View.VISIBLE
+                                        }
                                     }
                                 },
                                 failureListener = object : ControllerBase.FailureListener() {
@@ -117,6 +127,10 @@ class FavoriteProductsAdapter(
                                     }
                                 })
                         }
+
+                        holder.itemView.animate()
+                            .alpha(1f)
+                            .translationY(0f)
                     }
                 }
             },
@@ -134,6 +148,9 @@ class FavoriteProductsAdapter(
         var favoriteStatus: ImageView
 
         init {
+            itemView.alpha = 0f
+            itemView.translationY = 50f
+
             productThumbnail = itemView.findViewById(R.id.item_iv_products_favorite)
             productName = itemView.findViewById(R.id.item_txt_favorite_name)
             productType = itemView.findViewById(R.id.item_txt_favorite_type)

@@ -18,28 +18,28 @@
 
         <ImageView
             android:id="@+id/chat_iv_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_margin="15sp"
             android:src="@drawable/ic_left" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_iv_avata"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="45sp"
+            android:layout_height="45sp"
+            android:layout_marginTop="15sp"
             android:src="@mipmap/iv_avt_1" />
 
         <TextView
             android:id="@+id/chat_txt_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="20sp"
             android:lines="1"
             android:text="Anime"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -59,15 +59,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="3dp"
+        android:padding="3sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/chat_cardView_messenger"
-            android:layout_width="340dp"
-            android:layout_height="50dp"
+            android:layout_width="340sp"
+            android:layout_height="50sp"
             android:layout_margin="3sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -79,19 +79,19 @@
                 android:background="@drawable/custom_forgotpassword_txt"
                 android:gravity="center_vertical"
                 android:hint="Type Your Massages..."
-                android:paddingStart="15dp"
+                android:paddingStart="15sp"
                 android:textColorHint="#919191"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/chat_iv_send"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="12sp"
+            android:layout_marginEnd="8sp"
             android:background="@drawable/custom_iv_send"
-            android:padding="12dp"
+            android:padding="12sp"
             android:src="@drawable/ic_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

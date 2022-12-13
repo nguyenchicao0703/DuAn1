@@ -9,30 +9,141 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="update: Updated README">
+    <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="update: Optimized Firebase querying&#10;&#10;Optimized some certain Firebase querying handling hence increase overall app performance">
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountEditProfile.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountEditProfile.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountFavorites.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountFavorites.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthForgotPassword.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/OrderHistoryAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/OrderHistoryAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/authentication/AuthLogin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatSelectorAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatSelectorAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatViewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/adapter/ChatViewAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutOverview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutOverview.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/greeting/GreetingWelcome.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishAddItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishAddItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishOverview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishOverview.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerBase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/controller/ControllerBase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_forgotpassword_iv_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_forgotpassword_iv_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_forgotpassword_txt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_forgotpassword_txt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_home_edt_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_home_edt_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_home_iv_food.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_home_iv_food.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_login_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_login_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_search_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/custom_search_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_add.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_back.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_back.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_chat_now.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_chat_now.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_filter_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_filter_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_location.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_location.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_minimize.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_minimize.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_order_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_order_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_forgotpassword_iv_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_forgotpassword_iv_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_forgotpassword_txt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_forgotpassword_txt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_btn_buy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_btn_buy.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_edt_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_edt_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_iv_food.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_iv_food.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_iv_notification.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_home_iv_notification.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_item_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_item_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_iv_send.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_iv_send.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_iv_upload_avata.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_iv_upload_avata.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_edt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_edt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_facebook_google.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_login_facebook_google.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_receiver.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_receiver.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/custom_sender.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/custom_sender.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add_cart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add_cart.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_back.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_back.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_email_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_email_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_chat_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_chat_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_checkbox.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_checkbox.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_checkbox_tick.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_checkbox_tick.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_email.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_email.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_favorite.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_favorite.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_filter_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_filter_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_food.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_food.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_location.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_location.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_logout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_logout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_notification.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_notification.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_order.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_order.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_person.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_person.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_publish.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_publish.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_send.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_send.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_visibility.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_visibility.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_visibility_off.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_visibility_off.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_edt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_edt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_facebook_google.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/login_radius_facebook_google.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_btn_remove.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_btn_remove.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_stat_textview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_stat_textview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/account_change_pwd.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_change_pwd.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/account_favorite_prods.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_favorite_prods.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/account_item_order_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_item_order_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/account_order_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_order_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/account_profile_edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_profile_edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/auth_forgot_pwd.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_forgot_pwd.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/auth_forgot_pwd_otp.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_forgot_pwd_otp.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/auth_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/auth_register_fill_bio.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_register_fill_bio.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_user_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_user_other.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_user_this.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_item_user_this.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_overview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_overview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_session.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_session.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/checkout_cart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_cart.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/checkout_confirm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_confirm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/checkout_dialog_remove.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_dialog_remove.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_recycler_cart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_item_recycler_cart.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_recycler_favorite.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_item_recycler_favorite.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_recycler_featured.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_recycler_featured_products.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_item_recycler_featured.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_recycler_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_item_recycler_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_spinner_selected.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_category_detailed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_category_detailed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_product_detailed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_product_detailed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/profile_overview_other.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/sell_add_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_add_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/sell_dialog_remove.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_dialog_remove.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/sell_item_spinner_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_item_spinner_category.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/sell_overview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_overview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/view_order_detail_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/account_order_details.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/welcome_introduction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/welcome_introduction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/welcome_splash.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/welcome_splash.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/backup_rules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +176,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="resourceFile" />
         <option value="Kotlin Class" />
         <option value="layoutResourceFile" />
       </list>
@@ -100,6 +212,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
     <property name="android-custom-viewC:/AndroidSDK/sources/android-33/android/widget/EditText.java_SELECTED" value="EditText" />
+    <property name="android-custom-viewC:/Users/Admin/.gradle/caches/modules-2/files-2.1/androidx.core/core/1.9.0/a272ed8ec68c43f8c049a8e77b4f662cc4290fa2/core-1.9.0-sources.jar!/androidx/core/widget/NestedScrollView.java_SELECTED" value="NestedScrollView" />
     <property name="android-custom-viewC:/Users/Admin/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.7.0/289bbb3a7fea52532f1163487f9469217ee608a9/material-1.7.0-sources.jar!/com/google/android/material/bottomnavigation/BottomNavigationView.java_SELECTED" value="BottomNavigationView" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
@@ -176,6 +289,7 @@
     <MESSAGE value="refactor: Minor code cleanup" />
     <MESSAGE value="update: Final update? Maybe?&#10;&#10;Changes and tested:&#10;- Added Product publishing (add/remove)&#10;- Checkout clears current cart&#10;- Added Order history (limited)&#10;- Changed number formatting&#10;- Some layout adjustments&#10;- Optimized* fragments handling" />
     <MESSAGE value="update: Updated README" />
-    <option name="LAST_COMMIT_MESSAGE" value="update: Updated README" />
+    <MESSAGE value="update: Optimized Firebase querying&#10;&#10;Optimized some certain Firebase querying handling hence increase overall app performance" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: Optimized Firebase querying&#10;&#10;Optimized some certain Firebase querying handling hence increase overall app performance" />
   </component>
 </project>

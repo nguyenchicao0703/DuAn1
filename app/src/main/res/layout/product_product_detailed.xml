@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/custom_bottom_dialog_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingBottom="64sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/userPage_nav_btn">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,20 +22,10 @@
             <ImageView
                 android:id="@+id/userPage_iv_product"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="300sp"
                 android:src="@mipmap/iv_menu_hamburger_1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/userPage_iv_back"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="14dp"
-                android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,12 +33,12 @@
                 android:id="@+id/userPage_txt_name_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Beef Burgers"
-                android:maxWidth="250dp"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
+                android:maxWidth="250sp"
+                android:text="{prodName}"
                 android:textColor="@color/black"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
@@ -57,11 +47,11 @@
                 android:id="@+id/userPage_txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="16dp"
-                android:text="30.000"
-                android:textColor="#FF0000"
-                android:textSize="25dp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="16sp"
+                android:text="{prodPrice}"
+                android:textColor="@color/accent"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
@@ -69,17 +59,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_price">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/userPage_btn_minimize"
-                    android:layout_width="35dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="88dp"
+                    android:layout_width="35sp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="88sp"
                     android:background="@drawable/custom_forgotpassword_txt"
                     android:drawableTop="@drawable/ic_minimize"
                     android:gravity="center"
@@ -91,12 +81,12 @@
                     android:id="@+id/userPage_txt_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="10sp"
                     android:text="1"
                     android:textColor="@color/black"
-                    android:textSize="22dp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/userPage_btn_add"
                     app:layout_constraintStart_toEndOf="@+id/userPage_btn_minimize"
@@ -104,13 +94,13 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/userPage_btn_add"
-                    android:layout_width="35dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_width="35sp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="5sp"
                     android:background="@drawable/custom_home_iv_food"
                     android:drawableTop="@drawable/ic_add"
                     android:gravity="center"
-                    android:paddingTop="5dp"
+                    android:paddingTop="5sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -118,35 +108,34 @@
 
             <ImageView
                 android:id="@+id/userPage_iv_favourite"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="80dp"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="80sp"
                 android:background="@drawable/custom_forgotpassword_iv_chat"
-                android:padding="10dp"
+                android:padding="10sp"
                 android:src="@drawable/ic_heart_details"
                 app:layout_constraintStart_toEndOf="@+id/userPage_iv_location"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <ImageView
                 android:id="@+id/userPage_iv_location"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="80dp"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="80sp"
                 android:background="@drawable/custom_forgotpassword_iv_chat"
-                android:padding="10dp"
+                android:padding="10sp"
                 android:src="@drawable/ic_location"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_product" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userPage_iv_avatar"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="80dp"
-                android:src="@mipmap/iv_avt_1"
+                android:layout_width="55sp"
+                android:layout_height="55sp"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="80sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_name_product" />
 
@@ -154,11 +143,11 @@
                 android:id="@+id/userPage_txt_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="80dp"
-                android:text="James"
+                android:layout_marginStart="12sp"
+                android:layout_marginTop="80sp"
+                android:text="{userFullName}"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/userPage_iv_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_name_product" />
@@ -167,11 +156,11 @@
                 android:id="@+id/userPage_txt_user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="3dp"
-                android:text="nguyenchicao3007@gmail.com"
+                android:layout_marginStart="12sp"
+                android:layout_marginTop="3sp"
+                android:text="{userAdditionalInfo}"
                 android:textColor="#5A5A5A"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toEndOf="@+id/userPage_iv_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_txt_user_name" />
 
@@ -179,57 +168,24 @@
                 android:id="@+id/userPage_txt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginTop="25dp"
-                android:lineHeight="23dp"
-                android:text="Yummie and lexat original salad made directly by our professional chef. Consists of a variety of selected quality vegetables and fruits:
-                            \n\n•   Kale
-                            \n\n•   Spinach
-                            \n\n•   Melon
-                            \n\n•   Strawberry
-                            \n\n•   Lettuce
-                            \n\n•   Cucumber
-                            \n\nServed warmly for you. We also have extra seasoning for you to enjoy. Hope you like it!"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="24sp"
+                android:paddingBottom="20sp"
+                android:lineHeight="23sp"
+                android:text="{prodDescription}"
                 android:textColor="#6A6A6A"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPage_iv_avatar" />
-
-            <TextView
-                android:id="@+id/userPage_users_txt_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="Product"
-                android:textColor="#E4454E"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userPage_txt_description" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/userPage_users_recyclerView_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="70dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/userPage_users_txt_product" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/userPage_nav_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="50sp"
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -243,15 +199,15 @@
             android:layout_weight="1"
             android:background="#E4454E"
             android:drawableEnd="@drawable/ic_chat_now"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingStart="40sp"
+            android:paddingEnd="40sp"
             android:text="Chat now"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <TextView
-            android:layout_width="1dp"
+            android:layout_width="1sp"
             android:layout_height="match_parent"
             android:background="@color/black" />
 
@@ -262,12 +218,12 @@
             android:layout_weight="1"
             android:background="#E4454E"
             android:drawableEnd="@drawable/ic_add_cart"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingStart="40sp"
+            android:paddingEnd="40sp"
             android:text="Add to cart"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

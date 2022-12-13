@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
-    android:elevation="15dp"
-    android:padding="30dp"
+    app:cardCornerRadius="10sp"
+    android:elevation="15sp"
+    android:padding="30sp"
     app:cardUseCompatPadding="true"
     android:backgroundTint="@color/white">
 
@@ -17,11 +17,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_chat_iv_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:layout_gravity="center"
             android:src="@mipmap/iv_avt_1"
-            android:layout_margin="15dp"
+            android:layout_margin="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.003"
@@ -30,27 +30,27 @@
 
         <TextView
             android:id="@+id/item_chat_txt_name"
-            android:layout_width="180dp"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="12sp"
+            android:layout_marginTop="24sp"
             android:text="Anime"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_chat_txt_content"
-            android:layout_width="180dp"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="12sp"
+            android:layout_marginTop="8sp"
             android:lines="2"
             android:text="Hello, can we talk to each other?"
             android:textColor="#777777"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/item_chat_iv_avatar"
             app:layout_constraintTop_toBottomOf="@+id/item_chat_txt_name" />
 
@@ -59,10 +59,10 @@
             android:id="@+id/item_chat_txt_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10sp"
             android:text="20:00"
             android:textColor="#9A9A9A"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.636"

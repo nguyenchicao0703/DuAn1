@@ -30,7 +30,6 @@ class ProductProfileView : BottomSheetDialogFragment() {
     private var customer: Customer? = null
 
     private lateinit var productAdapter: ProductProfileAdapter
-    private lateinit var backButton: ImageView
     private lateinit var userAvatar: ImageView
     private lateinit var userFullName: TextView
     private lateinit var userEmail: TextView
@@ -43,8 +42,8 @@ class ProductProfileView : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.profile_overview_other, container, false)
+        view.alpha = 0f
 
-        backButton = view.findViewById(R.id.other_users_iv_back)
         userAvatar = view.findViewById(R.id.other_users_iv_avt)
         userFullName = view.findViewById(R.id.other_users_txt_user_name)
         userEmail = view.findViewById(R.id.other_users_txt_user_email)
@@ -70,8 +69,6 @@ class ProductProfileView : BottomSheetDialogFragment() {
             Toast.makeText(requireContext(), "Unable to find user", Toast.LENGTH_SHORT).show()
             return
         }
-
-        backButton.setOnClickListener { dismiss() }
 
         userFullName.text = customer!!.fullName
         userEmail.visibility = View.GONE
@@ -114,5 +111,7 @@ class ProductProfileView : BottomSheetDialogFragment() {
                     )
                 }
         }
+
+        view?.animate()?.alpha(1f)
     }
 }

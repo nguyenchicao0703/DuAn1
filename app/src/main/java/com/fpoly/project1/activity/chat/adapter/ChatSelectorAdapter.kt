@@ -34,6 +34,11 @@ class ChatSelectorAdapter(
         var chatName: TextView = itemView.findViewById(R.id.item_chat_txt_name)
         var chatMessage: TextView = itemView.findViewById(R.id.item_chat_txt_content)
         var chatDate: TextView = itemView.findViewById(R.id.item_chat_txt_time)
+
+        init {
+            itemView.alpha = 0f
+            itemView.translationY = 50f
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -98,6 +103,11 @@ class ChatSelectorAdapter(
 
                         context.startActivity(intentData)
                     }
+
+                    // show view
+                    holder.itemView.animate()
+                        .alpha(1f)
+                        .translationY(0f)
                 }
             },
             failureListener = object : ControllerBase.FailureListener() {

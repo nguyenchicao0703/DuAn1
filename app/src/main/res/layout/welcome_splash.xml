@@ -10,7 +10,7 @@
         android:id="@+id/welcome_iv_backround"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="28sp"
         android:src="@mipmap/iv_screen"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,7 +18,7 @@
     <ImageView
         android:id="@+id/welcome_iv_logo"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="280sp"
         android:src="@mipmap/iv_login_screen_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,14 +29,14 @@
 
     <TextView
         android:id="@+id/welcome_txt_title"
-        android:layout_width="280dp"
+        android:layout_width="280sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="320sp"
         android:background="@color/white"
         android:gravity="center"
         android:text="Cheetah Food Service"
         android:textColor="#F13A45"
-        android:textSize="35dp"
+        android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -45,7 +45,7 @@
 
     <ImageView
         android:id="@+id/welcome_iv_splash"
-        android:layout_width="100dp"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

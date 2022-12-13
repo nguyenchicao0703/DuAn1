@@ -5,20 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.fpoly.project1.R
-import com.fpoly.project1.firebase.controller.ControllerBase
-import com.fpoly.project1.firebase.controller.ControllerProduct
+import com.fpoly.project1.activity.account.AccountOrderDetails
 import com.fpoly.project1.firebase.enums.OrderStatus
 import com.fpoly.project1.firebase.model.Order
-import com.fpoly.project1.firebase.model.Product
-import com.google.firebase.database.DataSnapshot
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.util.*
 
 class OrderHistoryAdapter(
-    context: Context,
+    private val context: Context,
     private var orders: List<Order>
 ) : RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder>() {
 
@@ -29,6 +27,11 @@ class OrderHistoryAdapter(
         val itemDate: TextView = itemView.findViewById(R.id.item_orderhistory_txt_type)
         val itemCost: TextView = itemView.findViewById(R.id.item_orderhistory_txt_price)
         val itemStatus: TextView = itemView.findViewById(R.id.item_orderhistory_txt_stat)
+
+        init {
+            itemView.alpha = 0f
+            itemView.translationY = 50f
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -37,33 +40,31 @@ class OrderHistoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val order = orders[position]
 
-        var priceTotal = 0L
+        holder.itemId.text = "Order #${order.id}"
+        holder.itemDate.text = SimpleDateFormat.getDateInstance().format(order.date!!)
+        holder.itemCost.text =
+            NumberFormat.getIntegerInstance().format(order.amountTotal!! + order.amountFees!!)
+        holder.itemStatus.text =
+            when (order.status) {
+                OrderStatus.PENDING -> "Pending"
+                OrderStatus.ON_THE_WAY -> "On the way"
+                OrderStatus.DELIVERED -> "Delivered"
+                OrderStatus.CANCELLED -> "Cancelled"
+                else -> "Error"
+            }
 
-        ControllerProduct().getAllAsync(
-            object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    dataSnapshot?.children?.forEach { entry ->
-                        entry.getValue(Product::class.java)?.let { product ->
-                            if (order.list!!.contains(product.id))
-                                priceTotal += product.price!! * order.list[product.id]!!
-                        }
-                    }
+        holder.itemView.setOnClickListener {
+            val fragment = AccountOrderDetails()
+            fragment.arguments = bundleOf(Pair("id", order.id))
+            fragment.show(
+                (context as AppCompatActivity).supportFragmentManager,
+                "order_details"
+            )
+        }
 
-                    holder.itemId.text = "Order #${order.id}"
-                    holder.itemDate.text = SimpleDateFormat.getDateInstance().format(order.date!!)
-                    holder.itemCost.text = NumberFormat.getIntegerInstance().format(priceTotal)
-                    holder.itemStatus.text =
-                        when (order.status) {
-                            OrderStatus.PENDING -> "Pending"
-                            OrderStatus.ON_THE_WAY -> "On the way"
-                            OrderStatus.DELIVERED -> "Delivered"
-                            OrderStatus.CANCELLED -> "Cancelled"
-                            else -> "Error"
-                        }
-                }
-            },
-            failureListener = null
-        )
+        holder.itemView.animate()
+            .alpha(1f)
+            .translationY(0f)
     }
 
     fun updateList(newList: List<Order>) {

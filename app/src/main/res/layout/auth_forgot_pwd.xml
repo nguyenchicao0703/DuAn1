@@ -18,20 +18,20 @@
 
         <ImageView
             android:id="@+id/forgot_iv_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_margin="15sp"
             android:background="@drawable/custom_forgotpassword_txt"
             android:src="@drawable/ic_left" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="17sp"
             android:text="Forgot password?"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -39,11 +39,11 @@
         android:id="@+id/forgot_txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="14dp"
-        android:lineHeight="28dp"
+        android:layout_margin="14sp"
+        android:lineHeight="28sp"
         android:text="Select which contact details should we use to reset your password"
         android:textColor="#535252"
-        android:textSize="17dp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgot_linearLayout_statusBar" />
@@ -51,12 +51,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/forgot_cardView_sms"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="25dp"
-        app:cardCornerRadius="18dp"
-        app:cardElevation="10dp"
+        android:layout_height="120sp"
+        android:layout_marginStart="25sp"
+        android:layout_marginTop="40sp"
+        android:layout_marginEnd="25sp"
+        app:cardCornerRadius="18sp"
+        app:cardElevation="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgot_txt_title">
@@ -68,23 +68,23 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="18dp"
+                android:layout_width="80sp"
+                android:layout_height="80sp"
+                android:layout_marginStart="22sp"
+                android:layout_marginTop="18sp"
                 android:background="@drawable/custom_forgotpassword_iv_chat"
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:layout_width="34sp"
+                    android:layout_height="34sp"
                     android:src="@drawable/ic_chat" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="25dp"
+                android:layout_margin="25sp"
                 android:orientation="vertical">
 
                 <TextView
@@ -92,16 +92,16 @@
                     android:layout_height="wrap_content"
                     android:text="via SMS: "
                     android:textColor="#4C4C4C"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/forgot_txt_sms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="10sp"
                     android:text="+6282*****39"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -110,12 +110,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/forgot_cardView_email"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="25dp"
-        app:cardCornerRadius="18dp"
-        app:cardElevation="10dp"
+        android:layout_height="120sp"
+        android:layout_marginStart="25sp"
+        android:layout_marginTop="40sp"
+        android:layout_marginEnd="25sp"
+        app:cardCornerRadius="18sp"
+        app:cardElevation="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgot_cardView_sms">
@@ -127,23 +127,23 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="18dp"
+                android:layout_width="80sp"
+                android:layout_height="80sp"
+                android:layout_marginStart="22sp"
+                android:layout_marginTop="18sp"
                 android:background="@drawable/custom_forgotpassword_iv_chat"
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:layout_width="34sp"
+                    android:layout_height="34sp"
                     android:src="@drawable/ic_email" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="25dp"
+                android:layout_margin="25sp"
                 android:orientation="vertical">
 
                 <TextView
@@ -151,16 +151,16 @@
                     android:layout_height="wrap_content"
                     android:text="via Email: "
                     android:textColor="#4C4C4C"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/forgot_txt_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="10sp"
                     android:text="ex***le@gmail.com"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -168,14 +168,14 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/forgot_btn_next"
-        android:layout_width="360dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="360sp"
+        android:layout_height="51sp"
+        android:layout_marginBottom="36sp"
         android:background="@drawable/custom_login_btn"
         android:text="Next"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"

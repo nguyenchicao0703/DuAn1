@@ -1,13 +1,13 @@
 package com.fpoly.project1.activity.product.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -25,7 +25,7 @@ class ProductSearchAdapter(
     private val layoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.home_item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
@@ -45,11 +45,8 @@ class ProductSearchAdapter(
                 )
             }.getOrNull(0)?.name ?: "Unknown"
         holder.itemView.setOnClickListener {
-            val bundleData = Bundle()
-            bundleData.putString("id", product.id)
-
             val fragment = ProductDetails()
-            fragment.arguments = bundleData
+            fragment.arguments = bundleOf(Pair("id", product.id))
             fragment.show(
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
             )
@@ -58,13 +55,21 @@ class ProductSearchAdapter(
 
     override fun getItemCount(): Int = list.size
 
+    fun addList(newProductList: List<Product>) {
+        val index = list.size
+        val mutableList = list.toMutableList()
+
+        mutableList.addAll(newProductList)
+        list = mutableList
+        notifyItemRangeInserted(index, mutableList.size)
+    }
+
     fun updateList(newProductList: List<Product>, newCategoryList: List<ProductCategory>?) {
         if (newCategoryList != null && newCategoryList.isNotEmpty())
             this.categories = newCategoryList
 
-        notifyItemRangeRemoved(0, list.size)
         this.list = newProductList
-        notifyItemRangeInserted(0, newProductList.size)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

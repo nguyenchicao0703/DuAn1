@@ -32,20 +32,20 @@
 
                 <ImageView
                     android:id="@+id/registerProfile_iv_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="15dp"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_margin="15sp"
                     android:background="@drawable/custom_forgotpassword_txt"
                     android:src="@drawable/ic_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="17dp"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginTop="17sp"
                     android:text="Fill in your bio"
                     android:textColor="@color/black"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -53,12 +53,12 @@
                 android:id="@+id/registerProfile_txt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:lineHeight="40dp"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="20sp"
+                android:lineHeight="40sp"
                 android:text="This data will be displayed in your account profile for security"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,135 +68,135 @@
                 android:id="@+id/registerProfile_txt_fullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="30sp"
                 android:text="@string/fullName"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/registerProfile_edt_fullName"
-                android:layout_width="330dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="330sp"
+                android:layout_height="51sp"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="16sp"
                 android:background="@drawable/custom_login_edt"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:hint="Full name"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:padding="10sp"
+                android:paddingStart="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="#888787"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/registerProfile_txt_nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:text="@string/nickName"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/registerProfile_edt_nickName"
-                android:layout_width="330dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="330sp"
+                android:layout_height="51sp"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="16sp"
                 android:background="@drawable/custom_login_edt"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:hint="Nickname"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:padding="10sp"
+                android:paddingStart="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="#888787"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/registerProfile_txt_phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:text="@string/phoneNumber"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/registerProfile_edt_phoneNumber"
-                android:layout_width="330dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="330sp"
+                android:layout_height="51sp"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="16sp"
                 android:background="@drawable/custom_login_edt"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:hint="Phone number"
                 android:inputType="number"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:padding="10sp"
+                android:paddingStart="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="#888787"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/registerProfile_txt_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:text="@string/date"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/registerProfile_edt_date"
-                android:layout_width="330dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="330sp"
+                android:layout_height="51sp"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="16sp"
                 android:background="@drawable/custom_login_edt"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:hint="Date or Birthday"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:padding="10sp"
+                android:paddingStart="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="#888787"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/registerProfile_txt_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:text="@string/address"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/registerProfile_edt_address"
-                android:layout_width="330dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="330sp"
+                android:layout_height="51sp"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="16sp"
                 android:background="@drawable/custom_login_edt"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:hint="Address"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:padding="10sp"
+                android:paddingStart="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="#888787"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/registerProfile_btn_next"
-                android:layout_width="360dp"
-                android:layout_height="51dp"
+                android:layout_width="360sp"
+                android:layout_height="51sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="40sp"
+                android:layout_marginBottom="25sp"
                 android:background="@drawable/custom_login_btn"
                 android:text="Complete Sign Up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

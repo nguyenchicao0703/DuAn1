@@ -6,52 +6,64 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/search_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        tools:layout_editor_absoluteX="91dp"
-        tools:layout_editor_absoluteY="151dp">
+        tools:layout_editor_absoluteX="91sp"
+        tools:layout_editor_absoluteY="151sp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/search_linearLayout_statusBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:orientation="horizontal"
+                android:paddingEnd="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/search_iv_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/custom_forgotpassword_txt"
-                    android:src="@drawable/ic_left" />
+                <LinearLayout
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/custom_home_iv_food"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/home_chat_iv_statusBar_food"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_margin="15sp"
+                        android:src="@drawable/ic_search"
+                        app:tint="@color/white" />
+                </LinearLayout>
 
                 <TextView
+                    android:id="@+id/home_chat_txt_statusBar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="17dp"
-                    android:text="Find your food"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="25sp"
+                    android:text="Explore"
                     android:textColor="@color/black"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/search_constraint_search"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_height="60sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginEnd="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/search_linearLayout_statusBar">
@@ -59,11 +71,11 @@
                 <EditText
                     android:id="@+id/search_edt_search"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="60sp"
                     android:background="@drawable/custom_home_edt_search"
                     android:hint="Search"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="20dp"
+                    android:paddingStart="28sp"
+                    android:paddingEnd="20sp"
                     android:textColorHint="#504F4F"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -72,8 +84,8 @@
 
                 <ImageView
                     android:id="@+id/search_iv_search"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,185 +95,14 @@
                     app:layout_constraintVertical_bias="0.533" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <ImageView-->
-<!--                android:id="@+id/search_iv_filter"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="25dp"-->
-<!--                android:background="@drawable/custom_forgotpassword_txt"-->
-<!--                android:padding="10dp"-->
-<!--                android:src="@drawable/ic_filter_list"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.04"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/seach_constraint_search"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_linearLayout_statusBar" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/search_txt_type"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="24dp"-->
-<!--                android:layout_marginTop="28dp"-->
-<!--                android:text="Type"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="30dp"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/seach_constraint_search" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_type_featured"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="24dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Featured"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="@drawable/custom_search_txt"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_type" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_type_menu"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Menu"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                android:textAllCaps="false"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/search_btn_type_featured"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_type" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/search_txt_food"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="24dp"-->
-<!--                android:layout_marginTop="90dp"-->
-<!--                android:text="Food"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="30dp"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_type" />-->
-
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Cake"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.074"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food_2"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Dessert"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/search_btn_food_1"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food_3"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginTop="84dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Drink"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.074"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food_1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Noodles"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                android:textAllCaps="false"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/search_btn_food"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food_5"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="84dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Hamburger"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/search_btn_food_6"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/search_btn_food_6"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="84dp"-->
-<!--                android:background="@drawable/custom_search_btn"-->
-<!--                android:paddingLeft="18dp"-->
-<!--                android:paddingRight="18dp"-->
-<!--                android:text="Chicken"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="#E4454E"-->
-<!--                android:textSize="20dp"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/search_btn_food_3"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/search_txt_food" />-->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="24sp"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp"
+                android:paddingStart="10sp"
+                android:paddingEnd="5sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -269,26 +110,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/search_constraint_search"
                 tools:itemCount="2"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recycler_menu" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/search_btn_search"
-                android:layout_width="360dp"
-                android:layout_height="51dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/custom_login_btn"
-                android:text="Search"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_recyclerView"
-                app:layout_constraintVertical_bias="1.0" />
-
+                tools:listitem="@layout/home_item_recycler_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

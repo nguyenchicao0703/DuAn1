@@ -25,74 +25,74 @@
                 android:id="@+id/forgot_linearLayout_statusBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:orientation="horizontal"
-                android:paddingRight="20dp"
+                android:paddingEnd="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
                     android:background="@drawable/custom_home_iv_food"
                     android:gravity="center">
 
                     <ImageView
                         android:id="@+id/home_iv_statusBar_food"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="15dp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_margin="15sp"
                         android:src="@drawable/ic_food" />
                 </LinearLayout>
 
 
                 <TextView
                     android:id="@+id/home_txt_statusBar_title"
-                    android:layout_width="0dp"
+                    android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="25sp"
                     android:layout_weight="1"
                     android:text="Hello, Daniel !"
                     android:textColor="@color/black"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="80dp"
+                    android:layout_width="45sp"
+                    android:layout_height="45sp"
+                    android:layout_marginStart="80sp"
                     android:background="@drawable/custom_home_iv_notification"
                     android:gravity="center">
 
                     <ImageView
                         android:id="@+id/home_iv_statusBar_notification"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="25sp"
+                        android:layout_height="25sp"
                         android:src="@drawable/ic_notification" />
                 </LinearLayout>
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_constraint_search"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_width="0sp"
+                android:layout_height="60sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="40sp"
                 app:layout_constraintEnd_toStartOf="@id/home_iv_filter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/forgot_linearLayout_statusBar">
 
                 <EditText
                     android:id="@+id/home_edt_search"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_width="0sp"
+                    android:layout_height="60sp"
                     android:background="@drawable/custom_home_edt_search"
                     android:hint="Search"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="20dp"
+                    android:paddingStart="28sp"
+                    android:paddingEnd="20sp"
                     android:textColorHint="#504F4F"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -101,8 +101,8 @@
 
                 <ImageView
                     android:id="@+id/home_iv_search"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -115,13 +115,13 @@
 
             <ImageView
                 android:id="@+id/home_iv_filter"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginStart="16sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginTop="40sp"
                 android:background="@drawable/custom_forgotpassword_txt"
-                android:padding="10dp"
+                android:padding="10sp"
                 android:src="@drawable/ic_filter_list"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.04"
@@ -131,10 +131,10 @@
             <LinearLayout
                 android:id="@+id/home_linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginRight="15dp"
+                android:layout_height="180sp"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="36sp"
+                android:layout_marginEnd="15sp"
                 android:background="@drawable/custom_login_btn"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -160,24 +160,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="27dp"
-                        android:lineHeight="33dp"
+                        android:layout_marginTop="27sp"
+                        android:lineHeight="33sp"
                         android:lines="2"
                         android:text="Special Deal for December"
                         android:textColor="@color/white"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/home_btn_buyNow"
-                        android:layout_width="115dp"
-                        android:layout_height="47dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_width="115sp"
+                        android:layout_height="47sp"
+                        android:layout_marginTop="15sp"
                         android:background="@drawable/custom_home_btn_buy"
                         android:text="Buy Now"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="15dp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -185,82 +185,82 @@
                 android:id="@+id/home_txt_title_product_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="12sp"
                 android:text="Recently Added"
                 android:textColor="@color/black"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView_product_featured" />
 
             <TextView
                 android:id="@+id/home_txt_seeAll_product_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="20sp"
                 android:text="See all"
                 android:textColor="#E4454E"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_linearLayout" />
+                app:layout_constraintTop_toTopOf="@id/home_txt_title_product_menu"
+                app:layout_constraintBottom_toBottomOf="@+id/home_txt_title_product_menu" />
 
             <!--        Show product types (pizza, hamburger, drink, noodles, dessert, fried)-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView_product_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:paddingLeft="20dp"
+                android:layout_marginTop="18sp"
+                android:paddingStart="20sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_txt_title_product_menu"
-                tools:listitem="@layout/item_recycler_menu" />
+                tools:listitem="@layout/home_item_recycler_menu"
+                tools:itemCount="2"/>
 
             <TextView
                 android:id="@+id/home_txt_product_featured"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="32sp"
                 android:text="Featured Products"
                 android:textColor="@color/black"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView_product_menu" />
+                app:layout_constraintTop_toBottomOf="@+id/home_linearLayout" />
 
             <TextView
                 android:id="@+id/home_txt_seeAll_product_featured"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="20sp"
                 android:text="See all"
                 android:textColor="#E4454E"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.649"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView_product_menu" />
+                app:layout_constraintTop_toTopOf="@id/home_txt_product_featured"
+                app:layout_constraintBottom_toBottomOf="@+id/home_txt_product_featured" />
 
             <!--        Show featured products-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView_product_featured"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:paddingLeft="20dp"
+                android:layout_marginTop="18sp"
+                android:paddingStart="20sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/home_txt_product_featured"
-                tools:listitem="@layout/item_recycler_featured_products" />
+                tools:listitem="@layout/home_item_recycler_featured"
+                tools:itemCount="1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

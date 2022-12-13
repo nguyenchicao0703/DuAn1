@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,13 +26,17 @@ class CheckoutAdapter(
     private val context: Context,
     private val fragment: CheckoutOverview,
     private var list: List<Pair<Product, Int>>,
-    private var categories: List<ProductCategory>
+    private var categories: List<ProductCategory>,
+    view: View?
 ) : RecyclerView.Adapter<CheckoutAdapter.ViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
+    private val emptyView = view?.findViewById<ConstraintLayout>(R.id.cart_constraint_empty)
+    private val viewTotal = view?.findViewById<ConstraintLayout>(R.id.cart_constraint_total)
+    private val viewRecycler = view?.findViewById<RecyclerView>(R.id.cart_recyclerView_product)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_cart, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.checkout_item_recycler_cart, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position].first
@@ -111,6 +116,12 @@ class CheckoutAdapter(
 
                     notifyItemRemoved(index)
                     fragment.renderTotalCost()
+
+                    if (SessionUser.cart.size == 0) {
+                        emptyView?.visibility = View.VISIBLE
+                        viewTotal?.visibility = View.GONE
+                        viewRecycler?.visibility = View.GONE
+                    }
 
                     dialog.dismiss()
                     Toast.makeText(context, "Removed from cart", Toast.LENGTH_SHORT).show()

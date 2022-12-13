@@ -18,7 +18,6 @@ import com.fpoly.project1.activity.MainActivity
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
-import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.model.Customer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -29,13 +28,13 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.DataSnapshot
 import org.json.JSONException
 import org.json.JSONObject
 
 class AuthLogin : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
     private val firebaseAuth = FirebaseAuth.getInstance()
+
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
 
@@ -133,7 +132,8 @@ class AuthLogin : AppCompatActivity() {
                         "Something went wrong",
                         Toast.LENGTH_SHORT
                     ).show()
-                    error.printStackTrace()
+
+                    Log.e(this@AuthLogin::class.simpleName, "Error", error)
                 }
             })
 
@@ -194,8 +194,14 @@ class AuthLogin : AppCompatActivity() {
                         return@addOnCompleteListener
                     }
 
-                    matchingCustomer[0].let {
-                        SessionUser.setId((it.getValue(Customer::class.java))!!.id)
+                    matchingCustomer[0]?.let {
+                        val account = it.getValue(Customer::class.java)!!
+                        if (account.gid == null || account.gid != user.uid) {
+                            account.gid = user.uid
+                            controllerCustomer.setAsync(account, true, null, null)
+                        }
+
+                        SessionUser.setId(account.id)
                         startActivity(Intent(this@AuthLogin, MainActivity::class.java))
                     }
                 }
@@ -229,8 +235,17 @@ class AuthLogin : AppCompatActivity() {
                             return@addOnCompleteListener
                         }
 
-                        matchingCustomer[0].let {
-                            SessionUser.setId((it.getValue(Customer::class.java))!!.id)
+                        matchingCustomer[0]?.let {
+                            val account = it.getValue(Customer::class.java)!!
+                            if (
+                                account.fid == null ||
+                                account.fid != Profile.getCurrentProfile()?.id
+                            ) {
+                                account.fid = Profile.getCurrentProfile()?.id
+                                controllerCustomer.setAsync(account, true, null, null)
+                            }
+
+                            SessionUser.setId(account.id)
                             startActivity(Intent(this@AuthLogin, MainActivity::class.java))
                         }
                     }

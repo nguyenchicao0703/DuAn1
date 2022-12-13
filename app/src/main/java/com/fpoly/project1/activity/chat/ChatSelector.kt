@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fpoly.project1.R
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot
 
 class ChatSelector : Fragment(R.layout.chat_overview) {
     private lateinit var chatRecyclerView: RecyclerView
+    private lateinit var emptyView: ConstraintLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +27,10 @@ class ChatSelector : Fragment(R.layout.chat_overview) {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.chat_overview, container, false)
+        view.alpha = 0f
 
         chatRecyclerView = view.findViewById(R.id.home_chat_recyclerView)
+        emptyView = view.findViewById(R.id.home_chat_empty_view)
 
         return view
     }
@@ -43,13 +47,18 @@ class ChatSelector : Fragment(R.layout.chat_overview) {
                             sessions.add(entry.getValue(ChatSession::class.java)!!)
                         }
 
-                        it.adapter =
-                            ChatSelectorAdapter(
-                                requireContext(),
-                                sessions.filter { session ->
-                                    session.id!!.contains(SessionUser.sessionId!!)
-                                }
-                            )
+                        val matchingSessions = sessions.filter { session ->
+                            session.id!!.contains(SessionUser.sessionId!!)
+                        }
+
+                        if (context != null && matchingSessions.isNotEmpty()) {
+                            chatRecyclerView.visibility = View.VISIBLE
+                            emptyView.visibility = View.GONE
+
+                            it.adapter = ChatSelectorAdapter(requireContext(), matchingSessions)
+                        }
+
+                        view?.animate()?.alpha(1f)
                     }
                 },
                 failureListener = object : ControllerBase.FailureListener() {

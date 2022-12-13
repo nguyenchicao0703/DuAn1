@@ -19,41 +19,81 @@
                 android:id="@+id/cart_linearLayout_statusBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="20sp"
                 android:orientation="horizontal"
+                android:paddingEnd="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/cart_iv_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/custom_forgotpassword_txt"
-                    android:src="@drawable/ic_left" />
+                <LinearLayout
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/custom_home_iv_food"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_margin="15sp"
+                        android:src="@drawable/ic_add_cart"
+                        app:tint="@color/white" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="17dp"
-                    android:text="Cart Details"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="25sp"
+                    android:text="Your Cart"
                     android:textColor="@color/black"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cart_constraint_empty"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cart_linearLayout_statusBar"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/cart_empty_iv"
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
+                    android:alpha="0.52"
+                    android:src="@drawable/ic_cart_empty"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/tab_indicator_text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.52"
+                    android:text="Your cart is empty"
+                    android:textSize="30sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cart_empty_iv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cart_recyclerView_product"
                 android:layout_width="match_parent"
-                android:paddingBottom="10dp"
+                android:paddingBottom="10sp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="10dp"
-                android:paddingLeft="10dp"
+                android:layout_marginTop="18sp"
+                android:layout_marginBottom="10sp"
+                android:paddingStart="10sp"
                 tools:itemCount="2"
-                android:paddingRight="5dp"
-                tools:listitem="@layout/item_recycler_cart"
+                android:paddingEnd="5sp"
+                tools:listitem="@layout/checkout_item_recycler_cart"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -61,12 +101,14 @@
                 app:layout_constraintTop_toBottomOf="@id/cart_linearLayout_statusBar" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cart_constrain_total"
+                android:id="@+id/cart_constraint_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="20dp"
+                android:paddingTop="5sp"
+                android:paddingBottom="15sp"
+                android:layout_marginStart="15sp"
+                android:layout_marginEnd="15sp"
+                android:layout_marginBottom="20sp"
                 android:background="@drawable/custom_login_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
@@ -79,11 +121,11 @@
                     android:id="@+id/cart_txt_payment_summar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="20sp"
                     android:text="Payment summary"
                     android:textColor="#ffffff"
-                    android:textSize="22dp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -92,11 +134,11 @@
                     android:id="@+id/cart_txt_subtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="15sp"
                     android:text="Subtotal"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cart_txt_payment_summar" />
 
@@ -104,11 +146,11 @@
                     android:id="@+id/cart_txt_price_subtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="64sp"
+                    android:layout_marginEnd="28sp"
                     android:text="60.000"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -117,11 +159,11 @@
                     android:id="@+id/cart_txt_order_fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="15sp"
                     android:text="Service fees and other fees"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cart_txt_subtotal" />
 
@@ -129,21 +171,21 @@
                     android:id="@+id/cart_txt_price_other_fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginEnd="28sp"
                     android:text="5.000"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cart_txt_price_subtotal" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="28dp"
+                    android:layout_height="1sp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginEnd="28sp"
                     android:background="#FFE4E4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.912"
@@ -154,11 +196,11 @@
                     android:id="@+id/cart_txt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="40sp"
                     android:text="Total"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cart_txt_order_fees" />
 
@@ -166,11 +208,11 @@
                     android:id="@+id/cart_txt_price_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="40sp"
+                    android:layout_marginEnd="28sp"
                     android:text="65.000"
                     android:textColor="#FFE4E4"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cart_txt_price_other_fees" />
@@ -179,20 +221,20 @@
                     android:id="@+id/cart_btn_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="28dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="28sp"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginEnd="28sp"
+                    android:layout_marginBottom="15sp"
                     android:background="@drawable/custom_home_edt_search"
                     android:text="Place my order"
                     android:textAllCaps="false"
                     android:textColor="#E4454E"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cart_txt_price_total"
-                    tools:layout_editor_absoluteY="167dp" />
+                    tools:layout_editor_absoluteY="167sp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

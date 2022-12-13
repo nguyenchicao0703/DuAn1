@@ -21,9 +21,9 @@
 
         <ImageView
             android:id="@+id/forgotPassword_OTP_iv_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_margin="15sp"
             android:background="@drawable/custom_forgotpassword_txt"
             android:src="@drawable/ic_left" />
 
@@ -31,11 +31,11 @@
             android:id="@+id/forgotPassword_OTP_title_statusBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="17sp"
             android:text="Forgot password"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -43,10 +43,10 @@
         android:id="@+id/forgotPassword_OTP_txt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="196sp"
         android:text="Code has been send to"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.193"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +56,10 @@
         android:id="@+id/fotgotPassword_OTP_txt_sdt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="196sp"
         android:text=" +6282******39"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/forgotPassword_OTP_txt_title"
@@ -68,15 +68,15 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/forgotPassword_OTP_cardView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="60sp"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="20sp"
+        android:layout_marginTop="32sp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:textAlignment="4"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
+        app:cardCornerRadius="10sp"
+        app:cardElevation="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPassword_OTP_txt_title">
 
@@ -88,7 +88,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -96,24 +96,24 @@
         android:id="@+id/fotgotPassword_OTP_txt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="164sp"
         android:text="Resend code"
         android:textColor="@color/black"
-        android:textSize="17dp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPassword_OTP_txt_title" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/forgotPassword_OTP_btn_next"
-        android:layout_width="360dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="360sp"
+        android:layout_height="51sp"
+        android:layout_marginBottom="36sp"
         android:background="@drawable/custom_login_btn"
         android:text="Next"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"

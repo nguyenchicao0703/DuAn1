@@ -1,7 +1,6 @@
 package com.fpoly.project1.activity.home.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import java.text.NumberFormat
-import java.util.*
 
 class MenuAdapter(
     private val context: Context, private val products: List<Product>, private val
@@ -27,7 +25,7 @@ class MenuAdapter(
     override fun getItemCount(): Int = products.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.home_item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
@@ -50,6 +48,10 @@ class MenuAdapter(
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
             )
         }
+
+        holder.itemView.animate()
+            .alpha(1f)
+            .translationY(0f)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,6 +61,9 @@ class MenuAdapter(
         var productPrice: TextView
 
         init {
+            itemView.alpha = 0f
+            itemView.translationY = 50f
+
             productThumbnail = itemView.findViewById(R.id.item_iv_products_menu)
             productName = itemView.findViewById(R.id.item_txt_menu_name)
             productType = itemView.findViewById(R.id.item_txt_menu_type)

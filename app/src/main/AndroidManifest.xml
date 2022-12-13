@@ -32,9 +32,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <!--<Rating android:name="android.intent.Rating.DEFAULT" />
-                <Rating android:name="android.intent.Rating.BROWSABLE" />-->
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -79,9 +76,6 @@
 
         <activity
             android:name="com.fpoly.project1.activity.account.AccountEditProfile"
-            android:exported="false" />
-        <activity
-            android:name="com.fpoly.project1.activity.account.AccountFavorites"
             android:exported="false" />
         <activity
             android:name="com.fpoly.project1.activity.account.AccountVerifyEmail"

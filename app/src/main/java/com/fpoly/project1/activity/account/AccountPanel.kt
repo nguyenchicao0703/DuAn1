@@ -37,13 +37,6 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
     ): View? {
         val view = inflater.inflate(R.layout.profile_overview, container, false)
 
-        // back button?
-        backButton = view.findViewById(R.id.profile_iv_back)
-        backButton.setOnClickListener {
-            if (parentFragmentManager.backStackEntryCount > 0)
-                parentFragmentManager.popBackStack()
-        }
-
         // set avatar
         profileAvatar = view.findViewById(R.id.profile_iv_avt)
 
@@ -74,7 +67,7 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
         // favorite products activity
         profileFavoriteButton = view.findViewById(R.id.profile_btn_favourite)
         profileFavoriteButton.setOnClickListener {
-            startActivity(Intent(context, AccountFavorites::class.java))
+            AccountFavorites().show(parentFragmentManager, "account_favorites")
         }
 
         // session logout
@@ -92,23 +85,22 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
     override fun onResume() {
         super.onResume()
 
-        profileAvatar.let {
-            SessionUser.avatar.addOnCompleteListener { uri ->
-                if (uri.isSuccessful)
-                    Glide.with(requireContext()).load(uri.result).into(it)
-                else
-                    ControllerCustomer().getAsync(
-                        SessionUser.sessionId,
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run(dataSnapshot: DataSnapshot?) {
-                                val customer = dataSnapshot?.getValue(Customer::class.java)!!
+        SessionUser.avatar.addOnCompleteListener { uri ->
+            if (uri.isSuccessful)
+                Glide.with(requireContext()).load(uri.result).into(profileAvatar)
+            else
+                ControllerCustomer().getAsync(
+                    SessionUser.sessionId,
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            val customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-                                Glide.with(requireContext()).load(customer.avatarUrl).into(it)
-                            }
-                        },
-                        failureListener = null
-                    )
-            }
+                            Glide.with(requireContext()).load(customer.avatarUrl)
+                                .into(profileAvatar)
+                        }
+                    },
+                    failureListener = null
+                )
         }
     }
 }

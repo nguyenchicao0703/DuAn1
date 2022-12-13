@@ -1,7 +1,6 @@
 package com.fpoly.project1.activity.product.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import java.text.NumberFormat
-import java.util.*
 
 class ProductProfileAdapter(
     private val context: Context,
@@ -27,7 +25,7 @@ class ProductProfileAdapter(
     private val layoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.home_item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[position]
@@ -52,6 +50,10 @@ class ProductProfileAdapter(
             fragment.arguments = bundleData
             fragment.show((context as AppCompatActivity).supportFragmentManager, "product_details")
         }
+
+        holder.itemView.animate()
+            .alpha(1f)
+            .translationY(0f)
     }
 
     override fun getItemCount(): Int = list.size
@@ -72,6 +74,9 @@ class ProductProfileAdapter(
         var productPrice: TextView
 
         init {
+            itemView.alpha = 0f
+            itemView.translationY = 50f
+
             productThumbnail = itemView.findViewById(R.id.item_iv_products_menu)
             productName = itemView.findViewById(R.id.item_txt_menu_name)
             productType = itemView.findViewById(R.id.item_txt_menu_type)

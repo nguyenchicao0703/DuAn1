@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/white"
-    android:elevation="15dp"
-    android:padding="30dp"
-    app:cardCornerRadius="10dp"
+    android:elevation="15sp"
+    android:padding="30sp"
+    app:cardCornerRadius="10sp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,11 +17,11 @@
 
         <ImageView
             android:id="@+id/item_orderhistory_iv_products"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:layout_gravity="center"
             android:background="@color/white"
-            android:padding="0dp"
+            android:padding="0sp"
             android:src="@mipmap/iv_item_hamburger"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,13 +31,13 @@
 
         <TextView
             android:id="@+id/item_orderhistory_txt_name"
-            android:layout_width="180dp"
+            android:layout_width="180sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16sp"
+            android:layout_marginTop="16sp"
             android:text="Kubie Burger"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/item_orderhistory_iv_products"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,11 +46,11 @@
             android:id="@+id/item_orderhistory_txt_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16sp"
+            android:layout_marginTop="8sp"
             android:text="Hamburger"
             android:textColor="#777777"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/item_orderhistory_iv_products"
             app:layout_constraintTop_toBottomOf="@+id/item_orderhistory_txt_name" />
 
@@ -58,12 +58,12 @@
             android:id="@+id/item_orderhistory_txt_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="16sp"
+            android:layout_marginTop="8sp"
+            android:layout_marginBottom="10sp"
             android:text="100.000"
-            android:textColor="#FF0000"
-            android:textSize="20dp"
+            android:textColor="@color/accent"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_orderhistory_iv_products"
@@ -71,9 +71,9 @@
 
         <TextView
             android:id="@+id/item_orderhistory_txt_stat"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="100sp"
+            android:layout_height="40sp"
+            android:layout_marginEnd="16sp"
             android:gravity="center"
             android:text="Process"
             android:textColor="@color/white"

@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,13 +26,16 @@ import java.util.*
 class PublishOverviewAdapter(
     private val context: Context,
     private var list: ArrayList<Product>,
-    private var categories: ArrayList<ProductCategory>
+    private var categories: ArrayList<ProductCategory>,
+    private val view: View?
 ) : RecyclerView.Adapter<PublishOverviewAdapter.ViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
+    private val mainView = view?.findViewById<ConstraintLayout>(R.id.sell_normal_view)
+    private val emptyView = view?.findViewById<ConstraintLayout>(R.id.sell_empty_view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_menu, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.home_item_recycler_menu, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = list[holder.absoluteAdapterPosition]
@@ -60,7 +64,7 @@ class PublishOverviewAdapter(
         holder.itemView.setOnLongClickListener {
             val dialog = Dialog(context)
 
-            dialog.setContentView(R.layout.sell_dialog_remove)
+            dialog.setContentView(R.layout.publish_dialog_remove)
             dialog.findViewById<TextView>(R.id.dialog_remove_sell_txt_name).text = product.name
             dialog.findViewById<TextView>(R.id.dialog_remove_sell_txt_price).text =
                 NumberFormat.getInstance().format(product.price)
@@ -76,6 +80,11 @@ class PublishOverviewAdapter(
 
                             list.removeAt(holder.absoluteAdapterPosition)
                             notifyItemRemoved(holder.absoluteAdapterPosition)
+
+                            if (list.size == 0) {
+                                mainView?.visibility = View.GONE
+                                emptyView?.visibility = View.VISIBLE
+                            }
 
                             dialog.dismiss()
                         }

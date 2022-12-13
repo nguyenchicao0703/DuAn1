@@ -31,11 +31,11 @@ class ProductDetails : BottomSheetDialogFragment() {
     private lateinit var owner: Customer
     private lateinit var customer: Customer
 
-    private lateinit var backButton: ImageView
     private lateinit var ownerAvatar: ImageView
     private lateinit var ownerFullName: TextView
     private lateinit var ownerEmail: TextView
     private lateinit var ownerChat: Button
+    private lateinit var ownerLocation: ImageView
 
     private lateinit var productThumbnail: ImageView
     private lateinit var productName: TextView
@@ -59,59 +59,59 @@ class ProductDetails : BottomSheetDialogFragment() {
         bindViews(view)
 
         // run last
-        fun getOwner() {
+        fun task3() {
             ControllerCustomer().getAsync(
                 product.sellerId,
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
                         owner = dataSnapshot?.getValue(Customer::class.java)!!
 
-                        runLater()
+                        renderFragment(view)
                     }
                 }, null
             )
         }
 
         // run second
-        fun getProduct() {
+        fun task2() {
             ControllerProduct().getAsync(
                 arguments?.getString("id", null),
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
                         product = dataSnapshot?.getValue(Product::class.java)!!
 
-                        getOwner()
+                        task3()
                     }
                 }, null
             )
         }
 
         // run first
-        fun getCustomer() {
+        fun task1() {
             ControllerCustomer().getAsync(
                 SessionUser.sessionId,
                 successListener = object : ControllerBase.SuccessListener() {
                     override fun run(dataSnapshot: DataSnapshot?) {
                         customer = dataSnapshot?.getValue(Customer::class.java)!!
 
-                        getProduct()
+                        task2()
                     }
                 }, null
             )
         }
 
         // run async tasks
-        getCustomer()
+        task1()
 
         return view
     }
 
     private fun bindViews(view: View) {
-        backButton = view.findViewById(R.id.userPage_iv_back)
         ownerAvatar = view.findViewById(R.id.userPage_iv_avatar)
         ownerFullName = view.findViewById(R.id.userPage_txt_user_name)
         ownerEmail = view.findViewById(R.id.userPage_txt_user_email)
         ownerChat = view.findViewById(R.id.userPage_users_btn_chat)
+        ownerLocation = view.findViewById(R.id.userPage_iv_location)
 
         productThumbnail = view.findViewById(R.id.userPage_iv_product)
         productName = view.findViewById(R.id.userPage_txt_name_product)
@@ -123,18 +123,20 @@ class ProductDetails : BottomSheetDialogFragment() {
         cartAdd = view.findViewById(R.id.userPage_btn_add)
         cartRemove = view.findViewById(R.id.userPage_btn_minimize)
         cartButton = view.findViewById(R.id.userPage_users_btn_cart)
+
+        // hide view until data loaded completely
+        view.alpha = 0f
     }
 
-    private fun runLater() {
+    private fun renderFragment(view: View) {
         // bindings
-        backButton.setOnClickListener { dismiss() }
         ownerAvatar.let {
             it.setOnClickListener { showProfile() }
             owner.getAvatarUrl(object : ControllerBase.SuccessListener() {
                 override fun run(unused: Any?) {
                     try {
-                        Glide.with(this@ProductDetails).load(unused as String).into(ownerAvatar)
-                    } catch (e: java.lang.NullPointerException) {
+                        Glide.with(this@ProductDetails).load(unused as String).into(it)
+                    } catch (e: NullPointerException) {
                         // ignored fragment detached
                     }
                 }
@@ -145,7 +147,7 @@ class ProductDetails : BottomSheetDialogFragment() {
             it.setOnClickListener { showProfile() }
         }
         // no we don't display user's email without their consent
-        ownerEmail.text = "email hidden for privacy"
+        ownerEmail.visibility = View.GONE
 
         // chat button
         ownerChat.setOnClickListener {
@@ -164,7 +166,8 @@ class ProductDetails : BottomSheetDialogFragment() {
         product.thumbnails?.let { thumbnails ->
             context?.let { ctx ->
                 Glide.with(ctx).load(
-                    thumbnails.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+                    thumbnails.getOrNull(0)
+                        ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
                 ).into(productThumbnail)
             }
         }
@@ -173,7 +176,6 @@ class ProductDetails : BottomSheetDialogFragment() {
         cartAdd.setOnClickListener {
             cartAmount.text = (cartAmount.text.toString().toInt() + 1).toString()
         }
-
         // remove amount from current view
         cartRemove.setOnClickListener {
             val cartAmountNumber = cartAmount.text.toString().toInt()
@@ -181,7 +183,6 @@ class ProductDetails : BottomSheetDialogFragment() {
             cartAmount.text =
                 if (cartAmountNumber - 1 <= 0) "1" else (cartAmountNumber - 1).toString()
         }
-
         // add to card
         cartButton.setOnClickListener {
             val existingCartItem = SessionUser.cart.find { pair -> pair.first.id == product.id }
@@ -194,10 +195,14 @@ class ProductDetails : BottomSheetDialogFragment() {
             }
 
             Toast.makeText(
-                requireContext(), "Added ${cartAmount.text.toString().toInt()}x to " +
-                        "cart", Toast.LENGTH_SHORT
+                requireContext(),
+                "Added ${cartAmount.text.toString().toInt()}x to cart",
+                Toast.LENGTH_SHORT
             ).show()
         }
+
+        // show view
+        view.animate().alpha(1f)
     }
 
     private fun favoriteViewListener(favView: ImageView) {
@@ -236,7 +241,6 @@ class ProductDetails : BottomSheetDialogFragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // TODO untested color check
                         favView.backgroundTintList =
                             ColorStateList.valueOf(
                                 resources.getColor(

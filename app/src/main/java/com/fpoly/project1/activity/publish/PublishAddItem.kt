@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
@@ -46,7 +45,7 @@ class PublishAddItem : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.sell_add_item, container, false)
+        val view = inflater.inflate(R.layout.publish_add_item, container, false)
 
         view.let {
             backButton = it.findViewById(R.id.seller_iv_back)

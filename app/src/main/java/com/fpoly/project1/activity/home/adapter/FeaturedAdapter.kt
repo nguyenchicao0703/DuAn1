@@ -1,7 +1,6 @@
 package com.fpoly.project1.activity.home.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.ProductDetails
 import com.fpoly.project1.firebase.model.Product
 import java.text.NumberFormat
-import java.util.*
 
 class FeaturedAdapter(private val context: Context, private val products: List<Product>) :
     RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
@@ -25,7 +23,7 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
     override fun getItemCount(): Int = products.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(layoutInflater.inflate(R.layout.item_recycler_featured_products, parent, false))
+        ViewHolder(layoutInflater.inflate(R.layout.home_item_recycler_featured, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
@@ -45,6 +43,10 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
             )
         }
+
+        holder.itemView.animate()
+            .alpha(1f)
+            .translationX(0f)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -53,6 +55,9 @@ class FeaturedAdapter(private val context: Context, private val products: List<P
         var productPrice: TextView
 
         init {
+            itemView.alpha = 0f
+            itemView.translationX = 50f
+
             productThumbnail = itemView.findViewById(R.id.item_iv_product_featured)
             productName = itemView.findViewById(R.id.item_txt_featured_name)
             productPrice = itemView.findViewById(R.id.item_txt_featured_price)

@@ -7,10 +7,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_iv_chat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_marginStart="12sp"
+        android:layout_marginTop="16sp"
         android:src="@mipmap/iv_avt_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,14 +18,14 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="5dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="5dp"
+        android:layout_marginStart="8sp"
+        android:layout_marginTop="24sp"
+        android:paddingStart="15sp"
+        android:paddingTop="5sp"
+        android:paddingEnd="15sp"
+        android:paddingBottom="5sp"
         android:background="@drawable/custom_sender"
-        android:maxWidth="300dp"
+        android:maxWidth="300sp"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/item_iv_chat"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,17 +35,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:maxWidth="260dp"
+            android:maxWidth="260sp"
             android:text="Hello, can we talk to each other?"
             android:textColor="@color/white"
-            android:textSize="17dp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/item_txt_chat_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
             android:text="12:30"
             android:textColor="#E6E6E6" />
     </LinearLayout>

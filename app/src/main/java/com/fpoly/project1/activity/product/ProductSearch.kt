@@ -6,13 +6,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnScrollChangeListener
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.adapter.ProductSearchAdapter
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerProduct
 import com.fpoly.project1.firebase.controller.ControllerProductCategory
@@ -20,13 +22,19 @@ import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
 import java.util.*
+import kotlin.math.abs
 
 class ProductSearch : Fragment(R.layout.product_search) {
+    private val pageCount = 20
+    private val pageScrollDiff = 50
+    private val pageScrollDelay = 1500L
+    private var pageScrollTimer: Timer? = null
+
     private val products = ArrayList<Product>()
     private val categories = ArrayList<ProductCategory>()
 
+    private lateinit var nestedScrollView: NestedScrollView
     private lateinit var productRecycler: RecyclerView
-    private lateinit var backButton: ImageView
     private lateinit var searchBox: EditText
 
     override fun onCreateView(
@@ -36,77 +44,72 @@ class ProductSearch : Fragment(R.layout.product_search) {
     ): View? {
         val view = inflater.inflate(R.layout.product_search, container, false)
 
-        view.let {
-            // bindings
-            productRecycler = it.findViewById(R.id.search_recyclerView)
-            productRecycler.adapter = ProductSearchAdapter(
-                requireContext(),
-                products,
-                categories
-            )
+        // bindings
+        nestedScrollView = view.findViewById(R.id.search_scrollview)
+        nestedScrollView.setOnScrollChangeListener(onScrollListener)
 
-            backButton = it.findViewById(R.id.search_iv_back)
-            backButton.setOnClickListener {
-                if (parentFragmentManager.backStackEntryCount > 0)
-                    parentFragmentManager.popBackStack()
-            }
+        productRecycler = view.findViewById(R.id.search_recyclerView)
+        productRecycler.adapter = ProductSearchAdapter(
+            requireContext(),
+            products,
+            categories
+        )
 
-            searchBox = it.findViewById(R.id.search_edt_search)
-            searchBox.let { et ->
-                // disable until data is loaded
-                et.isEnabled = false
+        searchBox = view.findViewById(R.id.search_edt_search)
+        searchBox.let { et ->
+            // disable until data is loaded
+            et.isEnabled = false
 
-                var searchTimer: Timer? = null
+            var searchTimer: Timer? = null
 
-                et.addTextChangedListener(
-                    object : TextWatcher {
-                        override fun beforeTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            count: Int,
-                            after: Int
-                        ) {
-                            if (searchTimer != null) {
-                                searchTimer!!.cancel()
-                                searchTimer = null
-                            }
-                        }
-
-                        override fun onTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            before: Int,
-                            count: Int
-                        ) {
-                            // ignored
-                        }
-
-                        override fun afterTextChanged(s: Editable?) {
-                            val searchDelay = 1500L
-
-                            searchTimer = Timer()
-                            searchTimer!!.schedule(
-                                object : TimerTask() {
-                                    override fun run() {
-                                        // run in main thread
-                                        android.os.Handler(Looper.getMainLooper()).post {
-                                            (productRecycler.adapter as ProductSearchAdapter).updateList(
-                                                if (et.text.toString().isNotEmpty())
-                                                    products.filter { product ->
-                                                        product.name!!.contains(et.text.toString())
-                                                    }
-                                                else products,
-                                                null
-                                            )
-                                        }
-                                    }
-                                },
-                                searchDelay
-                            )
+            et.addTextChangedListener(
+                object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        if (searchTimer != null) {
+                            searchTimer!!.cancel()
+                            searchTimer = null
                         }
                     }
-                )
-            }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        // ignored
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                        val searchDelay = 1500L
+
+                        searchTimer = Timer()
+                        searchTimer!!.schedule(
+                            object : TimerTask() {
+                                override fun run() {
+                                    // run in main thread
+                                    android.os.Handler(Looper.getMainLooper()).post {
+                                        (productRecycler.adapter as ProductSearchAdapter).updateList(
+                                            if (et.text.toString().isNotEmpty())
+                                                products.filter { product ->
+                                                    product.name!!.contains(et.text.toString())
+                                                }
+                                            else products,
+                                            null
+                                        )
+                                    }
+                                }
+                            },
+                            searchDelay
+                        )
+                    }
+                }
+            )
         }
 
         return view
@@ -115,38 +118,90 @@ class ProductSearch : Fragment(R.layout.product_search) {
     override fun onResume() {
         super.onResume()
 
-        ControllerProduct().getAllAsync(
-            successListener = object : ControllerBase.SuccessListener() {
-                override fun run(dataSnapshot: DataSnapshot?) {
-                    dataSnapshot?.children?.let {
-                        products.clear()
-                        it.forEach {
-                            products.add(it.getValue(Product::class.java)!!)
-                        }
-                    }
+        Firebase.database.child(ControllerProduct().table)
+            .limitToFirst(pageCount)
+            .get().addOnCompleteListener { task ->
+                if (!task.isSuccessful) return@addOnCompleteListener
 
-                    ControllerProductCategory().getAllAsync(
-                        successListener = object : ControllerBase.SuccessListener() {
-                            override fun run(dataSnapshot: DataSnapshot?) {
-                                dataSnapshot?.children?.let {
-                                    categories.clear()
-                                    it.forEach {
-                                        categories.add(it.getValue(ProductCategory::class.java)!!)
+                task.result?.children?.let { children ->
+                    products.clear()
+                    children.forEach {
+                        products.add(it.getValue(Product::class.java)!!)
+                    }
+                }
+
+                ControllerProductCategory().getAllAsync(
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            dataSnapshot?.children?.let { children ->
+                                categories.clear()
+                                children.forEach {
+                                    categories.add(it.getValue(ProductCategory::class.java)!!)
+                                }
+                            }
+
+                            (productRecycler.adapter as ProductSearchAdapter)
+                                .updateList(products, categories)
+
+                            // enable once data is loaded
+                            searchBox.isEnabled = true
+                        }
+                    },
+                    null
+                )
+            }
+    }
+
+    private val onScrollListener = object : NestedScrollView.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: NestedScrollView,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            val pair = Pair(
+                productRecycler.measuredHeight + productRecycler.top,
+                scrollY + v.height
+            )
+
+            if (abs(pair.first - pair.second) < pageScrollDiff) {
+                if (pageScrollTimer == null) {
+                    pageScrollTimer = Timer()
+                    pageScrollTimer!!.schedule(object : TimerTask() {
+                        override fun run() {
+                            Firebase.database.child(ControllerProduct().table)
+                                .orderByKey()
+                                .startAt(products.last().id).limitToFirst(pageCount)
+                                .get().addOnCompleteListener { task ->
+                                    if (!task.isSuccessful) return@addOnCompleteListener
+
+                                    task.result?.children?.let { children ->
+                                        val oldSize = products.size
+
+                                        children.forEach { entry ->
+                                            entry.getValue(Product::class.java)!!.let { prod ->
+                                                if (!products.contains(prod)) {
+                                                    products.add(prod)
+                                                }
+                                            }
+                                        }
+
+                                        if (oldSize != products.size)
+                                            (productRecycler.adapter as ProductSearchAdapter).updateList(
+                                                products, null
+                                            )
                                     }
                                 }
-
-                                (productRecycler.adapter as ProductSearchAdapter)
-                                    .updateList(products, categories)
-
-                                // enable once data is loaded
-                                searchBox.isEnabled = true
-                            }
-                        },
-                        null
-                    )
+                        }
+                    }, pageScrollDelay)
                 }
-            },
-            null
-        )
+            } else {
+                pageScrollTimer?.let {
+                    it.cancel()
+                    pageScrollTimer = null
+                }
+            }
+        }
     }
 }

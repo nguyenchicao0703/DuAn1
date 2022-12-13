@@ -8,7 +8,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,37 +18,45 @@
             android:id="@+id/profile_linearLayout_statusBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="20sp"
             android:orientation="horizontal"
+            android:paddingEnd="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/profile_iv_back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="15dp"
-                android:background="@drawable/custom_forgotpassword_iv_chat"
-                android:src="@drawable/ic_left" />
+            <LinearLayout
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:background="@drawable/custom_home_iv_food"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_margin="15sp"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/white" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="17dp"
-                android:text="Profile"
+                android:layout_gravity="center"
+                android:layout_marginStart="25sp"
+                android:text="Your Profile"
                 android:textColor="@color/black"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_iv_avt"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
+            android:layout_marginTop="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,12 +65,12 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView_use_information"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginRight="20dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="57sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="50sp"
+            android:layout_marginEnd="20sp"
+            android:elevation="10sp"
+            app:cardCornerRadius="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,27 +79,28 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profile_btn_use_information"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="57sp"
                 android:background="#FF5862"
-                android:drawableLeft="@drawable/ic_person"
-                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="20sp"
+                android:drawableTint="@color/white"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="20dp"
-                android:text="Use information"
+                android:paddingStart="20sp"
+                android:text="Edit your profile"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView_chat"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="20dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="57sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="26sp"
+            android:layout_marginEnd="20sp"
+            android:elevation="10sp"
+            app:cardCornerRadius="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,27 +109,27 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profile_btn_order_chat"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="57sp"
                 android:background="#FF5862"
-                android:drawableLeft="@drawable/ic_chat_profile"
-                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_chat_profile"
+                android:drawablePadding="20sp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="20dp"
+                android:paddingStart="20sp"
                 android:text="Chat with users"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView_order_history"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="20dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="57sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="26sp"
+            android:layout_marginEnd="20sp"
+            android:elevation="10sp"
+            app:cardCornerRadius="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,27 +138,27 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profile_btn_order_history"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="57sp"
                 android:background="#FF5862"
-                android:drawableLeft="@drawable/ic_history"
-                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_history"
+                android:drawablePadding="20sp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="20dp"
+                android:paddingStart="20sp"
                 android:text="Order history"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView_favourite"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="20dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="57sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="26sp"
+            android:layout_marginEnd="20sp"
+            android:elevation="10sp"
+            app:cardCornerRadius="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -159,27 +167,27 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profile_btn_favourite"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="57sp"
                 android:background="#FF5862"
-                android:drawableLeft="@drawable/ic_favorite"
-                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_favorite"
+                android:drawablePadding="20sp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="20dp"
-                android:text="Favourite product"
+                android:paddingStart="20sp"
+                android:text="Favourite products"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView_logOut"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="20dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="57sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="26sp"
+            android:layout_marginEnd="20sp"
+            android:elevation="10sp"
+            app:cardCornerRadius="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,16 +196,16 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profile_btn_logOut"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="57sp"
                 android:background="#FF5862"
-                android:drawableLeft="@drawable/ic_logout"
-                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_logout"
+                android:drawablePadding="20sp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="20dp"
+                android:paddingStart="20sp"
                 android:text="Log out"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

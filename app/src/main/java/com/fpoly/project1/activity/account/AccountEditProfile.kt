@@ -2,6 +2,7 @@ package com.fpoly.project1.activity.account
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.enums.RequestCode
@@ -25,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class AccountEditProfile : AppCompatActivity() {
     private val controllerCustomer = ControllerCustomer()
+    private lateinit var mainView: ConstraintLayout
 
     private lateinit var profileAvatar: CircleImageView
     private lateinit var profileName: EditText
@@ -46,15 +49,15 @@ class AccountEditProfile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.account_profile_edit)
 
+        // bind views
+        bindViews()
+
         // get account info
         controllerCustomer.getAsync(
             SessionUser.sessionId,
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
                     val account = dataSnapshot!!.getValue(Customer::class.java)!!
-
-                    // bind views
-                    bindViews(account)
 
                     // update edit text fields
                     updateViews(account)
@@ -159,6 +162,9 @@ class AccountEditProfile : AppCompatActivity() {
                         it.setText(acc.postalAddress)
                         it.isEnabled = false
                     }
+
+                    // show main view
+                    mainView.animate().alpha(1f)
                 }
             },
             failureListener = object : ControllerBase.FailureListener() {
@@ -174,7 +180,11 @@ class AccountEditProfile : AppCompatActivity() {
         )
     }
 
-    private fun bindViews(account: Customer) {
+    private fun bindViews() {
+        // hide until data loads
+        mainView = findViewById(R.id.edit_profile_view)
+        mainView.alpha = 0f
+
         // bindings
         buttonUpdateProfile = findViewById(R.id.edit_profile_btn_save_changes)
         buttonUpdatePassword = findViewById(R.id.edit_profile_btn_change_password)
@@ -196,56 +206,26 @@ class AccountEditProfile : AppCompatActivity() {
 
         findViewById<ImageView>(R.id.edit_profile_iv_back).setOnClickListener { finish() }
 
-        // toggle update button
-        for (element in arrayOf(
-            profileName,
-            profileEmail,
-            profilePhone,
-            profileAddress,
-            profileBirthDate
-        )) {
-            element.setOnFocusChangeListener { _: View, _: Boolean ->
-                when (element) {
-                    profileName ->
-                        if (profileName.text.toString() == account.fullName)
-                            View.GONE else View.VISIBLE
-                    profileEmail ->
-                        if (profileEmail.text.toString() == account.emailAddress)
-                            View.GONE else View.VISIBLE
-                    profilePhone ->
-                        if (profilePhone.text.toString() == account.phoneNumber)
-                            View.GONE else View.VISIBLE
-                    profileAddress ->
-                        if (profileAddress.text.toString() == account.postalAddress)
-                            View.GONE else View.VISIBLE
-                    profileBirthDate ->
-                        if (profileBirthDate.text.toString() == account.birthDate)
-                            View.GONE else View.VISIBLE
-                }
-            }
-        }
-
         // toggle edit text
-        for (element in arrayOf(
-            profileNameToggle,
-            profileEmailToggle,
-            profilePhoneToggle,
-            profileAddressToggle,
-            profileBirthDateToggle
+        for (pair in arrayOf(
+            Pair(profileNameToggle, profileName),
+            Pair(profileEmailToggle, profileEmail),
+            Pair(profilePhoneToggle, profilePhone),
+            Pair(profileAddressToggle, profileAddress),
+            Pair(profileBirthDateToggle, profileBirthDate)
         )) {
-            element.setOnClickListener {
-                when (element) {
-                    profileNameToggle -> profileName.isEnabled =
-                        !profileName.isEnabled
-                    profileEmailToggle -> profileEmail.isEnabled =
-                        !profileEmail.isEnabled
-                    profilePhoneToggle -> profilePhone.isEnabled =
-                        !profilePhone.isEnabled
-                    profileAddressToggle -> profileAddress.isEnabled =
-                        !profileAddress.isEnabled
-                    profileBirthDateToggle -> profileBirthDate.isEnabled =
-                        !profileBirthDate.isEnabled
-                }
+            pair.first.setOnClickListener {
+                pair.second.isEnabled = !pair.second.isEnabled
+                pair.first.imageTintList =
+                    ColorStateList.valueOf(
+                        resources.getColor(
+                            if (pair.second.isEnabled)
+                                R.color.accent
+                            else
+                                android.R.color.tab_indicator_text,
+                            theme
+                        )
+                    )
             }
         }
     }
