@@ -1,23 +1,24 @@
 package com.fpoly.project1.activity.checkout
 
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fpoly.project1.R
+import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
 import com.fpoly.project1.firebase.controller.ControllerBase
 import com.fpoly.project1.firebase.controller.ControllerCustomer
 import com.fpoly.project1.firebase.controller.ControllerOrder
 import com.fpoly.project1.firebase.model.Customer
 import com.fpoly.project1.firebase.model.Order
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import java.text.NumberFormat
 import java.time.Instant
-import java.util.*
-import kotlin.collections.HashMap
 
 class CheckoutConfirm : AppCompatActivity() {
     private lateinit var paymentHolder: TextView

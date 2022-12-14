@@ -2,6 +2,7 @@ package com.fpoly.project1.activity.checkout.adapter
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color.alpha
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,15 +49,14 @@ class CheckoutAdapter(
         }
 
         holder.productName.text = product.name
-        holder.productPrice.text = product.price.toString().format("%,d")
+        holder.productPrice.text = NumberFormat.getIntegerInstance().format(product.price)
         holder.productType.text =
             categories.filter { productCategory: ProductCategory ->
                 productCategory.id.equals(
                     product.categoryId
                 )
             }.getOrNull(0)?.name ?: "Unknown"
-        holder.productCount.text =
-            list[holder.absoluteAdapterPosition].second.toString()
+        holder.productCount.text = list[holder.absoluteAdapterPosition].second.toString()
         holder.itemView.setOnClickListener {
             val fragment = ProductDetails()
 
@@ -95,42 +95,45 @@ class CheckoutAdapter(
         }
 
         holder.itemView.setOnLongClickListener {
-            val dialog = Dialog(context)
-            dialog.setContentView(R.layout.checkout_dialog_remove)
-            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_name).text = product.name
-            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_amout).text =
-                list[holder.absoluteAdapterPosition].second.toString()
-            dialog.findViewById<TextView>(R.id.dialog_remove_cart_txt_price).text =
-                NumberFormat.getIntegerInstance()
-                    .format(product.price!! * list[holder.absoluteAdapterPosition].second)
-            dialog.findViewById<Button>(R.id.dialog_remove_cart_btn_cancle).setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.findViewById<Button>(R.id.dialog_remove_cart_btn_sure).setOnClickListener {
-                SessionUser.cart.find { item ->
-                    item.first.id == list[position].first.id
-                }?.let { entry ->
-                    val index = SessionUser.cart.indexOf(entry)
+            Dialog(context).apply {
+                this.setContentView(R.layout.checkout_dialog_remove)
 
-                    SessionUser.cart.removeAt(index)
+                this.findViewById<TextView>(R.id.dialog_remove_cart_txt_name).text = product.name
+                this.findViewById<TextView>(R.id.dialog_remove_cart_txt_amount).text =
+                    list[holder.absoluteAdapterPosition].second.toString()
+                this.findViewById<TextView>(R.id.dialog_remove_cart_txt_price).text =
+                    NumberFormat.getIntegerInstance()
+                        .format(product.price!! * list[holder.absoluteAdapterPosition].second)
+                this.findViewById<Button>(R.id.dialog_remove_cart_btn_cancle).setOnClickListener {
+                    this.dismiss()
+                }
+                this.findViewById<Button>(R.id.dialog_remove_cart_btn_sure).setOnClickListener {
+                    SessionUser.cart.find { item ->
+                        item.first.id == list[position].first.id
+                    }?.let { entry ->
+                        val index = SessionUser.cart.indexOf(entry)
 
-                    notifyItemRemoved(index)
-                    fragment.renderTotalCost()
+                        notifyItemRemoved(SessionUser.cart.indexOf(entry))
+                        fragment.renderTotalCost()
 
-                    if (SessionUser.cart.size == 0) {
-                        emptyView?.visibility = View.VISIBLE
-                        viewTotal?.visibility = View.GONE
-                        viewRecycler?.visibility = View.GONE
+                        SessionUser.cart.let {
+                            it.removeAt(index)
+                            if (it.size == 0) {
+                                emptyView?.visibility = View.VISIBLE
+                                viewTotal?.visibility = View.GONE
+                                viewRecycler?.visibility = View.GONE
+                            }
+                        }
                     }
 
-                    dialog.dismiss()
+                    this.dismiss()
                     Toast.makeText(context, "Removed from cart", Toast.LENGTH_SHORT).show()
                 }
-            }
-            dialog.show()
+            }.show()
 
             true
         }
+        holder.itemView.alpha = 1f
     }
 
     override fun getItemCount(): Int = list.size
@@ -145,6 +148,8 @@ class CheckoutAdapter(
         var productCountAdd: Button
 
         init {
+            itemView.alpha = 0f
+
             productThumbnail = itemView.findViewById(R.id.item_iv_products_cart)
             productName = itemView.findViewById(R.id.item_txt_cart_name)
             productType = itemView.findViewById(R.id.item_txt_cart_type)

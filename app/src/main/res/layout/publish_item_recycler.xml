@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_main_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:backgroundTint="@color/white"
+    android:elevation="15sp"
+    android:padding="30sp"
+    app:cardCornerRadius="10sp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/item_iv_products_menu"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:padding="0sp"
+            android:src="@mipmap/iv_item_hamburger"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.003"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_txt_menu_name"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginTop="16sp"
+            android:lines="1"
+            android:text="Hamburger"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/item_iv_products_menu"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_txt_menu_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28sp"
+            android:layout_marginTop="12sp"
+            android:text="Hamburger"
+            android:textColor="#777777"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/item_iv_products_menu"
+            app:layout_constraintTop_toBottomOf="@+id/item_txt_menu_name" />
+
+        <TextView
+            android:id="@+id/item_txt_menu_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30.000"
+            android:textColor="@color/accent"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.886"
+            app:layout_constraintStart_toEndOf="@+id/item_txt_menu_name"
+            app:layout_constraintTop_toTopOf="@id/item_txt_menu_name"
+            app:layout_constraintVertical_bias="0.256" />
+
+        <LinearLayout
+            android:id="@+id/item_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:padding="20sp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:translationY="-50sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/item_iv_products_menu">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unique ID:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/item_txt_id"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="0"
+                    android:textColor="@color/accent"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Sales:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/item_txt_sales"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="0"
+                    android:textColor="@color/accent"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="12sp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/item_btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55sp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/custom_login_btn"
+                    android:paddingStart="20sp"
+                    android:paddingEnd="20sp"
+                    android:text="Delete Item"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/item_btn_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55sp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="12sp"
+                    android:background="@drawable/custom_login_btn"
+                    android:paddingStart="20sp"
+                    android:paddingEnd="20sp"
+                    android:text="Edit Item"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

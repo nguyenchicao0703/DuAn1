@@ -64,14 +64,14 @@ class AccountOrderHistory : BottomSheetDialogFragment() {
                 (recyclerView.adapter as? OrderHistoryAdapter)?.updateList(
                     if (it.contains("status:pending")) {
                         orders.filter { order -> order.status == OrderStatus.PENDING }
-                    } else if (it.contains("status:on the way")) {
+                    } else if (it.contains("status:on_the_way")) {
                         orders.filter { order -> order.status == OrderStatus.ON_THE_WAY }
                     } else if (it.contains("status:delivered")) {
                         orders.filter { order -> order.status == OrderStatus.DELIVERED }
                     } else if (it.contains("status:cancelled")) {
                         orders.filter { order -> order.status == OrderStatus.CANCELLED }
                     } else {
-                        orders
+                        orders.filter { order -> order.id!!.contains(it) }
                     }
                 )
             }

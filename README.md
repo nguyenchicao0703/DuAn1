@@ -5,17 +5,18 @@ Vì thiếu nhân lực, thời gian và quản lý đội ngũ thì app bị gi
 - Need to add check for account details in ``AuthLogin`` since users can skip fill bio 
 activity in ``AuthRegister``
 - ~~**Wrap Glide image loading into a try catch** to prevent crashing from trying to load image 
-  without a context when the user quickly dismiss the parent dialog fragment~~
-- **Add a total purchase counter to product** upon confirming purchases for use with the 
-  Featured menu section in home fragment
+  without a context when the user quickly dismiss the parent dialog fragment~~ Done fixing 
+  context issues
+- ~~**Add a total purchase counter to product** upon confirming purchases for use with the 
+  Featured menu section in home fragment~~ - Added to published products view
 - ~~**Move the buttons from recycler views from bottom to top** because having it all the way 
-  bottom doesn't make any sense~~
+  bottom doesn't make any sense~~ Done
 - **More testing**
 
 #### Nhóm 6 (lần 2) - Tổng nghỉ: 5
 
 - **Layout**: Chí Cao
-- **Program**: acay
+- **Program**: acay living in pain
 - **Presentation**: Hưng, Cao?
 - ~~Rút: Hùng, Hiệp, Phi, 2 thằng nữa không biết~~I
 
@@ -42,13 +43,13 @@ Còn thêm?
 **Note**: Firebase không có tạo tài khoản được bằng số điện thoại nên số điện thoại chỉ được dùng làm đăng nhập hoặc quên mật khẩu
 
 #### Màn hình chính
-| Task                                                       | Trạng thái       |
-|------------------------------------------------------------|------------------|
-| Layout homepage                                            | Working          |
-| Liệt kê danh sách sản phẩm mới đăng                        | Working, limited |
-| Liệt kê danh sách sản phẩm nổi bật                         | Working, limited |
-| Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Working          |
-| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Working          |
+| Task                                                       | Trạng thái |
+|------------------------------------------------------------|------------|
+| Layout homepage                                            | Working    |
+| Liệt kê danh sách sản phẩm mới đăng                        | Working    |
+| Liệt kê danh sách sản phẩm nổi bật trong X hoá đơn gần đây | Working    |
+| Khung tìm kiếm sản phẩm chuyển sang danh sách sản phẩm     | Working    |
+| Nhấn vào sản phẩm chuyển sang giao diện thông tin sản phẩm | Working    |
 Còn thêm?
 
 #### Màn hình tìm kiếm sản phẩm

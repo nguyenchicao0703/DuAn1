@@ -6,12 +6,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnScrollChangeListener
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.adapter.ProductSearchAdapter
 import com.fpoly.project1.firebase.Firebase
@@ -30,12 +33,18 @@ class ProductSearch : Fragment(R.layout.product_search) {
     private val pageScrollDelay = 1500L
     private var pageScrollTimer: Timer? = null
 
+    private val searchDelay = 500L
+
     private val products = ArrayList<Product>()
     private val categories = ArrayList<ProductCategory>()
 
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var productRecycler: RecyclerView
     private lateinit var searchBox: EditText
+
+    private lateinit var loadingIv: ImageView
+    private lateinit var loadingLL: LinearLayout
+    private lateinit var loadingTv: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +63,11 @@ class ProductSearch : Fragment(R.layout.product_search) {
             products,
             categories
         )
+
+        loadingLL = view.findViewById(R.id.search_ll_loading)
+        loadingTv = view.findViewById(R.id.search_txt_loading)
+        loadingIv = view.findViewById(R.id.search_iv_loading)
+        Glide.with(requireContext()).load(R.drawable.loading).into(loadingIv)
 
         searchBox = view.findViewById(R.id.search_edt_search)
         searchBox.let { et ->
@@ -86,8 +100,6 @@ class ProductSearch : Fragment(R.layout.product_search) {
                     }
 
                     override fun afterTextChanged(s: Editable?) {
-                        val searchDelay = 1500L
-
                         searchTimer = Timer()
                         searchTimer!!.schedule(
                             object : TimerTask() {
@@ -115,8 +127,8 @@ class ProductSearch : Fragment(R.layout.product_search) {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         Firebase.database.child(ControllerProduct().table)
             .limitToFirst(pageCount)
@@ -165,7 +177,7 @@ class ProductSearch : Fragment(R.layout.product_search) {
                 scrollY + v.height
             )
 
-            if (abs(pair.first - pair.second) < pageScrollDiff) {
+            if (abs(pair.first - pair.second) < pageScrollDiff + loadingLL.measuredHeight) {
                 if (pageScrollTimer == null) {
                     pageScrollTimer = Timer()
                     pageScrollTimer!!.schedule(object : TimerTask() {
@@ -174,6 +186,9 @@ class ProductSearch : Fragment(R.layout.product_search) {
                                 .orderByKey()
                                 .startAt(products.last().id).limitToFirst(pageCount)
                                 .get().addOnCompleteListener { task ->
+                                    loadingTv.visibility = View.GONE
+                                    loadingIv.visibility = View.VISIBLE
+
                                     if (!task.isSuccessful) return@addOnCompleteListener
 
                                     task.result?.children?.let { children ->
@@ -191,6 +206,10 @@ class ProductSearch : Fragment(R.layout.product_search) {
                                             (productRecycler.adapter as ProductSearchAdapter).updateList(
                                                 products, null
                                             )
+                                        else {
+                                            loadingTv.visibility = View.VISIBLE
+                                            loadingIv.visibility = View.GONE
+                                        }
                                     }
                                 }
                         }

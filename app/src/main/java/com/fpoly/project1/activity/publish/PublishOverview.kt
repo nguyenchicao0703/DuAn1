@@ -77,15 +77,15 @@ class PublishOverview : Fragment(R.layout.publish_overview) {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         // run first
         getCategories()
     }
 
     // run last
-    fun getProducts() {
+    private fun getProducts() {
         ControllerProduct().getAllAsync(
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
@@ -120,7 +120,7 @@ class PublishOverview : Fragment(R.layout.publish_overview) {
     }
 
     // run first
-    fun getCategories() {
+    private fun getCategories() {
         ControllerProductCategory().getAllAsync(
             object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {

@@ -123,7 +123,8 @@ class PublishAddItem : BottomSheetDialogFragment() {
                     price = itemPrice.text.toString().toLong(),
                     name = itemName.text.toString(),
                     description = itemDescription.text.toString(),
-                    thumbnails = this.thumbnails
+                    thumbnails = this.thumbnails,
+                    sales = 0
                 )
                 controllerProduct.setAsync(
                     value = product,

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="400sp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_gravity="center_vertical"
     android:background="@drawable/custom_home_edt_search"
-    android:layout_margin="20sp"
     android:padding="20sp">
 
     <ImageView
@@ -17,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5sp"
-        android:text="Want to delete?"
+        android:text="Confirm deletion"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -40,7 +38,7 @@
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/dialog_remove_sell_txt_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Hamburger"
                 android:textColor="@color/black"
@@ -61,7 +59,7 @@
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/dialog_remove_sell_txt_price"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="100.000"
                 android:textColor="@color/black"

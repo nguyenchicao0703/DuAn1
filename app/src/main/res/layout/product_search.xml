@@ -5,112 +5,134 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/search_linearLayout_statusBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:layout_marginTop="20sp"
+        android:orientation="horizontal"
+        android:paddingEnd="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:background="@drawable/custom_home_iv_food"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/home_chat_iv_statusBar_food"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_margin="15sp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/home_chat_txt_statusBar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="25sp"
+            android:text="Explore"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_constraint_search"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginStart="20sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginEnd="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_linearLayout_statusBar">
+
+        <EditText
+            android:id="@+id/search_edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="60sp"
+            android:background="@drawable/custom_home_edt_search"
+            android:hint="Search"
+            android:paddingStart="28sp"
+            android:paddingEnd="20sp"
+            android:textColorHint="#504F4F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/search_iv_search"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.94"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/search_scrollview"
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:layout_editor_absoluteX="91sp"
-        tools:layout_editor_absoluteY="151sp">
+        android:layout_height="0sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_constraint_search">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/search_linearLayout_statusBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20sp"
-                android:layout_marginTop="20sp"
-                android:orientation="horizontal"
-                android:paddingEnd="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:background="@drawable/custom_home_iv_food"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/home_chat_iv_statusBar_food"
-                        android:layout_width="30sp"
-                        android:layout_height="30sp"
-                        android:layout_margin="15sp"
-                        android:src="@drawable/ic_search"
-                        app:tint="@color/white" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/home_chat_txt_statusBar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="25sp"
-                    android:text="Explore"
-                    android:textColor="@color/black"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/search_constraint_search"
-                android:layout_width="match_parent"
-                android:layout_height="60sp"
-                android:layout_marginStart="20sp"
-                android:layout_marginTop="20sp"
-                android:layout_marginEnd="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_linearLayout_statusBar">
-
-                <EditText
-                    android:id="@+id/search_edt_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:background="@drawable/custom_home_edt_search"
-                    android:hint="Search"
-                    android:paddingStart="28sp"
-                    android:paddingEnd="20sp"
-                    android:textColorHint="#504F4F"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/search_iv_search"
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:src="@drawable/ic_search"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.94"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.533" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0sp"
                 android:layout_marginTop="24sp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:paddingStart="10sp"
                 android:paddingEnd="5sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_constraint_search"
                 tools:itemCount="2"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/home_item_recycler_menu" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/search_ll_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="20sp">
+
+                <ImageView
+                    android:id="@+id/search_iv_loading"
+                    android:layout_width="80sp"
+                    android:layout_height="80sp"
+                    android:src="@drawable/loading" />
+
+                <TextView
+                    android:id="@+id/search_txt_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80sp"
+                    android:gravity="center"
+                    android:text="No more results"
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

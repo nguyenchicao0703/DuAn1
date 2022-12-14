@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingBottom="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_bottom_dialog_bg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/publish_linearLayout_statusBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/publish_iv_back"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_margin="15sp"
+                    app:tint="@color/accent"
+                    android:src="@drawable/ic_edit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginTop="17sp"
+                    android:text="Edit Item"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/publish_iv_avt"
+                android:layout_width="150sp"
+                android:layout_height="150sp"
+                android:layout_marginTop="20sp"
+                android:src="@mipmap/iv_item_hamburger"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_linearLayout_statusBar" />
+
+            <!--         click image -> layout_upload_avata -->
+            <ImageView
+                android:id="@+id/publish_iv_editAvt"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:background="@drawable/custom_login_btn"
+                android:padding="8sp"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/publish_iv_avt"
+                app:layout_constraintEnd_toEndOf="@+id/publish_iv_avt" />
+
+            <TextView
+                android:id="@+id/publish_txt_title_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="30sp"
+                android:text="Product name"
+                android:textColor="#454545"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_iv_avt" />
+
+            <EditText
+                android:id="@+id/publish_txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginEnd="16sp"
+
+                android:text="Hamburger"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_title_name" />
+
+            <ImageView
+                android:id="@+id/publish_iv_edit_name"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="30sp"
+                android:layout_marginEnd="16sp"
+                android:src="@drawable/ic_edit_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_iv_avt" />
+
+            <TextView
+                android:id="@+id/publish_txt_title_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="36sp"
+                android:text="Product price"
+                android:textColor="#454545"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_name" />
+
+            <ImageView
+                android:id="@+id/publish_iv_edit_price"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="36sp"
+                android:layout_marginEnd="16sp"
+                android:src="@drawable/ic_edit_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_name" />
+
+            <EditText
+                android:id="@+id/publish_txt_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginEnd="16sp"
+
+                android:inputType="number"
+                android:text="100000"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_title_price" />
+
+            <TextView
+                android:id="@+id/publish_txt_title_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="36sp"
+                android:text="Product category"
+                android:textColor="#454545"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_price" />
+
+            <ImageView
+                android:id="@+id/publish_iv_edit_category"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="36sp"
+                android:layout_marginEnd="16sp"
+                android:src="@drawable/ic_edit_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_price" />
+
+            <Spinner
+                android:id="@+id/publish_txt_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginEnd="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_title_category" />
+
+            <TextView
+                android:id="@+id/publish_txt_title_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="36sp"
+                android:text="Product description"
+                android:textColor="#454545"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_category" />
+
+            <ImageView
+                android:id="@+id/publish_iv_edit_description"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="36sp"
+                android:layout_marginEnd="16sp"
+                android:src="@drawable/ic_edit_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_category" />
+
+            <EditText
+                android:id="@+id/publish_txt_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
+                android:layout_marginEnd="16sp"
+                android:layout_marginBottom="30sp"
+
+                android:text="In some East Asian countries such as Taiwan, Japan or Korea, some fast food restaurants sell a 'variant' of hamburger with vermicelli instead of bread. 'Bun' is made from a type of sticky rice that is flexible enough to shape the cake without being crushed."
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publish_txt_title_description" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/publish_btn_publish"
+                android:layout_width="360sp"
+                android:layout_height="55sp"
+                android:layout_marginTop="28sp"
+                android:background="@drawable/custom_login_btn"
+                android:text="Update item"
+                android:textAllCaps="false"
+                android:textColor="#EDEDED"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/publish_txt_description" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,31 +40,39 @@ class OrderDetailsAdapter(
         controllerProduct.getAsync(pair.first,
             successListener = object : ControllerBase.SuccessListener() {
                 override fun run(dataSnapshot: DataSnapshot?) {
-                    val product = dataSnapshot!!.getValue(Product::class.java)!!
+                    val product = dataSnapshot?.getValue(Product::class.java)
 
-                    product.thumbnails?.let {
-                        Glide.with(context).load(
-                            it.getOrNull(0)
-                                ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
-                        ).into(holder.productThumbnail)
-                    }
+                    if (product == null) {
+                        holder.productName.text = "Product not found"
+                        holder.productPrice.text = "Unknown"
+                        holder.productType.text = "Unknown"
+                        holder.productCount.text = "x0"
+                    } else {
+                        product.thumbnails?.let {
+                            Glide.with(context).load(
+                                it.getOrNull(0)
+                                    ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
+                            ).into(holder.productThumbnail)
+                        }
 
-                    holder.productName.text = product.name
-                    holder.productCount.text = "x${pair.second}"
-                    holder.productPrice.text =
-                        NumberFormat.getIntegerInstance().format(product.price)
-                    holder.productType.text =
-                        categories.filter { productCategory: ProductCategory ->
-                            productCategory.id.equals(
-                                product.categoryId
+                        holder.productName.text = product.name
+                        holder.productCount.text = "x${pair.second}"
+                        holder.productPrice.text =
+                            NumberFormat.getIntegerInstance().format(product.price!!)
+                        holder.productType.text =
+                            categories.filter { productCategory: ProductCategory ->
+                                productCategory.id.equals(
+                                    product.categoryId
+                                )
+                            }.getOrNull(0)?.name ?: "Unknown"
+                        holder.itemView.setOnClickListener {
+                            val fragment = ProductDetails()
+                            fragment.arguments = bundleOf(Pair("id", product.id))
+                            fragment.show(
+                                (context as AppCompatActivity).supportFragmentManager,
+                                "product_details"
                             )
-                        }.getOrNull(0)?.name ?: "Unknown"
-                    holder.itemView.setOnClickListener {
-                        val fragment = ProductDetails()
-                        fragment.arguments = bundleOf(Pair("id", product.id))
-                        fragment.show(
-                            (context as AppCompatActivity).supportFragmentManager, "product_details"
-                        )
+                        }
                     }
 
                     holder.itemView.animate()

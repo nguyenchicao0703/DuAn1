@@ -16,18 +16,22 @@ import com.fpoly.project1.activity.home.adapter.FeaturedAdapter
 import com.fpoly.project1.activity.home.adapter.MenuAdapter
 import com.fpoly.project1.firebase.Firebase
 import com.fpoly.project1.firebase.SessionUser
-import com.fpoly.project1.firebase.controller.ControllerBase
-import com.fpoly.project1.firebase.controller.ControllerCustomer
-import com.fpoly.project1.firebase.controller.ControllerProduct
-import com.fpoly.project1.firebase.controller.ControllerProductCategory
+import com.fpoly.project1.firebase.controller.*
 import com.fpoly.project1.firebase.model.Customer
+import com.fpoly.project1.firebase.model.Order
 import com.fpoly.project1.firebase.model.Product
 import com.fpoly.project1.firebase.model.ProductCategory
 import com.google.firebase.database.DataSnapshot
 
 class HomeFragment : Fragment(R.layout.home_main) {
-    private val LIMIT_MENU = 5
+    // recently added limit
+    private val LIMIT_MENU = 20
+
+    // featured limit
     private val LIMIT_FEATURED = 20
+
+    // featured orders limit to look back
+    private val LIMIT_FEATURED_ORDERS = 50
 
     private val controllerCustomer = ControllerCustomer()
     private val controllerProduct = ControllerProduct()
@@ -65,8 +69,8 @@ class HomeFragment : Fragment(R.layout.home_main) {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         // greeting
         controllerCustomer.getAllAsync(
@@ -82,7 +86,7 @@ class HomeFragment : Fragment(R.layout.home_main) {
             failureListener = null
         )
 
-        // menu list - limit 5
+        // menu list
         Firebase.database.child(controllerProduct.table).limitToLast(LIMIT_MENU)
             .get().addOnCompleteListener { task ->
                 if (!task.isSuccessful) return@addOnCompleteListener
@@ -111,19 +115,29 @@ class HomeFragment : Fragment(R.layout.home_main) {
                 )
             }
 
-        // featured list - limit 20
-        Firebase.database.child(controllerProduct.table).limitToLast(LIMIT_FEATURED)
-            .get().addOnCompleteListener { task ->
-                val list = ArrayList<Product>()
-                task.result?.children?.forEach { entry ->
-                    list.add(entry.getValue(Product::class.java)!!)
-                }
+        // featured list
+        Firebase.database.child(ControllerOrder().table)
+            .limitToLast(LIMIT_FEATURED_ORDERS)
+            .get().addOnCompleteListener { orderTask ->
+                if (orderTask.isSuccessful) {
+                    val productMap = HashMap<String, Long>()
 
-                recyclerFeatured.layoutManager =
-                    LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                recyclerFeatured.adapter = FeaturedAdapter(
-                    requireContext(), list.reversed()
-                )
+                    orderTask.result?.children?.forEach { order ->
+                        order.getValue(Order::class.java)?.list?.forEach { pair ->
+                            productMap[pair.key] = productMap.getOrDefault(pair.key, 0) + pair.value
+                        }
+                    }
+
+                    recyclerFeatured.layoutManager =
+                        LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                    recyclerFeatured.adapter = FeaturedAdapter(
+                        requireContext(),
+                        productMap.toList()
+                            .sortedBy { value -> value.second }
+                            .asReversed()
+                            .take(LIMIT_FEATURED)
+                    )
+                }
             }
     }
 }

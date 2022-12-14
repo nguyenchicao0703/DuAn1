@@ -35,8 +35,8 @@ class ChatSelector : Fragment(R.layout.chat_overview) {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         chatRecyclerView.let {
             ControllerChatSession().getAllAsync(

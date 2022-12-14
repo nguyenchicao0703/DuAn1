@@ -1,5 +1,6 @@
 package com.fpoly.project1.activity.product.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class ProductSearchAdapter(
             }.getOrNull(0)?.name ?: "Unknown"
         holder.itemView.setOnClickListener {
             val fragment = ProductDetails()
+
             fragment.arguments = bundleOf(Pair("id", product.id))
             fragment.show(
                 (context as AppCompatActivity).supportFragmentManager, "product_details"
@@ -64,6 +66,7 @@ class ProductSearchAdapter(
         notifyItemRangeInserted(index, mutableList.size)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newProductList: List<Product>, newCategoryList: List<ProductCategory>?) {
         if (newCategoryList != null && newCategoryList.isNotEmpty())
             this.categories = newCategoryList
