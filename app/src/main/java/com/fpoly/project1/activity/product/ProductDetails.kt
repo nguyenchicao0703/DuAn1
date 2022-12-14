@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
 import com.fpoly.project1.firebase.SessionUser
@@ -135,7 +136,8 @@ class ProductDetails : BottomSheetDialogFragment() {
             owner.getAvatarUrl(object : ControllerBase.SuccessListener() {
                 override fun run(unused: Any?) {
                     try {
-                        Glide.with(this@ProductDetails).load(unused as String).into(it)
+                        Glide.with(this@ProductDetails).load(unused as String)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL).into(it)
                     } catch (e: NullPointerException) {
                         // ignored fragment detached
                     }
@@ -168,7 +170,7 @@ class ProductDetails : BottomSheetDialogFragment() {
                 Glide.with(ctx).load(
                     thumbnails.getOrNull(0)
                         ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
-                ).into(productThumbnail)
+                ).diskCacheStrategy(DiskCacheStrategy.ALL).into(productThumbnail)
             }
         }
 

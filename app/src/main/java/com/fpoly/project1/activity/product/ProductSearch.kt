@@ -15,6 +15,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.product.adapter.ProductSearchAdapter
 import com.fpoly.project1.firebase.Firebase
@@ -34,6 +35,35 @@ class ProductSearch : Fragment(R.layout.product_search) {
     private var pageScrollTimer: Timer? = null
 
     private val searchDelay = 500L
+    private fun searchTask() {
+        android.os.Handler(Looper.getMainLooper()).post {
+            if (searchBox.text.toString().isNotEmpty()) {
+                ControllerProduct().getAllAsync(
+                    successListener = object : ControllerBase.SuccessListener() {
+                        override fun run(dataSnapshot: DataSnapshot?) {
+                            val arrayList = ArrayList<Product>()
+                            dataSnapshot?.children?.forEach { entry ->
+                                arrayList.add(entry.getValue(Product::class.java)!!)
+                            }
+
+                            (productRecycler.adapter as ProductSearchAdapter).updateList(
+                                arrayList.filter { product ->
+                                    product.name!!.contains(searchBox.text.toString())
+                                },
+                                null
+                            )
+                        }
+                    },
+                    failureListener = null
+                )
+            } else {
+                (productRecycler.adapter as ProductSearchAdapter).updateList(
+                    products,
+                    null
+                )
+            }
+        }
+    }
 
     private val products = ArrayList<Product>()
     private val categories = ArrayList<ProductCategory>()
@@ -67,7 +97,8 @@ class ProductSearch : Fragment(R.layout.product_search) {
         loadingLL = view.findViewById(R.id.search_ll_loading)
         loadingTv = view.findViewById(R.id.search_txt_loading)
         loadingIv = view.findViewById(R.id.search_iv_loading)
-        Glide.with(requireContext()).load(R.drawable.loading).into(loadingIv)
+        Glide.with(requireContext()).load(R.drawable.loading)
+            .diskCacheStrategy(DiskCacheStrategy.ALL).into(loadingIv)
 
         searchBox = view.findViewById(R.id.search_edt_search)
         searchBox.let { et ->
@@ -101,24 +132,11 @@ class ProductSearch : Fragment(R.layout.product_search) {
 
                     override fun afterTextChanged(s: Editable?) {
                         searchTimer = Timer()
-                        searchTimer!!.schedule(
-                            object : TimerTask() {
-                                override fun run() {
-                                    // run in main thread
-                                    android.os.Handler(Looper.getMainLooper()).post {
-                                        (productRecycler.adapter as ProductSearchAdapter).updateList(
-                                            if (et.text.toString().isNotEmpty())
-                                                products.filter { product ->
-                                                    product.name!!.contains(et.text.toString())
-                                                }
-                                            else products,
-                                            null
-                                        )
-                                    }
-                                }
-                            },
-                            searchDelay
-                        )
+                        searchTimer!!.schedule(object : TimerTask() {
+                            override fun run() {
+                                searchTask()
+                            }
+                        }, searchDelay)
                     }
                 }
             )

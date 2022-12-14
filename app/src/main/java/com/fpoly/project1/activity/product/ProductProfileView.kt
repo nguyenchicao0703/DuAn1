@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.chat.ChatView
 import com.fpoly.project1.activity.product.adapter.ProductProfileAdapter
@@ -74,7 +75,8 @@ class ProductProfileView : BottomSheetDialogFragment() {
         userEmail.visibility = View.GONE
         customer!!.getAvatarUrl(object : ControllerBase.SuccessListener() {
             override fun run(unused: Any?) {
-                Glide.with(this@ProductProfileView).load(unused as String).into(userAvatar)
+                Glide.with(this@ProductProfileView).load(unused as String)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(userAvatar)
             }
         })
         userChat.setOnClickListener {

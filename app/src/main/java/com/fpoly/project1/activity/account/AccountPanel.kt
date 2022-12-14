@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.facebook.login.LoginManager
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.MenuID
@@ -87,7 +88,8 @@ class AccountPanel : Fragment(R.layout.profile_overview) {
 
         SessionUser.avatar.addOnCompleteListener { uri ->
             if (uri.isSuccessful)
-                Glide.with(requireContext()).load(uri.result).into(profileAvatar)
+                Glide.with(requireContext()).load(uri.result)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(profileAvatar)
             else
                 ControllerCustomer().getAsync(
                     SessionUser.sessionId,

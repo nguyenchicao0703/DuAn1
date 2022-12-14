@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.activity.publish.adapter.PublishOverviewAdapter
@@ -65,7 +66,8 @@ class PublishEditItem : BottomSheetDialogFragment() {
                     product.thumbnails?.let {
                         thumbnails.clear()
                         thumbnails.add(it[0])
-                        Glide.with(requireContext()).load(it[0]).into(itemThumbnail)
+                        Glide.with(requireContext()).load(it[0])
+                            .diskCacheStrategy(DiskCacheStrategy.ALL).into(itemThumbnail)
                     }
 
                     itemThumbnail.setOnClickListener {

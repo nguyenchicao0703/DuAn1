@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.checkout.CheckoutOverview
 import com.fpoly.project1.activity.product.ProductDetails
@@ -45,7 +46,7 @@ class CheckoutAdapter(
         product.thumbnails?.let {
             Glide.with(context).load(
                 it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
-            ).into(holder.productThumbnail)
+            ).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.productThumbnail)
         }
 
         holder.productName.text = product.name

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fpoly.project1.R
 import com.fpoly.project1.activity.enums.RequestCode
 import com.fpoly.project1.activity.publish.PublishEditItem
@@ -55,7 +56,7 @@ class PublishOverviewAdapter(
             // normal
             Glide.with(context).load(
                 it.getOrNull(0) ?: "https://cdn.discordapp.com/emojis/967451516573220914.webp"
-            ).into(holder.productThumbnail)
+            ).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.productThumbnail)
         }
 
         holder.productId.text = product.id

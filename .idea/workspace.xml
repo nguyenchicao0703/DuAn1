@@ -10,10 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6519bccf-cd76-4b89-a2d8-f17eaf52f7a5" name="Changes" comment="update: Final update part 2?&#10;&#10;Added, changed and tested:&#10;- Home view featured products (based on number of sales for X last orders)&#10;- More animation&#10;- Even less crashes&#10;- Publish product view revamped to extended view on click&#10;- Added published product edit view&#10;- Fixed scrolling in search and publish view&#10;- Fixed order history view if product isn't found (deleted by user)&#10;- Fixed and adjusted some layouts">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishEditItem.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/loading.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_edit_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_item_recycler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -22,28 +18,19 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountOrderHistory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/AccountPanel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/FavoriteProductsAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/OrderDetailsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/account/adapter/OrderDetailsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/chat/ChatSelector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutConfirm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/CheckoutConfirm.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/checkout/adapter/CheckoutAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/HomeFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/FeaturedAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/home/adapter/MenuAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductProfileView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/ProductSearch.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductProfileAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/product/adapter/ProductSearchAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishAddItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishAddItem.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishOverview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishOverview.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishEditItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/PublishEditItem.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/activity/publish/adapter/PublishOverviewAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Product.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fpoly/project1/firebase/model/Product.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/auth_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_register.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/checkout_dialog_remove.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/checkout_dialog_remove.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_item_recycler_featured.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_item_recycler_featured.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/product_search.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/publish_add_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_add_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/publish_dialog_remove.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_dialog_remove.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/publish_overview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/publish_overview.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,21 +187,5 @@
     <MESSAGE value="update: Major update&#10;&#10;Added, changed and tested&#10;- Better error handling (less crashes)&#10;- Empty view on all recycler related views&#10;- Smooth transition on most of views&#10;- Dynamic search loading (explaination: scroll to see more)&#10;- Added order details&#10;- Fixed multiple layouts" />
     <MESSAGE value="update: Final update part 2?&#10;&#10;Added, changed and tested:&#10;- Home view featured products (based on number of sales for X last orders)&#10;- More animation&#10;- Even less crashes&#10;- Publish product view revamped to extended view on click&#10;- Added published product edit view&#10;- Fixed scrolling in search and publish view&#10;- Fixed order history view if product isn't found (deleted by user)&#10;- Fixed and adjusted some layouts" />
     <option name="LAST_COMMIT_MESSAGE" value="update: Final update part 2?&#10;&#10;Added, changed and tested:&#10;- Home view featured products (based on number of sales for X last orders)&#10;- More animation&#10;- Even less crashes&#10;- Publish product view revamped to extended view on click&#10;- Added published product edit view&#10;- Fixed scrolling in search and publish view&#10;- Fixed order history view if product isn't found (deleted by user)&#10;- Fixed and adjusted some layouts" />
-  </component>
-  <component name="com.github.lppedd.cc.CommitBuilderDialog">
-    <type>update</type>
-    <subject>Final update part 2?</subject>
-    <body>Added, changed and tested:
-- Home view featured products (based on number of sales for X last orders)
-- More animation
-- Even less crashes
-- Publish product view revamped to extended view on click
-- Added published product edit view
-- Fixed scrolling in search and publish view
-- Fixed order history view if product isn't found (deleted by user)
-- Fixed and adjusted some layouts</body>
-    <footers>
-      <entry type="" value="" />
-    </footers>
   </component>
 </project>
